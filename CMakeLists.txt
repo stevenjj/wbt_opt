@@ -59,31 +59,6 @@ include_directories(
 # ${catkin_INCLUDE_DIRS}
 )
 
-## Add cmake target dependencies of the library
-## as an example, code may need to be generated before libraries
-## either from message generation or dynamic reconfigure
-# add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-
-## Declare a C++ executable
-## With catkin_make all packages are built within a single CMake context
-## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/lcp_val_simulator_node.cpp)
-
-## Rename C++ executable without prefix
-## The above recommended prefix causes long target names, the following renames the
-## target back to the shorter version for ease of user use
-## e.g. "rosrun someones_pkg node" instead of "rosrun someones_pkg someones_pkg_node"
-# set_target_properties(${PROJECT_NAME}_node PROPERTIES OUTPUT_NAME node PREFIX "")
-
-## Add cmake target dependencies of the executable
-## same as for the library above
-# add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-
-## Specify libraries to link a library or executable target against
-# target_link_libraries(${PROJECT_NAME}_node
-#   ${catkin_LIBRARIES}
-# )
-
 include_directories(include)
 include_directories(src/valkyrie_dynamic_model)
 set(val_sim_model_sources src/valkyrie_dynamic_model/valkyrie_definition.h
@@ -95,16 +70,21 @@ set(val_sim_model_sources src/valkyrie_dynamic_model/valkyrie_definition.h
 						  src/valkyrie_dynamic_model/RobotModel.cpp)					
 
 
-#set(val_lcp_sim_sources src/lcp_val_simulator_node_main.cpp
-#						src/lcp_dyn_simulator.cpp
-#						src/val_rviz_translator.cpp)
+set(wbt_opt_sources     src/main.cpp
+						src/wbt_optimization.cpp)
 
-add_executable(traj_gen_main src/main.cpp ${val_sim_model_sources})
-
-target_link_libraries(traj_gen_main ${catkin_LIBRARIES} ${SJUtils}
+add_executable(eg_traj_gen_main src/example_main.cpp ${val_sim_model_sources})
+target_link_libraries(eg_traj_gen_main ${catkin_LIBRARIES} ${SJUtils}
   													    ${SJurdf}
 														${SJrbdl}
-														${SJsnopt})												     
+														${SJsnopt})										
+
+add_executable(traj_gen_main ${wbt_opt_sources} ${val_sim_model_sources})
+target_link_libraries(traj_gen_main ${catkin_LIBRARIES} ${SJUtils}
+  								  					       ${SJurdf}
+														   ${SJrbdl}
+														   ${SJsnopt})										
+
 
 SET (THIS_PACKAGE_PATH "${PROJECT_SOURCE_DIR}/" )
 CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/model_config.h.cmake ${PROJECT_SOURCE_DIR}/include/model_config.h)
