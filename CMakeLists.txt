@@ -71,13 +71,7 @@ set(val_sim_model_sources src/valkyrie_dynamic_model/valkyrie_definition.h
 
 
 set(wbt_opt_sources     src/main.cpp
-						src/wbt_optimization.cpp)
-
-add_executable(eg_traj_gen_main src/example_main.cpp ${val_sim_model_sources})
-target_link_libraries(eg_traj_gen_main ${catkin_LIBRARIES} ${SJUtils}
-  													    ${SJurdf}
-														${SJrbdl}
-														${SJsnopt})										
+						src/wbt_optimization.cpp)	
 
 add_executable(traj_gen_main ${wbt_opt_sources} ${val_sim_model_sources})
 target_link_libraries(traj_gen_main ${catkin_LIBRARIES} ${SJUtils}
