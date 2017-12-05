@@ -17,6 +17,8 @@ public:
 	void Initialization();
   void get_problem_functions();
 
+  void run_solver_test();
+
 	sejong::Vector m_q;
   sejong::Vector m_qdot;
   sejong::Vector m_tau;
@@ -26,6 +28,11 @@ public:
   sejong::Matrix A_;
   sejong::Matrix Ainv_;	
 
+  double dt;
+  int    total_time_steps;
+
+
+private:
 	WBT_Optimization();
 	~WBT_Optimization();	
 

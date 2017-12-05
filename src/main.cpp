@@ -10,6 +10,8 @@ int main(int argc, char **argv)
 	// Change virtual x position, to test singleton 
 	opt_obj_->m_q[0] = 100;
 
-	snopt_solve_opt_problem();
+	opt_obj_->run_solver_test();	
+
+//	snopt_solve_opt_problem();
 	return 0;
 }

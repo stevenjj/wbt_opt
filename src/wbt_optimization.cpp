@@ -1,5 +1,5 @@
 #include "wbt_optimization.h"
-
+#include "traj_solver.h"
 
 WBT_Optimization* WBT_Optimization::GetWBT_Optimization(){
     static WBT_Optimization wbt_opt_obj;
@@ -63,3 +63,37 @@ void WBT_Optimization::get_problem_functions(){
   std::cout << "Hello World!" << std::endl;
   std::cout << " Virtual x location: " << m_q[0] << std::endl;
 }
+
+
+void WBT_Optimization::run_solver_test(){
+  snopt_solve_opt_problem();
+}
+
+/*
+void WBT_Optimization::prepare_state_bounds(){
+}
+*/
+
+/*
+  
+  Whole Body Dynamics:
+    Aqddot + b + g = Utau + Jn*N*fn + Jd*D*fd
+
+  LCP constraints on fn and fd
+
+
+
+  Whole Body COntroller  
+    Aqddot_des + b + g = Jc^T Fr
+    qddot_des = B xddot + c 
+
+
+  states
+  t
+  Fn1, ..., Fn4
+  Fd1, ..., Fd4
+  q
+  qdot
+  t{n+1} = tn + dt;
+
+}*/
