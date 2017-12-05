@@ -17,9 +17,9 @@ public:
 	void Initialization();
   void get_problem_functions();
 
-  void prepare_state_problem_bounds(int &n, int &neF, double &ObjRow,
-                                            double xlow[], double xupp[],
-                                            double Flow[], double Fupp[]);
+  void prepare_state_problem_bounds(int &n, int &neF, int &ObjRow,
+                                            std::vector<double> &xlow, std::vector<double> &xupp,
+                                            std::vector<double> &Flow, std::vector<double> &Fupp);
 
   void run_solver_test();
 

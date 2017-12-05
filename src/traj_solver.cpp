@@ -23,10 +23,47 @@ void snopt_user_fun(int    *Status, int *n,    double x[],
   F[1] =  x[0] + x[1];
 }
 
+void test_bounds_prep(){
+  WBT_Optimization* opt_obj;
+  opt_obj = WBT_Optimization::GetWBT_Optimization();  
+  std::vector<double> xlow_vec;
+  std::vector<double> xupp_vec;
+  std::vector<double> Flow_vec; 
+  std::vector<double> Fupp_vec;
+
+  // Allocate and initialize;
+  int n     =  0; // Number of Optimization Variables
+  int neF   =  0; // Number of Problem Functions (constraints + objective function - state bounds constraints)
+  int ObjRow = 0;
+  int nS = 0, nInf;
+  double sInf;
+
+  opt_obj->prepare_state_problem_bounds(n, neF, ObjRow, xlow_vec, xupp_vec, Flow_vec, Fupp_vec);
+
+  double *x      = new double[n];
+  double *xlow   = new double[n];
+  double *xupp   = new double[n];
+  double *Flow   = new double[neF];
+  double *Fupp   = new double[neF];
+
+  for(size_t i = 0; i < n; i++){
+    xlow[i] = xlow_vec[i];
+    xupp[i] = xupp_vec[i];
+  }
+
+  for(size_t i = 0; i < neF; i++){
+    Flow[i] = Flow_vec[i];
+    Fupp[i] = Fupp_vec[i];              
+  }
+
+}
+
 void snopt_solve_opt_problem(){
   snoptProblemA traj_prob;	
   WBT_Optimization* opt_obj;
   opt_obj = WBT_Optimization::GetWBT_Optimization();
+
+  test_bounds_prep();
 
   double inf = 1.0e20;
   int Cold = 0, Basis = 1, Warm = 2;

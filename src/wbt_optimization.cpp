@@ -70,9 +70,9 @@ void WBT_Optimization::run_solver_test(){
 }
 
 
-void WBT_Optimization::prepare_state_problem_bounds(int &n, int &neF, double &ObjRow,
-                                            double xlow[], double xupp[],
-                                            double Flow[], double Fupp[]){
+void WBT_Optimization::prepare_state_problem_bounds(int &n, int &neF, int &ObjRow,
+                                            std::vector<double> &xlow, std::vector<double> &xupp,
+                                            std::vector<double> &Flow, std::vector<double> &Fupp){
   /* State Order. All the sizes of the state vector are equal to the number of timesteps.
   std::vector<double> time_state;
   std::vector<sejong::Vector> Fr_states;
@@ -92,36 +92,86 @@ void WBT_Optimization::prepare_state_problem_bounds(int &n, int &neF, double &Ob
   sejong::Vector phi_upperbound(phi_states.rows()); phi_upperbound.setZero();
   sejong::Vector phi_lowerbound(phi_states.rows()); phi_lowerbound.setZero();   
 
+
+  std::vector<double> xupp_states;
+  std::vector<double> xlow_states; 
   // Set Number of States
   n = Fr_states.rows() + phi_states.rows();
 
+  // Assign Reaction Force Bounds
   for(size_t i = 0; i < Fr_states.rows(); i++){
     Fr_upperbound[i] = 10000;
-    Fr_lowerbound[i] = -10000;    
+    Fr_lowerbound[i] = -10000;
+    xupp_states.push_back(Fr_upperbound[i]);
+    xlow_states.push_back(Fr_lowerbound[i]);    
   }
 
+  // Assign Phi(q) bounds
   for(size_t i = 0; i < phi_states.rows(); i++){
     phi_upperbound[i] = 10;
     phi_lowerbound[i] = -1;    
+    xupp_states.push_back(phi_upperbound[i]);
+    xlow_states.push_back(phi_lowerbound[i]);        
   }
+
+  // Assign to actual states
+  xupp = xupp_states;  
+  xlow = xlow_states;
 
 
   /* Problem Function order
   (1)              objective function
   (6)              WBC_virtual_states: Sv(Aqddot_des + b + g - U^t + Jc^Fr = 0)
   (17*2)           Fr contact constraint UFr >= 0
-  (NUM_ACT_JOINT) torque_constraints: -1800 <= Sa * (Aqddot_des + b + g - Jc^Fr) <= 1800
+  (NUM_ACT_JOINT)  torque_constraints: -1800 <= Sa * (Aqddot_des + b + g - Jc^Fr) <= 1800
+  (2)              Phi constraint phi*Fr = 0
   */
   sejong::Vector WBC_virtual_constraints(6); WBC_virtual_constraints.setZero();
   sejong::Vector Fr_contact_constraints(17*2); Fr_contact_constraints.setZero();
   sejong::Vector torque_constraints(NUM_ACT_JOINT); torque_constraints.setZero();
+  sejong::Vector phi_constraints(2); phi_constraints.setZero();  
 
-  sejong::Vector WBC_virtual_constraints_upp(6); WBC_virtual_constraints_upp.setZero();
-  sejong::Vector WBC_virtual_constraints_low(6); WBC_virtual_constraints_low.setZero();
-  sejong::Vector Fr_contact_constraints_upp(17*2); Fr_contact_constraints_upp.setZero();
-  sejong::Vector Fr_contact_constraints_low(17*2); Fr_contact_constraints_low.setZero();
-  sejong::Vector torque_constraints_upp(NUM_ACT_JOINT); torque_constraints_upp.setZero();  
-  sejong::Vector torque_constraints_low(NUM_ACT_JOINT); torque_constraints_low.setZero();    
+  std::vector<double> Fupp_;
+  std::vector<double> Flow_; 
+  neF = 1 + WBC_virtual_constraints.rows() + 
+            Fr_contact_constraints.rows() + 
+            torque_constraints.rows() + 
+            phi_constraints.rows();
+
+  //Assign Objective Function Bounds
+  double inf = 1e20;
+  Fupp_.push_back(inf);
+  Flow_.push_back(-inf);  
+  ObjRow = 0; // Assign Objective Row
+
+  // Assign WBC Bounds
+  for(size_t i = 0; i < WBC_virtual_constraints.rows(); i++){
+    Fupp_.push_back(0);
+    Flow_.push_back(0);    
+  }
+
+  // Assign Fr Contact constraint bounds
+  for(size_t i = 0; i < Fr_contact_constraints.rows(); i++){
+    Fupp_.push_back(inf);
+    Flow_.push_back(0);    
+  }
+
+  // Assign Torque constraint bounds
+  double torque_max = 1800.0;
+  for(size_t i = 0; i < torque_constraints.rows(); i++){
+    Fupp_.push_back(torque_max);
+    Flow_.push_back(-torque_max);    
+  }
+
+  // Assign Phi Constraints
+  for(size_t i = 0; i < phi_constraints.rows(); i++){
+    Fupp_.push_back(0);
+    Flow_.push_back(0);    
+  }
+
+  // Problem Function Bounds
+  Fupp = Fupp_;
+  Flow = Flow_;  
 
 }
 
