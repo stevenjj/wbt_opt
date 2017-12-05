@@ -1,5 +1,19 @@
 #include "traj_solver.h"
 
+void test_get_funcs(){
+  WBT_Optimization* opt_obj;
+  opt_obj = WBT_Optimization::GetWBT_Optimization();  
+
+  std::vector<double> x;
+  std::vector<double> F;
+  std::vector<double> G;
+
+
+  std::cout << "hello!" << std::endl;
+  opt_obj->get_problem_functions(x, F, G);
+}
+
+
 void snopt_user_fun(int    *Status, int *n,    double x[],
        int    *needF,  int *neF,  double F[],
        int    *needG,  int *neG,  double G[],
@@ -10,7 +24,8 @@ void snopt_user_fun(int    *Status, int *n,    double x[],
   WBT_Optimization* opt_obj;
   opt_obj = WBT_Optimization::GetWBT_Optimization();
 
-  opt_obj->get_problem_functions();
+  opt_obj->test_get_problem_functions();
+  test_get_funcs();
 
   //==================================================================
   //

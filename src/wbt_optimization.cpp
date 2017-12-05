@@ -1,5 +1,6 @@
 #include "wbt_optimization.h"
 #include "traj_solver.h"
+#include <Utils/utilities.hpp>
 
 WBT_Optimization* WBT_Optimization::GetWBT_Optimization(){
     static WBT_Optimization wbt_opt_obj;
@@ -10,6 +11,15 @@ WBT_Optimization::WBT_Optimization():m_q(NUM_Q), m_qdot(NUM_QDOT),
                                     m_tau(NUM_QDOT), cori_(NUM_QDOT),
                                     grav_(NUM_QDOT), A_(NUM_QDOT, NUM_QDOT), Ainv_(NUM_QDOT, NUM_QDOT){
   robot_model_ = RobotModel::GetRobotModel();	
+
+  // Prepare Selection Matrix
+  Sv.resize(NUM_VIRTUAL, NUM_QDOT);
+  Sa.resize(NUM_ACT_JOINT, NUM_QDOT);
+  Sv.setZero();
+  Sa.setZero();
+
+  Sv.block(0,0, NUM_VIRTUAL, NUM_VIRTUAL) = sejong::Matrix::Identity(NUM_VIRTUAL, NUM_VIRTUAL);
+  Sa.block(0, NUM_VIRTUAL, NUM_ACT_JOINT, NUM_ACT_JOINT) = sejong::Matrix::Identity(NUM_ACT_JOINT, NUM_ACT_JOINT);
 
   m_q.setZero();  
   m_qdot.setZero();  
@@ -58,12 +68,27 @@ void WBT_Optimization::Initialization(){
   std::cout << "[WBT] Robot Starting State Initialized" << std::endl;
 }
 
+void WBT_Optimization::UpdateModel(const sejong::Vector &q, const sejong::Vector &qdot,
+                                   sejong::Matrix &A_out, sejong::Vector &grav_out, sejong::Vector &cori_out){
+  A_out.resize(NUM_QDOT, NUM_QDOT);
+  grav_out.resize(NUM_QDOT, 1);
+  cori_out.resize(NUM_QDOT, 1);
+  A_out.setZero();
+  grav_out.setZero();
+  cori_out.setZero();  
 
-void WBT_Optimization::get_problem_functions(){
+  robot_model_->UpdateModel(q, qdot);
+  robot_model_->getMassInertia(A_out); 
+  robot_model_->getGravity(grav_out);  
+  robot_model_->getCoriolis(cori_out); 
+}
+
+
+
+void WBT_Optimization::test_get_problem_functions(){
   std::cout << "Hello World!" << std::endl;
   std::cout << " Virtual x location: " << m_q[0] << std::endl;
 }
-
 
 void WBT_Optimization::run_solver_test(){
   snopt_solve_opt_problem();
@@ -175,6 +200,61 @@ void WBT_Optimization::prepare_state_problem_bounds(int &n, int &neF, int &ObjRo
 
 }
 
+void WBT_Optimization::get_problem_functions(std::vector<double> &x, std::vector<double> &F, std::vector<double> &G){
+  // Extract states x:
+  sejong::Vector Fr_states(12); Fr_states.setZero(); // 6 Generalized Contact Forces
+  sejong::Vector phi_states(2); Fr_states.setZero(); // 2 for each generalized contact
+
+/*  int offset = 0;
+  for(size_t i = 0; i < Fr_states.rows(); i++){
+    Fr_states[i] = x[i + offset];
+  }
+  offset += Fr_states.rows();
+
+  for(size_t i = 0; i < phi_states.rows(); i++){
+    phi_states[i] = x[i + offset];
+  }  */
+
+  // Problem functions
+  std::vector<double> F_;
+
+  // Set Objective function: -----------------------------------------------------------------
+  sejong::Matrix Q_Fr = sejong::Matrix::Identity(Fr_states.rows(), Fr_states.rows());
+  Q_Fr(5,5) = 0.001; // Z direction 
+  Q_Fr(11,11) = 0.001; // Z direction
+  sejong::Vector objective_function = Fr_states.transpose()*Q_Fr*Fr_states;
+  
+  // Add to Problem Function
+  F_.push_back(objective_function[0]);
+
+  // Set WBC Virtual Constraints -------------------------------------------------------------
+  sejong::Matrix A(NUM_QDOT, NUM_QDOT);
+  sejong::Vector b(NUM_QDOT);
+  sejong::Vector g(NUM_QDOT);
+  UpdateModel(m_q, m_qdot, A, g, b);
+
+  // Find desired actuation
+  // needs tau_des =  A(B*xddot_des + c) + b + g
+  sejong::Vector tau_des = b + g;
+  sejong::Vector tau_act(NUM_QDOT); tau_act.setZero();
+  tau_act.tail(NUM_ACT_JOINT) = tau_des.tail(NUM_ACT_JOINT);
+  // Set Foot Contact Jacobian
+  sejong::Matrix Jc(Fr_states.rows(), NUM_QDOT);
+  sejong::Matrix Jtmp;
+  robot_model_->getFullJacobian(m_q, SJLinkID::LK_rightCOP_Frame, Jtmp);
+  Jc.block(0, 0, 6, NUM_QDOT) = Jtmp;
+  robot_model_->getFullJacobian(m_q, SJLinkID::LK_leftCOP_Frame, Jtmp);
+  Jc.block(6, 0, 6, NUM_QDOT) = Jtmp;  
+  sejong::Vector WBC_virtual_constraints = Sv*(b + g - tau_act - Jc.transpose()*Fr_states);
+
+  // Add to Problem Function
+  for(size_t i = 0; i < WBC_virtual_constraints.size(); i++){
+    F_.push_back(WBC_virtual_constraints[i]);
+  }
+
+
+
+}
 
 /*
   Simple Problem: min Fr^T Q Fr

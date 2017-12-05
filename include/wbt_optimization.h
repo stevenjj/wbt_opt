@@ -14,12 +14,16 @@ public:
   static WBT_Optimization* GetWBT_Optimization();  
 	RobotModel* robot_model_;
 
+  void UpdateModel(const sejong::Vector &q, const sejong::Vector &qdot,
+                                   sejong::Matrix &A_out, sejong::Vector &grav_out, sejong::Vector &cori_out);
+
 	void Initialization();
-  void get_problem_functions();
+  void test_get_problem_functions();
 
   void prepare_state_problem_bounds(int &n, int &neF, int &ObjRow,
                                             std::vector<double> &xlow, std::vector<double> &xupp,
                                             std::vector<double> &Flow, std::vector<double> &Fupp);
+  void get_problem_functions(std::vector<double> &x, std::vector<double> &F, std::vector<double> &G);
 
   void run_solver_test();
 
@@ -31,6 +35,12 @@ public:
   sejong::Vector grav_;
   sejong::Matrix A_;
   sejong::Matrix Ainv_;	
+
+
+
+  sejong::Matrix Sv;
+  sejong::Matrix Sa;
+
 
   double dt;
   int    total_time_steps;
