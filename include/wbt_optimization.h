@@ -17,6 +17,10 @@ public:
 	void Initialization();
   void get_problem_functions();
 
+  void prepare_state_problem_bounds(int &n, int &neF, double &ObjRow,
+                                            double xlow[], double xupp[],
+                                            double Flow[], double Fupp[]);
+
   void run_solver_test();
 
 	sejong::Vector m_q;

@@ -33,7 +33,7 @@ void snopt_solve_opt_problem(){
 
   // Allocate and initialize;
   int n     =  2; // Number of Optimization Variables
-  int neF   =  2; // 
+  int neF   =  2; // Number of Problem Functions (constraints + objective function - state bounds constraints)
 
   int nS = 0, nInf;
   double sInf;
@@ -64,7 +64,7 @@ void snopt_solve_opt_problem(){
 
   traj_prob.initialize     ("", 1);  // no print file, summary on
   traj_prob.setProbName("Simple Fr Minimization");
-  //traj_prob.setPrintFile("traj.out"); 
+  traj_prob.setPrintFile("traj.out"); 
   // snopta will compute the Jacobian by finite-differences.
   // snJac will be called  to define the
   // coordinate arrays (iAfun,jAvar,A) and (iGfun, jGvar).

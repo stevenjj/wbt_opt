@@ -69,24 +69,85 @@ void WBT_Optimization::run_solver_test(){
   snopt_solve_opt_problem();
 }
 
-/*
-void WBT_Optimization::prepare_state_bounds(){
+
+void WBT_Optimization::prepare_state_problem_bounds(int &n, int &neF, double &ObjRow,
+                                            double xlow[], double xupp[],
+                                            double Flow[], double Fupp[]){
+  /* State Order. All the sizes of the state vector are equal to the number of timesteps.
+  std::vector<double> time_state;
+  std::vector<sejong::Vector> Fr_states;
+  std::vector<sejong::Vector> xddot_des_states;
+  std::vector<sejong::Vector> Fn_states;
+  std::vector<sejong::Vector> Fd_states;
+  std::vector<sejong::Vector> phi_states;  
+  std::vector<sejong::Vector> q_states;
+  std::vector<sejong::Vector> qdot_states;
+  */
+
+  sejong::Vector Fr_states(12); Fr_states.setZero(); // 6 Generalized Contact Forces
+  sejong::Vector phi_states(2); Fr_states.setZero(); // 2 for each generalized contact
+
+  sejong::Vector Fr_upperbound(Fr_states.rows()); Fr_upperbound.setZero();
+  sejong::Vector Fr_lowerbound(Fr_states.rows()); Fr_lowerbound.setZero(); 
+  sejong::Vector phi_upperbound(phi_states.rows()); phi_upperbound.setZero();
+  sejong::Vector phi_lowerbound(phi_states.rows()); phi_lowerbound.setZero();   
+
+  // Set Number of States
+  n = Fr_states.rows() + phi_states.rows();
+
+  for(size_t i = 0; i < Fr_states.rows(); i++){
+    Fr_upperbound[i] = 10000;
+    Fr_lowerbound[i] = -10000;    
+  }
+
+  for(size_t i = 0; i < phi_states.rows(); i++){
+    phi_upperbound[i] = 10;
+    phi_lowerbound[i] = -1;    
+  }
+
+
+  /* Problem Function order
+  (1)              objective function
+  (6)              WBC_virtual_states: Sv(Aqddot_des + b + g - U^t + Jc^Fr = 0)
+  (17*2)           Fr contact constraint UFr >= 0
+  (NUM_ACT_JOINT) torque_constraints: -1800 <= Sa * (Aqddot_des + b + g - Jc^Fr) <= 1800
+  */
+  sejong::Vector WBC_virtual_constraints(6); WBC_virtual_constraints.setZero();
+  sejong::Vector Fr_contact_constraints(17*2); Fr_contact_constraints.setZero();
+  sejong::Vector torque_constraints(NUM_ACT_JOINT); torque_constraints.setZero();
+
+  sejong::Vector WBC_virtual_constraints_upp(6); WBC_virtual_constraints_upp.setZero();
+  sejong::Vector WBC_virtual_constraints_low(6); WBC_virtual_constraints_low.setZero();
+  sejong::Vector Fr_contact_constraints_upp(17*2); Fr_contact_constraints_upp.setZero();
+  sejong::Vector Fr_contact_constraints_low(17*2); Fr_contact_constraints_low.setZero();
+  sejong::Vector torque_constraints_upp(NUM_ACT_JOINT); torque_constraints_upp.setZero();  
+  sejong::Vector torque_constraints_low(NUM_ACT_JOINT); torque_constraints_low.setZero();    
+
 }
-*/
+
 
 /*
-  
+  Simple Problem: min Fr^T Q Fr
+  Sv(Aqddot_des + b + g = U^t + Jc^Fr)
+  UT = Aqddot_des + b + g
+
+  tau = Sa * (Aqddot_des + b + g - Jc^Fr)
+  UFr >= 0 
+  Fr*Phi(q) = 0
+ 
+
+  States: Fr1....Fr12, phi(q)
+  Constraints rows(U) + rows(Sa) + Fr*phi
+
+
   Whole Body Dynamics:
     Aqddot + b + g = Utau + Jn*N*fn + Jd*D*fd
 
   LCP constraints on fn and fd
 
-
-
-  Whole Body COntroller  
+  Whole Body Controller  
     Aqddot_des + b + g = Jc^T Fr
     qddot_des = B xddot + c 
-
 
   states
   t
@@ -94,6 +155,12 @@ void WBT_Optimization::prepare_state_bounds(){
   Fd1, ..., Fd4
   q
   qdot
+
+  Fr1...6, Fr7...12
+  xddot1, ... xddot_dim_WBC
+
+
+
   t{n+1} = tn + dt;
 
 }*/
