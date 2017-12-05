@@ -20,12 +20,21 @@ public:
 	void Initialization();
   void test_get_problem_functions();
 
+
   void prepare_state_problem_bounds(int &n, int &neF, int &ObjRow,
                                             std::vector<double> &xlow, std::vector<double> &xupp,
                                             std::vector<double> &Flow, std::vector<double> &Fupp);
   void get_problem_functions(std::vector<double> &x, std::vector<double> &F, std::vector<double> &G);
 
   void run_solver_test();
+
+
+
+  void simple_prepare_state_problem_bounds(int &n, int &neF, int &ObjRow,
+                                            std::vector<double> &xlow, std::vector<double> &xupp,
+                                            std::vector<double> &Flow, std::vector<double> &Fupp);
+  void simple_get_problem_functions(std::vector<double> &x, std::vector<double> &F, std::vector<double> &G);
+
 
 	sejong::Vector m_q;
   sejong::Vector m_qdot;
@@ -41,6 +50,8 @@ public:
   sejong::Matrix Sv;
   sejong::Matrix Sa;
 
+  int n_states_to_optimize;
+  int neF_problems;  
 
   double dt;
   int    total_time_steps;

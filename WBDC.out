@@ -1,0 +1,1952 @@
+1
+ 
+ SNMEMA EXIT 100 -- finished successfully
+ SNMEMA INFO 104 -- memory requirements estimated
+
+ Nonzero derivs  Jij       166
+ Non-constant    Jij's      12     Constant Jij's         154
+1
+ 
+ SNJAC  EXIT 100 -- finished successfully
+ SNJAC  INFO 102 -- Jacobian structure estimated
+
+ 
+ ===>  WARNING - Row        42 of the Jacobian is empty.
+ ===>  WARNING - Row        43 of the Jacobian is empty.
+ ===>  WARNING - Row        44 of the Jacobian is empty.
+ ===>  WARNING - Row        45 of the Jacobian is empty.
+ ===>  WARNING - Row        46 of the Jacobian is empty.
+ ===>  WARNING - Row        47 of the Jacobian is empty.
+ ===>  WARNING - Row        48 of the Jacobian is empty.
+ ===>  WARNING - Row        49 of the Jacobian is empty.
+ ===>  WARNING - Row        50 of the Jacobian is empty.
+ ===>  WARNING - Row        51 of the Jacobian is empty.
+ ===>  WARNING - Row        52 of the Jacobian is empty.
+ ===>  WARNING - Row        53 of the Jacobian is empty.
+ ===>  WARNING - Row        54 of the Jacobian is empty.
+ ===>  WARNING - Row        55 of the Jacobian is empty.
+ ===>  WARNING - Row        56 of the Jacobian is empty.
+ ===>  WARNING - Row        57 of the Jacobian is empty.
+ ===>  WARNING - Row        58 of the Jacobian is empty.
+ ===>  WARNING - Row        59 of the Jacobian is empty.
+ ===>  WARNING - Row        60 of the Jacobian is empty.
+ ===>  WARNING - Row        61 of the Jacobian is empty.
+ ===>  WARNING - Row        62 of the Jacobian is empty.
+ ===>  WARNING - Row        63 of the Jacobian is empty.
+ ===>  WARNING - Row        64 of the Jacobian is empty.
+ ===>  WARNING - Row        65 of the Jacobian is empty.
+ ===>  WARNING - Row        66 of the Jacobian is empty.
+ ===>  WARNING - Row        67 of the Jacobian is empty.
+ ===>  WARNING - Row        68 of the Jacobian is empty.
+ ===>  WARNING - Row        69 of the Jacobian is empty.
+1
+ 
+ Parameters
+ ==========
+
+ Files
+ -----
+ Solution file..........         0       Old basis file ........         0       Standard input.........         5
+ Insert file............         0       New basis file ........         0       (Printer)..............        10
+ Punch file.............         0       Backup basis file......         0       (Specs file)...........         0
+ Load file..............         0       Dump file..............         0       Standard output........         6
+
+ Frequencies
+ -----------
+ Print frequency........       100       Check frequency........        60       Save new basis map.....       100
+ Summary frequency......       100       Factorization frequency        50       Expand frequency.......     10000
+
+ QP subproblems
+ --------------
+ QPsolver Cholesky......
+ Scale tolerance........     0.900       Minor feasibility tol..  1.00E-06       Iteration limit........     10000
+ Scale option...........         0       Minor optimality  tol..  1.00E-06       Minor print level......         1
+ Crash tolerance........     0.100       Pivot tolerance........  3.25E-11       New superbasics........        99
+ Crash option...........         3       Elastic weight.........  1.00E+00
+
+ Partial pricing
+ ---------------
+ LP Partial price.......         1       Prtl price section ( A)        12       Prtl price section (-I)        69
+ QP Partial price.......         1       Prtl price section ( A)        12       Prtl price section (-I)        69
+
+ The SQP Method
+ --------------
+ Minimize...............                 Cold start.............                 Proximal Point method..         1
+ Nonlinear objectiv vars        12       Objective Row..........         1       Function precision.....  3.00E-13
+ Unbounded step size....  1.00E+20       Superbasics limit......        12       Difference interval....  5.48E-07
+ Unbounded objective....  1.00E+10       Reduced Hessian dim....        12       Central difference int.  6.70E-05
+ Major step limit.......  2.00E+00       Nonderiv.  linesearch..                 Derivative option......         0
+ Major iterations limit.      1000       Linesearch tolerance...   0.90000       Verify level...........         3
+ Minor iterations limit.       500       Penalty parameter......  0.00E+00       Major Print Level......         1
+ Time limit (secs)...... 9999999.0       Major optimality tol...  2.00E-06
+
+ Hessian Approximation
+ ---------------------
+ Hessian full-memory....                 Hessian updates........  99999999       Hessian frequency......  99999999
+                                                                                 Hessian flush..........  99999999
+
+ Miscellaneous
+ -------------
+ LU factor tolerance....      3.99       LU singularity tol.....  3.25E-11       Timing level...........         3
+ LU update tolerance....      3.99       LU swap tolerance......  1.22E-04       Debug level............         0
+ LU partial  pivoting...                 eps (machine precision)  2.22E-16       System information.....        No
+                                                                                 Sticky parameters......        No
+1
+ 
+
+ 
+
+ Matrix statistics
+ -----------------
+               Total      Normal        Free       Fixed     Bounded
+ Rows             69          34           1           6          28
+ Columns          12           0           0           0          12
+
+ No. of matrix elements                  154     Density      18.599
+ Biggest                          1.1306E+00  (excluding fixed columns,
+ Smallest                         3.5324E-02   free rows, and RHS)
+
+ No. of objective coefficients             0
+
+ Nonlinear constraints       0     Linear constraints      69
+ Nonlinear variables        12     Linear variables         0
+ Jacobian  variables         0     Objective variables     12
+ Total constraints          69     Total variables         12
+1
+ 
+
+ 
+ The user has defined       0   out of      12   first  derivatives
+
+ 
+ Column       x(j)        dx(j)    Element no.    Row        Derivative    Difference approxn
+1
+ 
+ 
+
+   Itns Major Minors    Step   nObj Feasible  Optimal      Objective     L+U BSwap     nS condZHZ
+      0     0      0              1          (2.7E-07) 0.0000000E+00     203                      _  r
+1
+ 
+ SNOPTA EXIT   0 -- finished successfully
+ SNOPTA INFO   1 -- optimality conditions satisfied
+
+ Problem name                 WBDC Fr
+ No. of iterations                   0   Objective            0.0000000000E+00
+ No. of major iterations             0   Linear    obj. term  0.0000000000E+00
+                                         Nonlinear obj. term  0.0000000000E+00
+ User function calls (total)        13   Calls with modes 1,2 (known g)      1
+ Calls for forward differencing     12   Calls for central differencing      0
+ No. of degenerate steps             0   Percentage                       0.00
+ Max x                       1 9.5-317   Max pi                     41 1.0E+00
+ Max Primal infeas           0 0.0E+00   Max Dual infeas            37 2.7E-07
+1
+ 
+ Name           WBDC Fr                  Objective Value      0.0000000000E+00
+
+ Status         Optimal Soln             Iteration      0    Superbasics     0
+
+ Objective               (Min)
+ RHS
+ Ranges
+ Bounds
+
+ Section 1 - Constraints
+
+  Number  ...Row.. State  ...Value......  Slack Value...  ..Lower Limit.  ..Upper Limit.  .Dual Variable    ..i
+ 
+      13  r      1    BS          .               .                None            None         -1.0          1
+      14  r      2 A  EQ          .               .               .               .             -0.00000      2
+      15  r      3 A  EQ          .               .               .               .              0.00000      3
+      16  r      4 A  EQ          .               .               .               .             -0.00000      4
+      17  r      5 A  EQ          .               .               .               .             -0.00000      5
+      18  r      6 A  EQ          .               .               .               .             -0.00000      6
+      19  r      7 A  EQ          .               .               .               .             -0.00000      7
+      20  r      8 D  BS          .               .               .                None           .           8
+      21  r      9 D  BS          .               .               .                None           .           9
+      22  r     10 D  BS          .               .               .                None           .          10
+      23  r     11 D  BS          .               .               .                None           .          11
+      24  r     12 D  BS          .               .               .                None           .          12
+      25  r     13 D  BS          .               .               .                None           .          13
+      26  r     14 D  BS          .               .               .                None           .          14
+      27  r     15 D  BS          .               .               .                None           .          15
+      28  r     16 D  BS          .               .               .                None           .          16
+      29  r     17 D  BS          .               .               .                None           .          17
+      30  r     18 D  BS          .               .               .                None           .          18
+      31  r     19 D  BS          .               .               .                None           .          19
+      32  r     20 D  BS          .               .               .                None           .          20
+      33  r     21 D  BS          .               .               .                None           .          21
+      34  r     22 D  BS          .               .               .                None           .          22
+      35  r     23 D  BS          .               .               .                None           .          23
+      36  r     24 D  BS          .               .               .                None           .          24
+      37  r     25 A  LL          .               .               .                None         -0.00000     25
+      38  r     26 A  LL          .               .               .                None          0.00000     26
+      39  r     27 D  BS          .               .               .                None           .          27
+      40  r     28 A  LL          .               .               .                None           .          28
+      41  r     29 D  BS          .               .               .                None           .          29
+      42  r     30 A  LL          .               .               .                None           .          30
+      43  r     31 D  BS          .               .               .                None           .          31
+      44  r     32 A  LL          .               .               .                None           .          32
+      45  r     33 D  BS          .               .               .                None           .          33
+      46  r     34 D  BS          .               .               .                None           .          34
+      47  r     35 D  BS          .               .               .                None           .          35
+      48  r     36 D  BS          .               .               .                None           .          36
+      49  r     37 D  BS          .               .               .                None           .          37
+      50  r     38 D  BS          .               .               .                None           .          38
+      51  r     39 D  BS          .               .               .                None           .          39
+      52  r     40 D  BS          .               .               .                None           .          40
+      53  r     41 D  BS          .               .               .                None           .          41
+      54  r     42    BS          .           1800.00000     -1800.00000      1800.00000          .          42
+      55  r     43    BS          .           1800.00000     -1800.00000      1800.00000          .          43
+      56  r     44    BS          .           1800.00000     -1800.00000      1800.00000          .          44
+      57  r     45    BS          .           1800.00000     -1800.00000      1800.00000          .          45
+      58  r     46    BS          .           1800.00000     -1800.00000      1800.00000          .          46
+      59  r     47    BS          .           1800.00000     -1800.00000      1800.00000          .          47
+      60  r     48    BS          .           1800.00000     -1800.00000      1800.00000          .          48
+      61  r     49    BS          .           1800.00000     -1800.00000      1800.00000          .          49
+      62  r     50    BS          .           1800.00000     -1800.00000      1800.00000          .          50
+      63  r     51    BS          .           1800.00000     -1800.00000      1800.00000          .          51
+      64  r     52    BS          .           1800.00000     -1800.00000      1800.00000          .          52
+      65  r     53    BS          .           1800.00000     -1800.00000      1800.00000          .          53
+      66  r     54    BS          .           1800.00000     -1800.00000      1800.00000          .          54
+      67  r     55    BS          .           1800.00000     -1800.00000      1800.00000          .          55
+      68  r     56    BS          .           1800.00000     -1800.00000      1800.00000          .          56
+      69  r     57    BS          .           1800.00000     -1800.00000      1800.00000          .          57
+      70  r     58    BS          .           1800.00000     -1800.00000      1800.00000          .          58
+      71  r     59    BS          .           1800.00000     -1800.00000      1800.00000          .          59
+      72  r     60    BS          .           1800.00000     -1800.00000      1800.00000          .          60
+      73  r     61    BS          .           1800.00000     -1800.00000      1800.00000          .          61
+      74  r     62    BS          .           1800.00000     -1800.00000      1800.00000          .          62
+      75  r     63    BS          .           1800.00000     -1800.00000      1800.00000          .          63
+      76  r     64    BS          .           1800.00000     -1800.00000      1800.00000          .          64
+      77  r     65    BS          .           1800.00000     -1800.00000      1800.00000          .          65
+      78  r     66    BS          .           1800.00000     -1800.00000      1800.00000          .          66
+      79  r     67    BS          .           1800.00000     -1800.00000      1800.00000          .          67
+      80  r     68    BS          .           1800.00000     -1800.00000      1800.00000          .          68
+      81  r     69    BS          .           1800.00000     -1800.00000      1800.00000          .          69
+1
+ 
+ Section 2 - Variables
+
+  Number  .Column. State  ...Value......  .Obj Gradient.  ..Lower Limit.  ..Upper Limit.  .Dual Variable    m+j
+ 
+       1  x      1    BS         0.00000         0.00000    -10000.00000     10000.00000          .          70
+       2  x      2    BS          .              0.00000    -10000.00000     10000.00000          .          71
+       3  x      3    BS          .              0.00000    -10000.00000     10000.00000          .          72
+       4  x      4    BS          .              0.00000    -10000.00000     10000.00000          .          73
+       5  x      5    BS          .              0.00000    -10000.00000     10000.00000          .          74
+       6  x      6    BS          .              0.00000    -10000.00000     10000.00000        -0.00000     75
+       7  x      7    BS          .              0.00000    -10000.00000     10000.00000          .          76
+       8  x      8    BS          .              0.00000    -10000.00000     10000.00000          .          77
+       9  x      9 A  FR          .              0.00000    -10000.00000     10000.00000         0.00000     78
+      10  x     10    BS          .              0.00000    -10000.00000     10000.00000        -0.00000     79
+      11  x     11    BS          .              0.00000    -10000.00000     10000.00000          .          80
+      12  x     12    BS          .              0.00000    -10000.00000     10000.00000        -0.00000     81
+ 
+ Time for MPS input                             0.00 seconds
+ Time for solving problem                       0.05 seconds
+ Time for solution output                       0.00 seconds
+ Time for constraint functions                  0.06 seconds
+ Time for objective function                    0.00 seconds
+1
+ 
+ SNMEMA EXIT 100 -- finished successfully
+ SNMEMA INFO 104 -- memory requirements estimated
+
+ Nonzero derivs  Jij       166
+ Non-constant    Jij's      12     Constant Jij's         154
+1
+ 
+ SNJAC  EXIT 100 -- finished successfully
+ SNJAC  INFO 102 -- Jacobian structure estimated
+
+ 
+ ===>  WARNING - Row        42 of the Jacobian is empty.
+ ===>  WARNING - Row        43 of the Jacobian is empty.
+ ===>  WARNING - Row        44 of the Jacobian is empty.
+ ===>  WARNING - Row        45 of the Jacobian is empty.
+ ===>  WARNING - Row        46 of the Jacobian is empty.
+ ===>  WARNING - Row        47 of the Jacobian is empty.
+ ===>  WARNING - Row        48 of the Jacobian is empty.
+ ===>  WARNING - Row        49 of the Jacobian is empty.
+ ===>  WARNING - Row        50 of the Jacobian is empty.
+ ===>  WARNING - Row        51 of the Jacobian is empty.
+ ===>  WARNING - Row        52 of the Jacobian is empty.
+ ===>  WARNING - Row        53 of the Jacobian is empty.
+ ===>  WARNING - Row        54 of the Jacobian is empty.
+ ===>  WARNING - Row        55 of the Jacobian is empty.
+ ===>  WARNING - Row        56 of the Jacobian is empty.
+ ===>  WARNING - Row        57 of the Jacobian is empty.
+ ===>  WARNING - Row        58 of the Jacobian is empty.
+ ===>  WARNING - Row        59 of the Jacobian is empty.
+ ===>  WARNING - Row        60 of the Jacobian is empty.
+ ===>  WARNING - Row        61 of the Jacobian is empty.
+ ===>  WARNING - Row        62 of the Jacobian is empty.
+ ===>  WARNING - Row        63 of the Jacobian is empty.
+ ===>  WARNING - Row        64 of the Jacobian is empty.
+ ===>  WARNING - Row        65 of the Jacobian is empty.
+ ===>  WARNING - Row        66 of the Jacobian is empty.
+ ===>  WARNING - Row        67 of the Jacobian is empty.
+ ===>  WARNING - Row        68 of the Jacobian is empty.
+ ===>  WARNING - Row        69 of the Jacobian is empty.
+1
+ 
+ Parameters
+ ==========
+
+ Files
+ -----
+ Solution file..........         0       Old basis file ........         0       Standard input.........         5
+ Insert file............         0       New basis file ........         0       (Printer)..............        10
+ Punch file.............         0       Backup basis file......         0       (Specs file)...........         0
+ Load file..............         0       Dump file..............         0       Standard output........         6
+
+ Frequencies
+ -----------
+ Print frequency........       100       Check frequency........        60       Save new basis map.....       100
+ Summary frequency......       100       Factorization frequency        50       Expand frequency.......     10000
+
+ QP subproblems
+ --------------
+ QPsolver Cholesky......
+ Scale tolerance........     0.900       Minor feasibility tol..  1.00E-06       Iteration limit........     10000
+ Scale option...........         0       Minor optimality  tol..  1.00E-06       Minor print level......         1
+ Crash tolerance........     0.100       Pivot tolerance........  3.25E-11       New superbasics........        99
+ Crash option...........         3       Elastic weight.........  1.00E+00
+
+ Partial pricing
+ ---------------
+ LP Partial price.......         1       Prtl price section ( A)        12       Prtl price section (-I)        69
+ QP Partial price.......         1       Prtl price section ( A)        12       Prtl price section (-I)        69
+
+ The SQP Method
+ --------------
+ Minimize...............                 Cold start.............                 Proximal Point method..         1
+ Nonlinear objectiv vars        12       Objective Row..........         1       Function precision.....  3.00E-13
+ Unbounded step size....  1.00E+20       Superbasics limit......        12       Difference interval....  5.48E-07
+ Unbounded objective....  1.00E+10       Reduced Hessian dim....        12       Central difference int.  6.70E-05
+ Major step limit.......  2.00E+00       Nonderiv.  linesearch..                 Derivative option......         0
+ Major iterations limit.      1000       Linesearch tolerance...   0.90000       Verify level...........         3
+ Minor iterations limit.       500       Penalty parameter......  0.00E+00       Major Print Level......         1
+ Time limit (secs)...... 9999999.0       Major optimality tol...  2.00E-06
+
+ Hessian Approximation
+ ---------------------
+ Hessian full-memory....                 Hessian updates........  99999999       Hessian frequency......  99999999
+                                                                                 Hessian flush..........  99999999
+
+ Miscellaneous
+ -------------
+ LU factor tolerance....      3.99       LU singularity tol.....  3.25E-11       Timing level...........         3
+ LU update tolerance....      3.99       LU swap tolerance......  1.22E-04       Debug level............         0
+ LU partial  pivoting...                 eps (machine precision)  2.22E-16       System information.....        No
+                                                                                 Sticky parameters......        No
+1
+ 
+
+ 
+
+ Matrix statistics
+ -----------------
+               Total      Normal        Free       Fixed     Bounded
+ Rows             69          34           1           6          28
+ Columns          12           0           0           0          12
+
+ No. of matrix elements                  154     Density      18.599
+ Biggest                          1.1306E+00  (excluding fixed columns,
+ Smallest                         3.5324E-02   free rows, and RHS)
+
+ No. of objective coefficients             0
+
+ Nonlinear constraints       0     Linear constraints      69
+ Nonlinear variables        12     Linear variables         0
+ Jacobian  variables         0     Objective variables     12
+ Total constraints          69     Total variables         12
+1
+ 
+
+ 
+ The user has defined       0   out of      12   first  derivatives
+
+ 
+ Column       x(j)        dx(j)    Element no.    Row        Derivative    Difference approxn
+1
+ 
+ 
+
+   Itns Major Minors    Step   nObj Feasible  Optimal      Objective     L+U BSwap     nS condZHZ
+      0     0      0              1          (2.7E-07) 0.0000000E+00     203                      _  r
+1
+ 
+ SNOPTA EXIT   0 -- finished successfully
+ SNOPTA INFO   1 -- optimality conditions satisfied
+
+ Problem name                 WBDC Fr
+ No. of iterations                   0   Objective            0.0000000000E+00
+ No. of major iterations             0   Linear    obj. term  0.0000000000E+00
+                                         Nonlinear obj. term  0.0000000000E+00
+ User function calls (total)        13   Calls with modes 1,2 (known g)      1
+ Calls for forward differencing     12   Calls for central differencing      0
+ No. of degenerate steps             0   Percentage                       0.00
+ Max x                       1 1.9-316   Max pi                     41 1.0E+00
+ Max Primal infeas           0 0.0E+00   Max Dual infeas            37 2.7E-07
+1
+ 
+ Name           WBDC Fr                  Objective Value      0.0000000000E+00
+
+ Status         Optimal Soln             Iteration      0    Superbasics     0
+
+ Objective               (Min)
+ RHS
+ Ranges
+ Bounds
+
+ Section 1 - Constraints
+
+  Number  ...Row.. State  ...Value......  Slack Value...  ..Lower Limit.  ..Upper Limit.  .Dual Variable    ..i
+ 
+      13  r      1    BS          .               .                None            None         -1.0          1
+      14  r      2 A  EQ          .               .               .               .             -0.00000      2
+      15  r      3 A  EQ          .               .               .               .              0.00000      3
+      16  r      4 A  EQ          .               .               .               .             -0.00000      4
+      17  r      5 A  EQ          .               .               .               .             -0.00000      5
+      18  r      6 A  EQ          .               .               .               .             -0.00000      6
+      19  r      7 A  EQ          .               .               .               .             -0.00000      7
+      20  r      8 D  BS          .               .               .                None           .           8
+      21  r      9 D  BS          .               .               .                None           .           9
+      22  r     10 D  BS          .               .               .                None           .          10
+      23  r     11 D  BS          .               .               .                None           .          11
+      24  r     12 D  BS          .               .               .                None           .          12
+      25  r     13 D  BS          .               .               .                None           .          13
+      26  r     14 D  BS          .               .               .                None           .          14
+      27  r     15 D  BS          .               .               .                None           .          15
+      28  r     16 D  BS          .               .               .                None           .          16
+      29  r     17 D  BS          .               .               .                None           .          17
+      30  r     18 D  BS          .               .               .                None           .          18
+      31  r     19 D  BS          .               .               .                None           .          19
+      32  r     20 D  BS          .               .               .                None           .          20
+      33  r     21 D  BS          .               .               .                None           .          21
+      34  r     22 D  BS          .               .               .                None           .          22
+      35  r     23 D  BS          .               .               .                None           .          23
+      36  r     24 D  BS          .               .               .                None           .          24
+      37  r     25 A  LL          .               .               .                None         -0.00000     25
+      38  r     26 A  LL          .               .               .                None          0.00000     26
+      39  r     27 D  BS          .               .               .                None           .          27
+      40  r     28 A  LL          .               .               .                None           .          28
+      41  r     29 D  BS          .               .               .                None           .          29
+      42  r     30 A  LL          .               .               .                None           .          30
+      43  r     31 D  BS          .               .               .                None           .          31
+      44  r     32 A  LL          .               .               .                None           .          32
+      45  r     33 D  BS          .               .               .                None           .          33
+      46  r     34 D  BS          .               .               .                None           .          34
+      47  r     35 D  BS          .               .               .                None           .          35
+      48  r     36 D  BS          .               .               .                None           .          36
+      49  r     37 D  BS          .               .               .                None           .          37
+      50  r     38 D  BS          .               .               .                None           .          38
+      51  r     39 D  BS          .               .               .                None           .          39
+      52  r     40 D  BS          .               .               .                None           .          40
+      53  r     41 D  BS          .               .               .                None           .          41
+      54  r     42    BS          .           1800.00000     -1800.00000      1800.00000          .          42
+      55  r     43    BS          .           1800.00000     -1800.00000      1800.00000          .          43
+      56  r     44    BS          .           1800.00000     -1800.00000      1800.00000          .          44
+      57  r     45    BS          .           1800.00000     -1800.00000      1800.00000          .          45
+      58  r     46    BS          .           1800.00000     -1800.00000      1800.00000          .          46
+      59  r     47    BS          .           1800.00000     -1800.00000      1800.00000          .          47
+      60  r     48    BS          .           1800.00000     -1800.00000      1800.00000          .          48
+      61  r     49    BS          .           1800.00000     -1800.00000      1800.00000          .          49
+      62  r     50    BS          .           1800.00000     -1800.00000      1800.00000          .          50
+      63  r     51    BS          .           1800.00000     -1800.00000      1800.00000          .          51
+      64  r     52    BS          .           1800.00000     -1800.00000      1800.00000          .          52
+      65  r     53    BS          .           1800.00000     -1800.00000      1800.00000          .          53
+      66  r     54    BS          .           1800.00000     -1800.00000      1800.00000          .          54
+      67  r     55    BS          .           1800.00000     -1800.00000      1800.00000          .          55
+      68  r     56    BS          .           1800.00000     -1800.00000      1800.00000          .          56
+      69  r     57    BS          .           1800.00000     -1800.00000      1800.00000          .          57
+      70  r     58    BS          .           1800.00000     -1800.00000      1800.00000          .          58
+      71  r     59    BS          .           1800.00000     -1800.00000      1800.00000          .          59
+      72  r     60    BS          .           1800.00000     -1800.00000      1800.00000          .          60
+      73  r     61    BS          .           1800.00000     -1800.00000      1800.00000          .          61
+      74  r     62    BS          .           1800.00000     -1800.00000      1800.00000          .          62
+      75  r     63    BS          .           1800.00000     -1800.00000      1800.00000          .          63
+      76  r     64    BS          .           1800.00000     -1800.00000      1800.00000          .          64
+      77  r     65    BS          .           1800.00000     -1800.00000      1800.00000          .          65
+      78  r     66    BS          .           1800.00000     -1800.00000      1800.00000          .          66
+      79  r     67    BS          .           1800.00000     -1800.00000      1800.00000          .          67
+      80  r     68    BS          .           1800.00000     -1800.00000      1800.00000          .          68
+      81  r     69    BS          .           1800.00000     -1800.00000      1800.00000          .          69
+1
+ 
+ Section 2 - Variables
+
+  Number  .Column. State  ...Value......  .Obj Gradient.  ..Lower Limit.  ..Upper Limit.  .Dual Variable    m+j
+ 
+       1  x      1    BS         0.00000         0.00000    -10000.00000     10000.00000          .          70
+       2  x      2    BS          .              0.00000    -10000.00000     10000.00000          .          71
+       3  x      3    BS          .              0.00000    -10000.00000     10000.00000          .          72
+       4  x      4    BS          .              0.00000    -10000.00000     10000.00000          .          73
+       5  x      5    BS          .              0.00000    -10000.00000     10000.00000          .          74
+       6  x      6    BS          .              0.00000    -10000.00000     10000.00000        -0.00000     75
+       7  x      7    BS          .              0.00000    -10000.00000     10000.00000          .          76
+       8  x      8    BS          .              0.00000    -10000.00000     10000.00000          .          77
+       9  x      9 A  FR          .              0.00000    -10000.00000     10000.00000         0.00000     78
+      10  x     10    BS          .              0.00000    -10000.00000     10000.00000        -0.00000     79
+      11  x     11    BS          .              0.00000    -10000.00000     10000.00000          .          80
+      12  x     12    BS          .              0.00000    -10000.00000     10000.00000        -0.00000     81
+ 
+ Time for MPS input                             0.00 seconds
+ Time for solving problem                       0.06 seconds
+ Time for solution output                       0.00 seconds
+ Time for constraint functions                  0.06 seconds
+ Time for objective function                    0.00 seconds
+1
+ 
+ SNMEMA EXIT 100 -- finished successfully
+ SNMEMA INFO 104 -- memory requirements estimated
+
+ Nonzero derivs  Jij       166
+ Non-constant    Jij's      12     Constant Jij's         154
+1
+ 
+ SNJAC  EXIT 100 -- finished successfully
+ SNJAC  INFO 102 -- Jacobian structure estimated
+
+ 
+ ===>  WARNING - Row        42 of the Jacobian is empty.
+ ===>  WARNING - Row        43 of the Jacobian is empty.
+ ===>  WARNING - Row        44 of the Jacobian is empty.
+ ===>  WARNING - Row        45 of the Jacobian is empty.
+ ===>  WARNING - Row        46 of the Jacobian is empty.
+ ===>  WARNING - Row        47 of the Jacobian is empty.
+ ===>  WARNING - Row        48 of the Jacobian is empty.
+ ===>  WARNING - Row        49 of the Jacobian is empty.
+ ===>  WARNING - Row        50 of the Jacobian is empty.
+ ===>  WARNING - Row        51 of the Jacobian is empty.
+ ===>  WARNING - Row        52 of the Jacobian is empty.
+ ===>  WARNING - Row        53 of the Jacobian is empty.
+ ===>  WARNING - Row        54 of the Jacobian is empty.
+ ===>  WARNING - Row        55 of the Jacobian is empty.
+ ===>  WARNING - Row        56 of the Jacobian is empty.
+ ===>  WARNING - Row        57 of the Jacobian is empty.
+ ===>  WARNING - Row        58 of the Jacobian is empty.
+ ===>  WARNING - Row        59 of the Jacobian is empty.
+ ===>  WARNING - Row        60 of the Jacobian is empty.
+ ===>  WARNING - Row        61 of the Jacobian is empty.
+ ===>  WARNING - Row        62 of the Jacobian is empty.
+ ===>  WARNING - Row        63 of the Jacobian is empty.
+ ===>  WARNING - Row        64 of the Jacobian is empty.
+ ===>  WARNING - Row        65 of the Jacobian is empty.
+ ===>  WARNING - Row        66 of the Jacobian is empty.
+ ===>  WARNING - Row        67 of the Jacobian is empty.
+ ===>  WARNING - Row        68 of the Jacobian is empty.
+ ===>  WARNING - Row        69 of the Jacobian is empty.
+1
+ 
+ Parameters
+ ==========
+
+ Files
+ -----
+ Solution file..........         0       Old basis file ........         0       Standard input.........         5
+ Insert file............         0       New basis file ........         0       (Printer)..............        10
+ Punch file.............         0       Backup basis file......         0       (Specs file)...........         0
+ Load file..............         0       Dump file..............         0       Standard output........         6
+
+ Frequencies
+ -----------
+ Print frequency........       100       Check frequency........        60       Save new basis map.....       100
+ Summary frequency......       100       Factorization frequency        50       Expand frequency.......     10000
+
+ QP subproblems
+ --------------
+ QPsolver Cholesky......
+ Scale tolerance........     0.900       Minor feasibility tol..  1.00E-06       Iteration limit........     10000
+ Scale option...........         0       Minor optimality  tol..  1.00E-06       Minor print level......         1
+ Crash tolerance........     0.100       Pivot tolerance........  3.25E-11       New superbasics........        99
+ Crash option...........         3       Elastic weight.........  1.00E+00
+
+ Partial pricing
+ ---------------
+ LP Partial price.......         1       Prtl price section ( A)        12       Prtl price section (-I)        69
+ QP Partial price.......         1       Prtl price section ( A)        12       Prtl price section (-I)        69
+
+ The SQP Method
+ --------------
+ Minimize...............                 Cold start.............                 Proximal Point method..         1
+ Nonlinear objectiv vars        12       Objective Row..........         1       Function precision.....  3.00E-13
+ Unbounded step size....  1.00E+20       Superbasics limit......        12       Difference interval....  5.48E-07
+ Unbounded objective....  1.00E+10       Reduced Hessian dim....        12       Central difference int.  6.70E-05
+ Major step limit.......  2.00E+00       Nonderiv.  linesearch..                 Derivative option......         0
+ Major iterations limit.      1000       Linesearch tolerance...   0.90000       Verify level...........         3
+ Minor iterations limit.       500       Penalty parameter......  0.00E+00       Major Print Level......         1
+ Time limit (secs)...... 9999999.0       Major optimality tol...  2.00E-06
+
+ Hessian Approximation
+ ---------------------
+ Hessian full-memory....                 Hessian updates........  99999999       Hessian frequency......  99999999
+                                                                                 Hessian flush..........  99999999
+
+ Miscellaneous
+ -------------
+ LU factor tolerance....      3.99       LU singularity tol.....  3.25E-11       Timing level...........         3
+ LU update tolerance....      3.99       LU swap tolerance......  1.22E-04       Debug level............         0
+ LU partial  pivoting...                 eps (machine precision)  2.22E-16       System information.....        No
+                                                                                 Sticky parameters......        No
+1
+ 
+
+ 
+
+ Matrix statistics
+ -----------------
+               Total      Normal        Free       Fixed     Bounded
+ Rows             69          34           1           6          28
+ Columns          12           0           0           0          12
+
+ No. of matrix elements                  154     Density      18.599
+ Biggest                          1.1306E+00  (excluding fixed columns,
+ Smallest                         3.5324E-02   free rows, and RHS)
+
+ No. of objective coefficients             0
+
+ Nonlinear constraints       0     Linear constraints      69
+ Nonlinear variables        12     Linear variables         0
+ Jacobian  variables         0     Objective variables     12
+ Total constraints          69     Total variables         12
+1
+ 
+
+ 
+ The user has defined       0   out of      12   first  derivatives
+
+ 
+ Column       x(j)        dx(j)    Element no.    Row        Derivative    Difference approxn
+1
+ 
+ 
+
+   Itns Major Minors    Step   nObj Feasible  Optimal      Objective     L+U BSwap     nS condZHZ
+      0     0      0              1          (2.7E-07) 0.0000000E+00     203                      _  r
+1
+ 
+ SNOPTA EXIT   0 -- finished successfully
+ SNOPTA INFO   1 -- optimality conditions satisfied
+
+ Problem name                 WBDC Fr
+ No. of iterations                   0   Objective            0.0000000000E+00
+ No. of major iterations             0   Linear    obj. term  0.0000000000E+00
+                                         Nonlinear obj. term  0.0000000000E+00
+ User function calls (total)        13   Calls with modes 1,2 (known g)      1
+ Calls for forward differencing     12   Calls for central differencing      0
+ No. of degenerate steps             0   Percentage                       0.00
+ Max x                       1 2.0-316   Max pi                     41 1.0E+00
+ Max Primal infeas           0 0.0E+00   Max Dual infeas            37 2.7E-07
+1
+ 
+ Name           WBDC Fr                  Objective Value      0.0000000000E+00
+
+ Status         Optimal Soln             Iteration      0    Superbasics     0
+
+ Objective               (Min)
+ RHS
+ Ranges
+ Bounds
+
+ Section 1 - Constraints
+
+  Number  ...Row.. State  ...Value......  Slack Value...  ..Lower Limit.  ..Upper Limit.  .Dual Variable    ..i
+ 
+      13  r      1    BS          .               .                None            None         -1.0          1
+      14  r      2 A  EQ          .               .               .               .             -0.00000      2
+      15  r      3 A  EQ          .               .               .               .              0.00000      3
+      16  r      4 A  EQ          .               .               .               .             -0.00000      4
+      17  r      5 A  EQ          .               .               .               .             -0.00000      5
+      18  r      6 A  EQ          .               .               .               .             -0.00000      6
+      19  r      7 A  EQ          .               .               .               .             -0.00000      7
+      20  r      8 D  BS          .               .               .                None           .           8
+      21  r      9 D  BS          .               .               .                None           .           9
+      22  r     10 D  BS          .               .               .                None           .          10
+      23  r     11 D  BS          .               .               .                None           .          11
+      24  r     12 D  BS          .               .               .                None           .          12
+      25  r     13 D  BS          .               .               .                None           .          13
+      26  r     14 D  BS          .               .               .                None           .          14
+      27  r     15 D  BS          .               .               .                None           .          15
+      28  r     16 D  BS          .               .               .                None           .          16
+      29  r     17 D  BS          .               .               .                None           .          17
+      30  r     18 D  BS          .               .               .                None           .          18
+      31  r     19 D  BS          .               .               .                None           .          19
+      32  r     20 D  BS          .               .               .                None           .          20
+      33  r     21 D  BS          .               .               .                None           .          21
+      34  r     22 D  BS          .               .               .                None           .          22
+      35  r     23 D  BS          .               .               .                None           .          23
+      36  r     24 D  BS          .               .               .                None           .          24
+      37  r     25 A  LL          .               .               .                None         -0.00000     25
+      38  r     26 A  LL          .               .               .                None          0.00000     26
+      39  r     27 D  BS          .               .               .                None           .          27
+      40  r     28 A  LL          .               .               .                None           .          28
+      41  r     29 D  BS          .               .               .                None           .          29
+      42  r     30 A  LL          .               .               .                None           .          30
+      43  r     31 D  BS          .               .               .                None           .          31
+      44  r     32 A  LL          .               .               .                None           .          32
+      45  r     33 D  BS          .               .               .                None           .          33
+      46  r     34 D  BS          .               .               .                None           .          34
+      47  r     35 D  BS          .               .               .                None           .          35
+      48  r     36 D  BS          .               .               .                None           .          36
+      49  r     37 D  BS          .               .               .                None           .          37
+      50  r     38 D  BS          .               .               .                None           .          38
+      51  r     39 D  BS          .               .               .                None           .          39
+      52  r     40 D  BS          .               .               .                None           .          40
+      53  r     41 D  BS          .               .               .                None           .          41
+      54  r     42    BS          .           1800.00000     -1800.00000      1800.00000          .          42
+      55  r     43    BS          .           1800.00000     -1800.00000      1800.00000          .          43
+      56  r     44    BS          .           1800.00000     -1800.00000      1800.00000          .          44
+      57  r     45    BS          .           1800.00000     -1800.00000      1800.00000          .          45
+      58  r     46    BS          .           1800.00000     -1800.00000      1800.00000          .          46
+      59  r     47    BS          .           1800.00000     -1800.00000      1800.00000          .          47
+      60  r     48    BS          .           1800.00000     -1800.00000      1800.00000          .          48
+      61  r     49    BS          .           1800.00000     -1800.00000      1800.00000          .          49
+      62  r     50    BS          .           1800.00000     -1800.00000      1800.00000          .          50
+      63  r     51    BS          .           1800.00000     -1800.00000      1800.00000          .          51
+      64  r     52    BS          .           1800.00000     -1800.00000      1800.00000          .          52
+      65  r     53    BS          .           1800.00000     -1800.00000      1800.00000          .          53
+      66  r     54    BS          .           1800.00000     -1800.00000      1800.00000          .          54
+      67  r     55    BS          .           1800.00000     -1800.00000      1800.00000          .          55
+      68  r     56    BS          .           1800.00000     -1800.00000      1800.00000          .          56
+      69  r     57    BS          .           1800.00000     -1800.00000      1800.00000          .          57
+      70  r     58    BS          .           1800.00000     -1800.00000      1800.00000          .          58
+      71  r     59    BS          .           1800.00000     -1800.00000      1800.00000          .          59
+      72  r     60    BS          .           1800.00000     -1800.00000      1800.00000          .          60
+      73  r     61    BS          .           1800.00000     -1800.00000      1800.00000          .          61
+      74  r     62    BS          .           1800.00000     -1800.00000      1800.00000          .          62
+      75  r     63    BS          .           1800.00000     -1800.00000      1800.00000          .          63
+      76  r     64    BS          .           1800.00000     -1800.00000      1800.00000          .          64
+      77  r     65    BS          .           1800.00000     -1800.00000      1800.00000          .          65
+      78  r     66    BS          .           1800.00000     -1800.00000      1800.00000          .          66
+      79  r     67    BS          .           1800.00000     -1800.00000      1800.00000          .          67
+      80  r     68    BS          .           1800.00000     -1800.00000      1800.00000          .          68
+      81  r     69    BS          .           1800.00000     -1800.00000      1800.00000          .          69
+1
+ 
+ Section 2 - Variables
+
+  Number  .Column. State  ...Value......  .Obj Gradient.  ..Lower Limit.  ..Upper Limit.  .Dual Variable    m+j
+ 
+       1  x      1    BS         0.00000         0.00000    -10000.00000     10000.00000          .          70
+       2  x      2    BS          .              0.00000    -10000.00000     10000.00000          .          71
+       3  x      3    BS          .              0.00000    -10000.00000     10000.00000          .          72
+       4  x      4    BS          .              0.00000    -10000.00000     10000.00000          .          73
+       5  x      5    BS          .              0.00000    -10000.00000     10000.00000          .          74
+       6  x      6    BS          .              0.00000    -10000.00000     10000.00000        -0.00000     75
+       7  x      7    BS          .              0.00000    -10000.00000     10000.00000          .          76
+       8  x      8    BS          .              0.00000    -10000.00000     10000.00000          .          77
+       9  x      9 A  FR          .              0.00000    -10000.00000     10000.00000         0.00000     78
+      10  x     10    BS          .              0.00000    -10000.00000     10000.00000        -0.00000     79
+      11  x     11    BS          .              0.00000    -10000.00000     10000.00000          .          80
+      12  x     12    BS          .              0.00000    -10000.00000     10000.00000        -0.00000     81
+ 
+ Time for MPS input                             0.00 seconds
+ Time for solving problem                       0.05 seconds
+ Time for solution output                       0.00 seconds
+ Time for constraint functions                  0.06 seconds
+ Time for objective function                    0.00 seconds
+1
+ 
+ SNMEMA EXIT 100 -- finished successfully
+ SNMEMA INFO 104 -- memory requirements estimated
+
+ Nonzero derivs  Jij       166
+ Non-constant    Jij's      12     Constant Jij's         154
+1
+ 
+ SNJAC  EXIT 100 -- finished successfully
+ SNJAC  INFO 102 -- Jacobian structure estimated
+
+ 
+ ===>  WARNING - Row        42 of the Jacobian is empty.
+ ===>  WARNING - Row        43 of the Jacobian is empty.
+ ===>  WARNING - Row        44 of the Jacobian is empty.
+ ===>  WARNING - Row        45 of the Jacobian is empty.
+ ===>  WARNING - Row        46 of the Jacobian is empty.
+ ===>  WARNING - Row        47 of the Jacobian is empty.
+ ===>  WARNING - Row        48 of the Jacobian is empty.
+ ===>  WARNING - Row        49 of the Jacobian is empty.
+ ===>  WARNING - Row        50 of the Jacobian is empty.
+ ===>  WARNING - Row        51 of the Jacobian is empty.
+ ===>  WARNING - Row        52 of the Jacobian is empty.
+ ===>  WARNING - Row        53 of the Jacobian is empty.
+ ===>  WARNING - Row        54 of the Jacobian is empty.
+ ===>  WARNING - Row        55 of the Jacobian is empty.
+ ===>  WARNING - Row        56 of the Jacobian is empty.
+ ===>  WARNING - Row        57 of the Jacobian is empty.
+ ===>  WARNING - Row        58 of the Jacobian is empty.
+ ===>  WARNING - Row        59 of the Jacobian is empty.
+ ===>  WARNING - Row        60 of the Jacobian is empty.
+ ===>  WARNING - Row        61 of the Jacobian is empty.
+ ===>  WARNING - Row        62 of the Jacobian is empty.
+ ===>  WARNING - Row        63 of the Jacobian is empty.
+ ===>  WARNING - Row        64 of the Jacobian is empty.
+ ===>  WARNING - Row        65 of the Jacobian is empty.
+ ===>  WARNING - Row        66 of the Jacobian is empty.
+ ===>  WARNING - Row        67 of the Jacobian is empty.
+ ===>  WARNING - Row        68 of the Jacobian is empty.
+ ===>  WARNING - Row        69 of the Jacobian is empty.
+1
+ 
+ Parameters
+ ==========
+
+ Files
+ -----
+ Solution file..........         0       Old basis file ........         0       Standard input.........         5
+ Insert file............         0       New basis file ........         0       (Printer)..............        10
+ Punch file.............         0       Backup basis file......         0       (Specs file)...........         0
+ Load file..............         0       Dump file..............         0       Standard output........         6
+
+ Frequencies
+ -----------
+ Print frequency........       100       Check frequency........        60       Save new basis map.....       100
+ Summary frequency......       100       Factorization frequency        50       Expand frequency.......     10000
+
+ QP subproblems
+ --------------
+ QPsolver Cholesky......
+ Scale tolerance........     0.900       Minor feasibility tol..  1.00E-06       Iteration limit........     10000
+ Scale option...........         0       Minor optimality  tol..  1.00E-06       Minor print level......         1
+ Crash tolerance........     0.100       Pivot tolerance........  3.25E-11       New superbasics........        99
+ Crash option...........         3       Elastic weight.........  1.00E+00
+
+ Partial pricing
+ ---------------
+ LP Partial price.......         1       Prtl price section ( A)        12       Prtl price section (-I)        69
+ QP Partial price.......         1       Prtl price section ( A)        12       Prtl price section (-I)        69
+
+ The SQP Method
+ --------------
+ Minimize...............                 Cold start.............                 Proximal Point method..         1
+ Nonlinear objectiv vars        12       Objective Row..........         1       Function precision.....  3.00E-13
+ Unbounded step size....  1.00E+20       Superbasics limit......        12       Difference interval....  5.48E-07
+ Unbounded objective....  1.00E+10       Reduced Hessian dim....        12       Central difference int.  6.70E-05
+ Major step limit.......  2.00E+00       Nonderiv.  linesearch..                 Derivative option......         0
+ Major iterations limit.      1000       Linesearch tolerance...   0.90000       Verify level...........         3
+ Minor iterations limit.       500       Penalty parameter......  0.00E+00       Major Print Level......         1
+ Time limit (secs)...... 9999999.0       Major optimality tol...  2.00E-06
+
+ Hessian Approximation
+ ---------------------
+ Hessian full-memory....                 Hessian updates........  99999999       Hessian frequency......  99999999
+                                                                                 Hessian flush..........  99999999
+
+ Miscellaneous
+ -------------
+ LU factor tolerance....      3.99       LU singularity tol.....  3.25E-11       Timing level...........         3
+ LU update tolerance....      3.99       LU swap tolerance......  1.22E-04       Debug level............         0
+ LU partial  pivoting...                 eps (machine precision)  2.22E-16       System information.....        No
+                                                                                 Sticky parameters......        No
+1
+ 
+
+ 
+
+ Matrix statistics
+ -----------------
+               Total      Normal        Free       Fixed     Bounded
+ Rows             69          34           1           6          28
+ Columns          12           0           0           0          12
+
+ No. of matrix elements                  154     Density      18.599
+ Biggest                          1.1306E+00  (excluding fixed columns,
+ Smallest                         3.5324E-02   free rows, and RHS)
+
+ No. of objective coefficients             0
+
+ Nonlinear constraints       0     Linear constraints      69
+ Nonlinear variables        12     Linear variables         0
+ Jacobian  variables         0     Objective variables     12
+ Total constraints          69     Total variables         12
+1
+ 
+
+ 
+ The user has defined       0   out of      12   first  derivatives
+
+ 
+ Column       x(j)        dx(j)    Element no.    Row        Derivative    Difference approxn
+1
+ 
+ 
+
+   Itns Major Minors    Step   nObj Feasible  Optimal      Objective     L+U BSwap     nS condZHZ
+      0     0      0              1          (2.7E-07) 0.0000000E+00     203                      _  r
+1
+ 
+ SNOPTA EXIT   0 -- finished successfully
+ SNOPTA INFO   1 -- optimality conditions satisfied
+
+ Problem name                 WBDC Fr
+ No. of iterations                   0   Objective            0.0000000000E+00
+ No. of major iterations             0   Linear    obj. term  0.0000000000E+00
+                                         Nonlinear obj. term  0.0000000000E+00
+ User function calls (total)        13   Calls with modes 1,2 (known g)      1
+ Calls for forward differencing     12   Calls for central differencing      0
+ No. of degenerate steps             0   Percentage                       0.00
+ Max x                       1 2.0-316   Max pi                     41 1.0E+00
+ Max Primal infeas           0 0.0E+00   Max Dual infeas            37 2.7E-07
+1
+ 
+ Name           WBDC Fr                  Objective Value      0.0000000000E+00
+
+ Status         Optimal Soln             Iteration      0    Superbasics     0
+
+ Objective               (Min)
+ RHS
+ Ranges
+ Bounds
+
+ Section 1 - Constraints
+
+  Number  ...Row.. State  ...Value......  Slack Value...  ..Lower Limit.  ..Upper Limit.  .Dual Variable    ..i
+ 
+      13  r      1    BS          .               .                None            None         -1.0          1
+      14  r      2 A  EQ          .               .               .               .             -0.00000      2
+      15  r      3 A  EQ          .               .               .               .              0.00000      3
+      16  r      4 A  EQ          .               .               .               .             -0.00000      4
+      17  r      5 A  EQ          .               .               .               .             -0.00000      5
+      18  r      6 A  EQ          .               .               .               .             -0.00000      6
+      19  r      7 A  EQ          .               .               .               .             -0.00000      7
+      20  r      8 D  BS          .               .               .                None           .           8
+      21  r      9 D  BS          .               .               .                None           .           9
+      22  r     10 D  BS          .               .               .                None           .          10
+      23  r     11 D  BS          .               .               .                None           .          11
+      24  r     12 D  BS          .               .               .                None           .          12
+      25  r     13 D  BS          .               .               .                None           .          13
+      26  r     14 D  BS          .               .               .                None           .          14
+      27  r     15 D  BS          .               .               .                None           .          15
+      28  r     16 D  BS          .               .               .                None           .          16
+      29  r     17 D  BS          .               .               .                None           .          17
+      30  r     18 D  BS          .               .               .                None           .          18
+      31  r     19 D  BS          .               .               .                None           .          19
+      32  r     20 D  BS          .               .               .                None           .          20
+      33  r     21 D  BS          .               .               .                None           .          21
+      34  r     22 D  BS          .               .               .                None           .          22
+      35  r     23 D  BS          .               .               .                None           .          23
+      36  r     24 D  BS          .               .               .                None           .          24
+      37  r     25 A  LL          .               .               .                None         -0.00000     25
+      38  r     26 A  LL          .               .               .                None          0.00000     26
+      39  r     27 D  BS          .               .               .                None           .          27
+      40  r     28 A  LL          .               .               .                None           .          28
+      41  r     29 D  BS          .               .               .                None           .          29
+      42  r     30 A  LL          .               .               .                None           .          30
+      43  r     31 D  BS          .               .               .                None           .          31
+      44  r     32 A  LL          .               .               .                None           .          32
+      45  r     33 D  BS          .               .               .                None           .          33
+      46  r     34 D  BS          .               .               .                None           .          34
+      47  r     35 D  BS          .               .               .                None           .          35
+      48  r     36 D  BS          .               .               .                None           .          36
+      49  r     37 D  BS          .               .               .                None           .          37
+      50  r     38 D  BS          .               .               .                None           .          38
+      51  r     39 D  BS          .               .               .                None           .          39
+      52  r     40 D  BS          .               .               .                None           .          40
+      53  r     41 D  BS          .               .               .                None           .          41
+      54  r     42    BS          .           1800.00000     -1800.00000      1800.00000          .          42
+      55  r     43    BS          .           1800.00000     -1800.00000      1800.00000          .          43
+      56  r     44    BS          .           1800.00000     -1800.00000      1800.00000          .          44
+      57  r     45    BS          .           1800.00000     -1800.00000      1800.00000          .          45
+      58  r     46    BS          .           1800.00000     -1800.00000      1800.00000          .          46
+      59  r     47    BS          .           1800.00000     -1800.00000      1800.00000          .          47
+      60  r     48    BS          .           1800.00000     -1800.00000      1800.00000          .          48
+      61  r     49    BS          .           1800.00000     -1800.00000      1800.00000          .          49
+      62  r     50    BS          .           1800.00000     -1800.00000      1800.00000          .          50
+      63  r     51    BS          .           1800.00000     -1800.00000      1800.00000          .          51
+      64  r     52    BS          .           1800.00000     -1800.00000      1800.00000          .          52
+      65  r     53    BS          .           1800.00000     -1800.00000      1800.00000          .          53
+      66  r     54    BS          .           1800.00000     -1800.00000      1800.00000          .          54
+      67  r     55    BS          .           1800.00000     -1800.00000      1800.00000          .          55
+      68  r     56    BS          .           1800.00000     -1800.00000      1800.00000          .          56
+      69  r     57    BS          .           1800.00000     -1800.00000      1800.00000          .          57
+      70  r     58    BS          .           1800.00000     -1800.00000      1800.00000          .          58
+      71  r     59    BS          .           1800.00000     -1800.00000      1800.00000          .          59
+      72  r     60    BS          .           1800.00000     -1800.00000      1800.00000          .          60
+      73  r     61    BS          .           1800.00000     -1800.00000      1800.00000          .          61
+      74  r     62    BS          .           1800.00000     -1800.00000      1800.00000          .          62
+      75  r     63    BS          .           1800.00000     -1800.00000      1800.00000          .          63
+      76  r     64    BS          .           1800.00000     -1800.00000      1800.00000          .          64
+      77  r     65    BS          .           1800.00000     -1800.00000      1800.00000          .          65
+      78  r     66    BS          .           1800.00000     -1800.00000      1800.00000          .          66
+      79  r     67    BS          .           1800.00000     -1800.00000      1800.00000          .          67
+      80  r     68    BS          .           1800.00000     -1800.00000      1800.00000          .          68
+      81  r     69    BS          .           1800.00000     -1800.00000      1800.00000          .          69
+1
+ 
+ Section 2 - Variables
+
+  Number  .Column. State  ...Value......  .Obj Gradient.  ..Lower Limit.  ..Upper Limit.  .Dual Variable    m+j
+ 
+       1  x      1    BS         0.00000         0.00000    -10000.00000     10000.00000          .          70
+       2  x      2    BS          .              0.00000    -10000.00000     10000.00000          .          71
+       3  x      3    BS          .              0.00000    -10000.00000     10000.00000          .          72
+       4  x      4    BS          .              0.00000    -10000.00000     10000.00000          .          73
+       5  x      5    BS          .              0.00000    -10000.00000     10000.00000          .          74
+       6  x      6    BS          .              0.00000    -10000.00000     10000.00000        -0.00000     75
+       7  x      7    BS          .              0.00000    -10000.00000     10000.00000          .          76
+       8  x      8    BS          .              0.00000    -10000.00000     10000.00000          .          77
+       9  x      9 A  FR          .              0.00000    -10000.00000     10000.00000         0.00000     78
+      10  x     10    BS          .              0.00000    -10000.00000     10000.00000        -0.00000     79
+      11  x     11    BS          .              0.00000    -10000.00000     10000.00000          .          80
+      12  x     12    BS          .              0.00000    -10000.00000     10000.00000        -0.00000     81
+ 
+ Time for MPS input                             0.00 seconds
+ Time for solving problem                       0.05 seconds
+ Time for solution output                       0.00 seconds
+ Time for constraint functions                  0.06 seconds
+ Time for objective function                    0.00 seconds
+1
+ 
+ SNMEMA EXIT 100 -- finished successfully
+ SNMEMA INFO 104 -- memory requirements estimated
+
+ Nonzero derivs  Jij       202
+ Non-constant    Jij's      12     Constant Jij's         190
+1
+ 
+ SNJAC  EXIT 100 -- finished successfully
+ SNJAC  INFO 102 -- Jacobian structure estimated
+
+ 
+ ===>  WARNING - Row        54 of the Jacobian is empty.
+ ===>  WARNING - Row        55 of the Jacobian is empty.
+ ===>  WARNING - Row        56 of the Jacobian is empty.
+ ===>  WARNING - Row        57 of the Jacobian is empty.
+ ===>  WARNING - Row        58 of the Jacobian is empty.
+ ===>  WARNING - Row        59 of the Jacobian is empty.
+ ===>  WARNING - Row        60 of the Jacobian is empty.
+ ===>  WARNING - Row        61 of the Jacobian is empty.
+ ===>  WARNING - Row        62 of the Jacobian is empty.
+ ===>  WARNING - Row        63 of the Jacobian is empty.
+ ===>  WARNING - Row        64 of the Jacobian is empty.
+ ===>  WARNING - Row        65 of the Jacobian is empty.
+ ===>  WARNING - Row        66 of the Jacobian is empty.
+ ===>  WARNING - Row        67 of the Jacobian is empty.
+ ===>  WARNING - Row        68 of the Jacobian is empty.
+ ===>  WARNING - Row        69 of the Jacobian is empty.
+1
+ 
+ Parameters
+ ==========
+
+ Files
+ -----
+ Solution file..........         0       Old basis file ........         0       Standard input.........         5
+ Insert file............         0       New basis file ........         0       (Printer)..............        10
+ Punch file.............         0       Backup basis file......         0       (Specs file)...........         0
+ Load file..............         0       Dump file..............         0       Standard output........         6
+
+ Frequencies
+ -----------
+ Print frequency........       100       Check frequency........        60       Save new basis map.....       100
+ Summary frequency......       100       Factorization frequency        50       Expand frequency.......     10000
+
+ QP subproblems
+ --------------
+ QPsolver Cholesky......
+ Scale tolerance........     0.900       Minor feasibility tol..  1.00E-06       Iteration limit........     10000
+ Scale option...........         0       Minor optimality  tol..  1.00E-06       Minor print level......         1
+ Crash tolerance........     0.100       Pivot tolerance........  3.25E-11       New superbasics........        99
+ Crash option...........         3       Elastic weight.........  1.00E+00
+
+ Partial pricing
+ ---------------
+ LP Partial price.......         1       Prtl price section ( A)        12       Prtl price section (-I)        69
+ QP Partial price.......         1       Prtl price section ( A)        12       Prtl price section (-I)        69
+
+ The SQP Method
+ --------------
+ Minimize...............                 Cold start.............                 Proximal Point method..         1
+ Nonlinear objectiv vars        12       Objective Row..........         1       Function precision.....  3.00E-13
+ Unbounded step size....  1.00E+20       Superbasics limit......        12       Difference interval....  5.48E-07
+ Unbounded objective....  1.00E+10       Reduced Hessian dim....        12       Central difference int.  6.70E-05
+ Major step limit.......  2.00E+00       Nonderiv.  linesearch..                 Derivative option......         0
+ Major iterations limit.      1000       Linesearch tolerance...   0.90000       Verify level...........         3
+ Minor iterations limit.       500       Penalty parameter......  0.00E+00       Major Print Level......         1
+ Time limit (secs)...... 9999999.0       Major optimality tol...  2.00E-06
+
+ Hessian Approximation
+ ---------------------
+ Hessian full-memory....                 Hessian updates........  99999999       Hessian frequency......  99999999
+                                                                                 Hessian flush..........  99999999
+
+ Miscellaneous
+ -------------
+ LU factor tolerance....      3.99       LU singularity tol.....  3.25E-11       Timing level...........         3
+ LU update tolerance....      3.99       LU swap tolerance......  1.22E-04       Debug level............         0
+ LU partial  pivoting...                 eps (machine precision)  2.22E-16       System information.....        No
+                                                                                 Sticky parameters......        No
+1
+ 
+
+ 
+
+ Matrix statistics
+ -----------------
+               Total      Normal        Free       Fixed     Bounded
+ Rows             69          34           1           6          28
+ Columns          12           0           0           0          12
+
+ No. of matrix elements                  190     Density      22.947
+ Biggest                          1.1306E+00  (excluding fixed columns,
+ Smallest                         5.1610E-03   free rows, and RHS)
+
+ No. of objective coefficients             0
+
+ Nonlinear constraints       0     Linear constraints      69
+ Nonlinear variables        12     Linear variables         0
+ Jacobian  variables         0     Objective variables     12
+ Total constraints          69     Total variables         12
+1
+ 
+
+ 
+ The user has defined       0   out of      12   first  derivatives
+
+ 
+ Column       x(j)        dx(j)    Element no.    Row        Derivative    Difference approxn
+1
+ 
+ 
+
+   Itns Major Minors    Step   nObj Feasible  Optimal      Objective     L+U BSwap     nS condZHZ
+      0     0      0              1          (2.7E-07) 0.0000000E+00     238                      _  r
+1
+ 
+ SNOPTA EXIT   0 -- finished successfully
+ SNOPTA INFO   1 -- optimality conditions satisfied
+
+ Problem name                 WBDC Fr
+ No. of iterations                   0   Objective            0.0000000000E+00
+ No. of major iterations             0   Linear    obj. term  0.0000000000E+00
+                                         Nonlinear obj. term  0.0000000000E+00
+ User function calls (total)        13   Calls with modes 1,2 (known g)      1
+ Calls for forward differencing     12   Calls for central differencing      0
+ No. of degenerate steps             0   Percentage                       0.00
+ Max x                       1 1.4-316   Max pi                     53 1.0E+00
+ Max Primal infeas           0 0.0E+00   Max Dual infeas            37 2.7E-07
+1
+ 
+ Name           WBDC Fr                  Objective Value      0.0000000000E+00
+
+ Status         Optimal Soln             Iteration      0    Superbasics     0
+
+ Objective               (Min)
+ RHS
+ Ranges
+ Bounds
+
+ Section 1 - Constraints
+
+  Number  ...Row.. State  ...Value......  Slack Value...  ..Lower Limit.  ..Upper Limit.  .Dual Variable    ..i
+ 
+      13  r      1    BS          .               .                None            None         -1.0          1
+      14  r      2 A  EQ          .               .               .               .             -0.00000      2
+      15  r      3 A  EQ          .               .               .               .              0.00000      3
+      16  r      4 A  EQ          .               .               .               .             -0.00000      4
+      17  r      5 A  EQ          .               .               .               .             -0.00000      5
+      18  r      6 A  EQ          .               .               .               .             -0.00000      6
+      19  r      7 A  EQ          .               .               .               .             -0.00000      7
+      20  r      8 D  BS          .               .               .                None           .           8
+      21  r      9 D  BS          .               .               .                None           .           9
+      22  r     10 D  BS          .               .               .                None           .          10
+      23  r     11 D  BS          .               .               .                None           .          11
+      24  r     12 D  BS          .               .               .                None           .          12
+      25  r     13 D  BS          .               .               .                None           .          13
+      26  r     14 D  BS          .               .               .                None           .          14
+      27  r     15 D  BS          .               .               .                None           .          15
+      28  r     16 D  BS          .               .               .                None           .          16
+      29  r     17 D  BS          .               .               .                None           .          17
+      30  r     18 D  BS          .               .               .                None           .          18
+      31  r     19 D  BS          .               .               .                None           .          19
+      32  r     20 D  BS          .               .               .                None           .          20
+      33  r     21 D  BS          .               .               .                None           .          21
+      34  r     22 D  BS          .               .               .                None           .          22
+      35  r     23 D  BS          .               .               .                None           .          23
+      36  r     24 D  BS          .               .               .                None           .          24
+      37  r     25 A  LL          .               .               .                None         -0.00000     25
+      38  r     26 A  LL          .               .               .                None          0.00000     26
+      39  r     27 D  BS          .               .               .                None           .          27
+      40  r     28 A  LL          .               .               .                None           .          28
+      41  r     29 D  BS          .               .               .                None           .          29
+      42  r     30 A  LL          .               .               .                None           .          30
+      43  r     31 D  BS          .               .               .                None           .          31
+      44  r     32 A  LL          .               .               .                None           .          32
+      45  r     33 D  BS          .               .               .                None           .          33
+      46  r     34 D  BS          .               .               .                None           .          34
+      47  r     35 D  BS          .               .               .                None           .          35
+      48  r     36 D  BS          .               .               .                None           .          36
+      49  r     37 D  BS          .               .               .                None           .          37
+      50  r     38 D  BS          .               .               .                None           .          38
+      51  r     39 D  BS          .               .               .                None           .          39
+      52  r     40 D  BS          .               .               .                None           .          40
+      53  r     41 D  BS          .               .               .                None           .          41
+      54  r     42    BS          .           1800.00000     -1800.00000      1800.00000          .          42
+      55  r     43    BS          .           1800.00000     -1800.00000      1800.00000          .          43
+      56  r     44    BS          .           1800.00000     -1800.00000      1800.00000          .          44
+      57  r     45    BS          .           1800.00000     -1800.00000      1800.00000          .          45
+      58  r     46    BS          .           1800.00000     -1800.00000      1800.00000          .          46
+      59  r     47    BS          .           1800.00000     -1800.00000      1800.00000          .          47
+      60  r     48    BS          .           1800.00000     -1800.00000      1800.00000          .          48
+      61  r     49    BS          .           1800.00000     -1800.00000      1800.00000          .          49
+      62  r     50    BS          .           1800.00000     -1800.00000      1800.00000          .          50
+      63  r     51    BS          .           1800.00000     -1800.00000      1800.00000          .          51
+      64  r     52    BS          .           1800.00000     -1800.00000      1800.00000          .          52
+      65  r     53    BS          .           1800.00000     -1800.00000      1800.00000          .          53
+      66  r     54    BS          .           1800.00000     -1800.00000      1800.00000          .          54
+      67  r     55    BS          .           1800.00000     -1800.00000      1800.00000          .          55
+      68  r     56    BS          .           1800.00000     -1800.00000      1800.00000          .          56
+      69  r     57    BS          .           1800.00000     -1800.00000      1800.00000          .          57
+      70  r     58    BS          .           1800.00000     -1800.00000      1800.00000          .          58
+      71  r     59    BS          .           1800.00000     -1800.00000      1800.00000          .          59
+      72  r     60    BS          .           1800.00000     -1800.00000      1800.00000          .          60
+      73  r     61    BS          .           1800.00000     -1800.00000      1800.00000          .          61
+      74  r     62    BS          .           1800.00000     -1800.00000      1800.00000          .          62
+      75  r     63    BS          .           1800.00000     -1800.00000      1800.00000          .          63
+      76  r     64    BS          .           1800.00000     -1800.00000      1800.00000          .          64
+      77  r     65    BS          .           1800.00000     -1800.00000      1800.00000          .          65
+      78  r     66    BS          .           1800.00000     -1800.00000      1800.00000          .          66
+      79  r     67    BS          .           1800.00000     -1800.00000      1800.00000          .          67
+      80  r     68    BS          .           1800.00000     -1800.00000      1800.00000          .          68
+      81  r     69    BS          .           1800.00000     -1800.00000      1800.00000          .          69
+1
+ 
+ Section 2 - Variables
+
+  Number  .Column. State  ...Value......  .Obj Gradient.  ..Lower Limit.  ..Upper Limit.  .Dual Variable    m+j
+ 
+       1  x      1    BS         0.00000         0.00000    -10000.00000     10000.00000          .          70
+       2  x      2    BS          .              0.00000    -10000.00000     10000.00000          .          71
+       3  x      3    BS          .              0.00000    -10000.00000     10000.00000          .          72
+       4  x      4    BS          .              0.00000    -10000.00000     10000.00000          .          73
+       5  x      5    BS          .              0.00000    -10000.00000     10000.00000          .          74
+       6  x      6    BS          .              0.00000    -10000.00000     10000.00000        -0.00000     75
+       7  x      7    BS          .              0.00000    -10000.00000     10000.00000          .          76
+       8  x      8    BS          .              0.00000    -10000.00000     10000.00000          .          77
+       9  x      9 A  FR          .              0.00000    -10000.00000     10000.00000         0.00000     78
+      10  x     10    BS          .              0.00000    -10000.00000     10000.00000        -0.00000     79
+      11  x     11    BS          .              0.00000    -10000.00000     10000.00000          .          80
+      12  x     12    BS          .              0.00000    -10000.00000     10000.00000        -0.00000     81
+ 
+ Time for MPS input                             0.00 seconds
+ Time for solving problem                       0.06 seconds
+ Time for solution output                       0.00 seconds
+ Time for constraint functions                  0.06 seconds
+ Time for objective function                    0.00 seconds
+1
+ 
+ SNMEMA EXIT 100 -- finished successfully
+ SNMEMA INFO 104 -- memory requirements estimated
+
+ Nonzero derivs  Jij       202
+ Non-constant    Jij's      12     Constant Jij's         190
+1
+ 
+ SNJAC  EXIT 100 -- finished successfully
+ SNJAC  INFO 102 -- Jacobian structure estimated
+
+ 
+ ===>  WARNING - Row        54 of the Jacobian is empty.
+ ===>  WARNING - Row        55 of the Jacobian is empty.
+ ===>  WARNING - Row        56 of the Jacobian is empty.
+ ===>  WARNING - Row        57 of the Jacobian is empty.
+ ===>  WARNING - Row        58 of the Jacobian is empty.
+ ===>  WARNING - Row        59 of the Jacobian is empty.
+ ===>  WARNING - Row        60 of the Jacobian is empty.
+ ===>  WARNING - Row        61 of the Jacobian is empty.
+ ===>  WARNING - Row        62 of the Jacobian is empty.
+ ===>  WARNING - Row        63 of the Jacobian is empty.
+ ===>  WARNING - Row        64 of the Jacobian is empty.
+ ===>  WARNING - Row        65 of the Jacobian is empty.
+ ===>  WARNING - Row        66 of the Jacobian is empty.
+ ===>  WARNING - Row        67 of the Jacobian is empty.
+ ===>  WARNING - Row        68 of the Jacobian is empty.
+ ===>  WARNING - Row        69 of the Jacobian is empty.
+1
+ 
+ Parameters
+ ==========
+
+ Files
+ -----
+ Solution file..........         0       Old basis file ........         0       Standard input.........         5
+ Insert file............         0       New basis file ........         0       (Printer)..............        10
+ Punch file.............         0       Backup basis file......         0       (Specs file)...........         0
+ Load file..............         0       Dump file..............         0       Standard output........         6
+
+ Frequencies
+ -----------
+ Print frequency........       100       Check frequency........        60       Save new basis map.....       100
+ Summary frequency......       100       Factorization frequency        50       Expand frequency.......     10000
+
+ QP subproblems
+ --------------
+ QPsolver Cholesky......
+ Scale tolerance........     0.900       Minor feasibility tol..  1.00E-06       Iteration limit........     10000
+ Scale option...........         0       Minor optimality  tol..  1.00E-06       Minor print level......         1
+ Crash tolerance........     0.100       Pivot tolerance........  3.25E-11       New superbasics........        99
+ Crash option...........         3       Elastic weight.........  1.00E+00
+
+ Partial pricing
+ ---------------
+ LP Partial price.......         1       Prtl price section ( A)        12       Prtl price section (-I)        69
+ QP Partial price.......         1       Prtl price section ( A)        12       Prtl price section (-I)        69
+
+ The SQP Method
+ --------------
+ Minimize...............                 Cold start.............                 Proximal Point method..         1
+ Nonlinear objectiv vars        12       Objective Row..........         1       Function precision.....  3.00E-13
+ Unbounded step size....  1.00E+20       Superbasics limit......        12       Difference interval....  5.48E-07
+ Unbounded objective....  1.00E+10       Reduced Hessian dim....        12       Central difference int.  6.70E-05
+ Major step limit.......  2.00E+00       Nonderiv.  linesearch..                 Derivative option......         0
+ Major iterations limit.      1000       Linesearch tolerance...   0.90000       Verify level...........         3
+ Minor iterations limit.       500       Penalty parameter......  0.00E+00       Major Print Level......         1
+ Time limit (secs)...... 9999999.0       Major optimality tol...  2.00E-06
+
+ Hessian Approximation
+ ---------------------
+ Hessian full-memory....                 Hessian updates........  99999999       Hessian frequency......  99999999
+                                                                                 Hessian flush..........  99999999
+
+ Miscellaneous
+ -------------
+ LU factor tolerance....      3.99       LU singularity tol.....  3.25E-11       Timing level...........         3
+ LU update tolerance....      3.99       LU swap tolerance......  1.22E-04       Debug level............         0
+ LU partial  pivoting...                 eps (machine precision)  2.22E-16       System information.....        No
+                                                                                 Sticky parameters......        No
+1
+ 
+
+ 
+
+ Matrix statistics
+ -----------------
+               Total      Normal        Free       Fixed     Bounded
+ Rows             69          34           1           6          28
+ Columns          12           0           0           0          12
+
+ No. of matrix elements                  190     Density      22.947
+ Biggest                          1.1306E+00  (excluding fixed columns,
+ Smallest                         5.1610E-03   free rows, and RHS)
+
+ No. of objective coefficients             0
+
+ Nonlinear constraints       0     Linear constraints      69
+ Nonlinear variables        12     Linear variables         0
+ Jacobian  variables         0     Objective variables     12
+ Total constraints          69     Total variables         12
+1
+ 
+
+ 
+ The user has defined       0   out of      12   first  derivatives
+
+ 
+ Column       x(j)        dx(j)    Element no.    Row        Derivative    Difference approxn
+1
+ 
+ 
+
+   Itns Major Minors    Step   nObj Feasible  Optimal      Objective     L+U BSwap     nS condZHZ
+      0     0      0              1          (2.7E-07) 0.0000000E+00     238                      _  r
+1
+ 
+ SNOPTA EXIT   0 -- finished successfully
+ SNOPTA INFO   1 -- optimality conditions satisfied
+
+ Problem name                 WBDC Fr
+ No. of iterations                   0   Objective            0.0000000000E+00
+ No. of major iterations             0   Linear    obj. term  0.0000000000E+00
+                                         Nonlinear obj. term  0.0000000000E+00
+ User function calls (total)        13   Calls with modes 1,2 (known g)      1
+ Calls for forward differencing     12   Calls for central differencing      0
+ No. of degenerate steps             0   Percentage                       0.00
+ Max x                       1 1.8-316   Max pi                     53 1.0E+00
+ Max Primal infeas           0 0.0E+00   Max Dual infeas            37 2.7E-07
+1
+ 
+ Name           WBDC Fr                  Objective Value      0.0000000000E+00
+
+ Status         Optimal Soln             Iteration      0    Superbasics     0
+
+ Objective               (Min)
+ RHS
+ Ranges
+ Bounds
+
+ Section 1 - Constraints
+
+  Number  ...Row.. State  ...Value......  Slack Value...  ..Lower Limit.  ..Upper Limit.  .Dual Variable    ..i
+ 
+      13  r      1    BS          .               .                None            None         -1.0          1
+      14  r      2 A  EQ          .               .               .               .             -0.00000      2
+      15  r      3 A  EQ          .               .               .               .              0.00000      3
+      16  r      4 A  EQ          .               .               .               .             -0.00000      4
+      17  r      5 A  EQ          .               .               .               .             -0.00000      5
+      18  r      6 A  EQ          .               .               .               .             -0.00000      6
+      19  r      7 A  EQ          .               .               .               .             -0.00000      7
+      20  r      8 D  BS          .               .               .                None           .           8
+      21  r      9 D  BS          .               .               .                None           .           9
+      22  r     10 D  BS          .               .               .                None           .          10
+      23  r     11 D  BS          .               .               .                None           .          11
+      24  r     12 D  BS          .               .               .                None           .          12
+      25  r     13 D  BS          .               .               .                None           .          13
+      26  r     14 D  BS          .               .               .                None           .          14
+      27  r     15 D  BS          .               .               .                None           .          15
+      28  r     16 D  BS          .               .               .                None           .          16
+      29  r     17 D  BS          .               .               .                None           .          17
+      30  r     18 D  BS          .               .               .                None           .          18
+      31  r     19 D  BS          .               .               .                None           .          19
+      32  r     20 D  BS          .               .               .                None           .          20
+      33  r     21 D  BS          .               .               .                None           .          21
+      34  r     22 D  BS          .               .               .                None           .          22
+      35  r     23 D  BS          .               .               .                None           .          23
+      36  r     24 D  BS          .               .               .                None           .          24
+      37  r     25 A  LL          .               .               .                None         -0.00000     25
+      38  r     26 A  LL          .               .               .                None          0.00000     26
+      39  r     27 D  BS          .               .               .                None           .          27
+      40  r     28 A  LL          .               .               .                None           .          28
+      41  r     29 D  BS          .               .               .                None           .          29
+      42  r     30 A  LL          .               .               .                None           .          30
+      43  r     31 D  BS          .               .               .                None           .          31
+      44  r     32 A  LL          .               .               .                None           .          32
+      45  r     33 D  BS          .               .               .                None           .          33
+      46  r     34 D  BS          .               .               .                None           .          34
+      47  r     35 D  BS          .               .               .                None           .          35
+      48  r     36 D  BS          .               .               .                None           .          36
+      49  r     37 D  BS          .               .               .                None           .          37
+      50  r     38 D  BS          .               .               .                None           .          38
+      51  r     39 D  BS          .               .               .                None           .          39
+      52  r     40 D  BS          .               .               .                None           .          40
+      53  r     41 D  BS          .               .               .                None           .          41
+      54  r     42    BS          .           1800.00000     -1800.00000      1800.00000          .          42
+      55  r     43    BS          .           1800.00000     -1800.00000      1800.00000          .          43
+      56  r     44    BS          .           1800.00000     -1800.00000      1800.00000          .          44
+      57  r     45    BS          .           1800.00000     -1800.00000      1800.00000          .          45
+      58  r     46    BS          .           1800.00000     -1800.00000      1800.00000          .          46
+      59  r     47    BS          .           1800.00000     -1800.00000      1800.00000          .          47
+      60  r     48    BS          .           1800.00000     -1800.00000      1800.00000          .          48
+      61  r     49    BS          .           1800.00000     -1800.00000      1800.00000          .          49
+      62  r     50    BS          .           1800.00000     -1800.00000      1800.00000          .          50
+      63  r     51    BS          .           1800.00000     -1800.00000      1800.00000          .          51
+      64  r     52    BS          .           1800.00000     -1800.00000      1800.00000          .          52
+      65  r     53    BS          .           1800.00000     -1800.00000      1800.00000          .          53
+      66  r     54    BS          .           1800.00000     -1800.00000      1800.00000          .          54
+      67  r     55    BS          .           1800.00000     -1800.00000      1800.00000          .          55
+      68  r     56    BS          .           1800.00000     -1800.00000      1800.00000          .          56
+      69  r     57    BS          .           1800.00000     -1800.00000      1800.00000          .          57
+      70  r     58    BS          .           1800.00000     -1800.00000      1800.00000          .          58
+      71  r     59    BS          .           1800.00000     -1800.00000      1800.00000          .          59
+      72  r     60    BS          .           1800.00000     -1800.00000      1800.00000          .          60
+      73  r     61    BS          .           1800.00000     -1800.00000      1800.00000          .          61
+      74  r     62    BS          .           1800.00000     -1800.00000      1800.00000          .          62
+      75  r     63    BS          .           1800.00000     -1800.00000      1800.00000          .          63
+      76  r     64    BS          .           1800.00000     -1800.00000      1800.00000          .          64
+      77  r     65    BS          .           1800.00000     -1800.00000      1800.00000          .          65
+      78  r     66    BS          .           1800.00000     -1800.00000      1800.00000          .          66
+      79  r     67    BS          .           1800.00000     -1800.00000      1800.00000          .          67
+      80  r     68    BS          .           1800.00000     -1800.00000      1800.00000          .          68
+      81  r     69    BS          .           1800.00000     -1800.00000      1800.00000          .          69
+1
+ 
+ Section 2 - Variables
+
+  Number  .Column. State  ...Value......  .Obj Gradient.  ..Lower Limit.  ..Upper Limit.  .Dual Variable    m+j
+ 
+       1  x      1    BS         0.00000         0.00000    -10000.00000     10000.00000          .          70
+       2  x      2    BS          .              0.00000    -10000.00000     10000.00000          .          71
+       3  x      3    BS          .              0.00000    -10000.00000     10000.00000          .          72
+       4  x      4    BS          .              0.00000    -10000.00000     10000.00000          .          73
+       5  x      5    BS          .              0.00000    -10000.00000     10000.00000          .          74
+       6  x      6    BS          .              0.00000    -10000.00000     10000.00000        -0.00000     75
+       7  x      7    BS          .              0.00000    -10000.00000     10000.00000          .          76
+       8  x      8    BS          .              0.00000    -10000.00000     10000.00000          .          77
+       9  x      9 A  FR          .              0.00000    -10000.00000     10000.00000         0.00000     78
+      10  x     10    BS          .              0.00000    -10000.00000     10000.00000        -0.00000     79
+      11  x     11    BS          .              0.00000    -10000.00000     10000.00000          .          80
+      12  x     12    BS          .              0.00000    -10000.00000     10000.00000        -0.00000     81
+ 
+ Time for MPS input                             0.00 seconds
+ Time for solving problem                       0.05 seconds
+ Time for solution output                       0.00 seconds
+ Time for constraint functions                  0.06 seconds
+ Time for objective function                    0.00 seconds
+1
+ 
+ SNMEMA EXIT 100 -- finished successfully
+ SNMEMA INFO 104 -- memory requirements estimated
+
+ Nonzero derivs  Jij       202
+ Non-constant    Jij's      12     Constant Jij's         190
+1
+ 
+ SNJAC  EXIT 100 -- finished successfully
+ SNJAC  INFO 102 -- Jacobian structure estimated
+
+ 
+ ===>  WARNING - Row        54 of the Jacobian is empty.
+ ===>  WARNING - Row        55 of the Jacobian is empty.
+ ===>  WARNING - Row        56 of the Jacobian is empty.
+ ===>  WARNING - Row        57 of the Jacobian is empty.
+ ===>  WARNING - Row        58 of the Jacobian is empty.
+ ===>  WARNING - Row        59 of the Jacobian is empty.
+ ===>  WARNING - Row        60 of the Jacobian is empty.
+ ===>  WARNING - Row        61 of the Jacobian is empty.
+ ===>  WARNING - Row        62 of the Jacobian is empty.
+ ===>  WARNING - Row        63 of the Jacobian is empty.
+ ===>  WARNING - Row        64 of the Jacobian is empty.
+ ===>  WARNING - Row        65 of the Jacobian is empty.
+ ===>  WARNING - Row        66 of the Jacobian is empty.
+ ===>  WARNING - Row        67 of the Jacobian is empty.
+ ===>  WARNING - Row        68 of the Jacobian is empty.
+ ===>  WARNING - Row        69 of the Jacobian is empty.
+1
+ 
+ Parameters
+ ==========
+
+ Files
+ -----
+ Solution file..........         0       Old basis file ........         0       Standard input.........         5
+ Insert file............         0       New basis file ........         0       (Printer)..............        10
+ Punch file.............         0       Backup basis file......         0       (Specs file)...........         0
+ Load file..............         0       Dump file..............         0       Standard output........         6
+
+ Frequencies
+ -----------
+ Print frequency........       100       Check frequency........        60       Save new basis map.....       100
+ Summary frequency......       100       Factorization frequency        50       Expand frequency.......     10000
+
+ QP subproblems
+ --------------
+ QPsolver Cholesky......
+ Scale tolerance........     0.900       Minor feasibility tol..  1.00E-06       Iteration limit........     10000
+ Scale option...........         0       Minor optimality  tol..  1.00E-06       Minor print level......         1
+ Crash tolerance........     0.100       Pivot tolerance........  3.25E-11       New superbasics........        99
+ Crash option...........         3       Elastic weight.........  1.00E+00
+
+ Partial pricing
+ ---------------
+ LP Partial price.......         1       Prtl price section ( A)        12       Prtl price section (-I)        69
+ QP Partial price.......         1       Prtl price section ( A)        12       Prtl price section (-I)        69
+
+ The SQP Method
+ --------------
+ Minimize...............                 Cold start.............                 Proximal Point method..         1
+ Nonlinear objectiv vars        12       Objective Row..........         1       Function precision.....  3.00E-13
+ Unbounded step size....  1.00E+20       Superbasics limit......        12       Difference interval....  5.48E-07
+ Unbounded objective....  1.00E+10       Reduced Hessian dim....        12       Central difference int.  6.70E-05
+ Major step limit.......  2.00E+00       Nonderiv.  linesearch..                 Derivative option......         0
+ Major iterations limit.      1000       Linesearch tolerance...   0.90000       Verify level...........         3
+ Minor iterations limit.       500       Penalty parameter......  0.00E+00       Major Print Level......         1
+ Time limit (secs)...... 9999999.0       Major optimality tol...  2.00E-06
+
+ Hessian Approximation
+ ---------------------
+ Hessian full-memory....                 Hessian updates........  99999999       Hessian frequency......  99999999
+                                                                                 Hessian flush..........  99999999
+
+ Miscellaneous
+ -------------
+ LU factor tolerance....      3.99       LU singularity tol.....  3.25E-11       Timing level...........         3
+ LU update tolerance....      3.99       LU swap tolerance......  1.22E-04       Debug level............         0
+ LU partial  pivoting...                 eps (machine precision)  2.22E-16       System information.....        No
+                                                                                 Sticky parameters......        No
+1
+ 
+
+ 
+
+ Matrix statistics
+ -----------------
+               Total      Normal        Free       Fixed     Bounded
+ Rows             69          34           1           6          28
+ Columns          12           0           0           0          12
+
+ No. of matrix elements                  190     Density      22.947
+ Biggest                          1.1306E+00  (excluding fixed columns,
+ Smallest                         5.1610E-03   free rows, and RHS)
+
+ No. of objective coefficients             0
+
+ Nonlinear constraints       0     Linear constraints      69
+ Nonlinear variables        12     Linear variables         0
+ Jacobian  variables         0     Objective variables     12
+ Total constraints          69     Total variables         12
+1
+ 
+
+ 
+ The user has defined       0   out of      12   first  derivatives
+
+ 
+ Column       x(j)        dx(j)    Element no.    Row        Derivative    Difference approxn
+1
+ 
+ 
+
+   Itns Major Minors    Step   nObj Feasible  Optimal      Objective     L+U BSwap     nS condZHZ
+      0     0      0              1          (2.7E-07) 0.0000000E+00     238                      _  r
+1
+ 
+ SNOPTA EXIT   0 -- finished successfully
+ SNOPTA INFO   1 -- optimality conditions satisfied
+
+ Problem name                 WBDC Fr
+ No. of iterations                   0   Objective            0.0000000000E+00
+ No. of major iterations             0   Linear    obj. term  0.0000000000E+00
+                                         Nonlinear obj. term  0.0000000000E+00
+ User function calls (total)        13   Calls with modes 1,2 (known g)      1
+ Calls for forward differencing     12   Calls for central differencing      0
+ No. of degenerate steps             0   Percentage                       0.00
+ Max x                       1 2.1-316   Max pi                     53 1.0E+00
+ Max Primal infeas           0 0.0E+00   Max Dual infeas            37 2.7E-07
+1
+ 
+ Name           WBDC Fr                  Objective Value      0.0000000000E+00
+
+ Status         Optimal Soln             Iteration      0    Superbasics     0
+
+ Objective               (Min)
+ RHS
+ Ranges
+ Bounds
+
+ Section 1 - Constraints
+
+  Number  ...Row.. State  ...Value......  Slack Value...  ..Lower Limit.  ..Upper Limit.  .Dual Variable    ..i
+ 
+      13  r      1    BS          .               .                None            None         -1.0          1
+      14  r      2 A  EQ          .               .               .               .             -0.00000      2
+      15  r      3 A  EQ          .               .               .               .              0.00000      3
+      16  r      4 A  EQ          .               .               .               .             -0.00000      4
+      17  r      5 A  EQ          .               .               .               .             -0.00000      5
+      18  r      6 A  EQ          .               .               .               .             -0.00000      6
+      19  r      7 A  EQ          .               .               .               .             -0.00000      7
+      20  r      8 D  BS          .               .               .                None           .           8
+      21  r      9 D  BS          .               .               .                None           .           9
+      22  r     10 D  BS          .               .               .                None           .          10
+      23  r     11 D  BS          .               .               .                None           .          11
+      24  r     12 D  BS          .               .               .                None           .          12
+      25  r     13 D  BS          .               .               .                None           .          13
+      26  r     14 D  BS          .               .               .                None           .          14
+      27  r     15 D  BS          .               .               .                None           .          15
+      28  r     16 D  BS          .               .               .                None           .          16
+      29  r     17 D  BS          .               .               .                None           .          17
+      30  r     18 D  BS          .               .               .                None           .          18
+      31  r     19 D  BS          .               .               .                None           .          19
+      32  r     20 D  BS          .               .               .                None           .          20
+      33  r     21 D  BS          .               .               .                None           .          21
+      34  r     22 D  BS          .               .               .                None           .          22
+      35  r     23 D  BS          .               .               .                None           .          23
+      36  r     24 D  BS          .               .               .                None           .          24
+      37  r     25 A  LL          .               .               .                None         -0.00000     25
+      38  r     26 A  LL          .               .               .                None          0.00000     26
+      39  r     27 D  BS          .               .               .                None           .          27
+      40  r     28 A  LL          .               .               .                None           .          28
+      41  r     29 D  BS          .               .               .                None           .          29
+      42  r     30 A  LL          .               .               .                None           .          30
+      43  r     31 D  BS          .               .               .                None           .          31
+      44  r     32 A  LL          .               .               .                None           .          32
+      45  r     33 D  BS          .               .               .                None           .          33
+      46  r     34 D  BS          .               .               .                None           .          34
+      47  r     35 D  BS          .               .               .                None           .          35
+      48  r     36 D  BS          .               .               .                None           .          36
+      49  r     37 D  BS          .               .               .                None           .          37
+      50  r     38 D  BS          .               .               .                None           .          38
+      51  r     39 D  BS          .               .               .                None           .          39
+      52  r     40 D  BS          .               .               .                None           .          40
+      53  r     41 D  BS          .               .               .                None           .          41
+      54  r     42    BS          .           1800.00000     -1800.00000      1800.00000          .          42
+      55  r     43    BS          .           1800.00000     -1800.00000      1800.00000          .          43
+      56  r     44    BS          .           1800.00000     -1800.00000      1800.00000          .          44
+      57  r     45    BS          .           1800.00000     -1800.00000      1800.00000          .          45
+      58  r     46    BS          .           1800.00000     -1800.00000      1800.00000          .          46
+      59  r     47    BS          .           1800.00000     -1800.00000      1800.00000          .          47
+      60  r     48    BS          .           1800.00000     -1800.00000      1800.00000          .          48
+      61  r     49    BS          .           1800.00000     -1800.00000      1800.00000          .          49
+      62  r     50    BS          .           1800.00000     -1800.00000      1800.00000          .          50
+      63  r     51    BS          .           1800.00000     -1800.00000      1800.00000          .          51
+      64  r     52    BS          .           1800.00000     -1800.00000      1800.00000          .          52
+      65  r     53    BS          .           1800.00000     -1800.00000      1800.00000          .          53
+      66  r     54    BS          .           1800.00000     -1800.00000      1800.00000          .          54
+      67  r     55    BS          .           1800.00000     -1800.00000      1800.00000          .          55
+      68  r     56    BS          .           1800.00000     -1800.00000      1800.00000          .          56
+      69  r     57    BS          .           1800.00000     -1800.00000      1800.00000          .          57
+      70  r     58    BS          .           1800.00000     -1800.00000      1800.00000          .          58
+      71  r     59    BS          .           1800.00000     -1800.00000      1800.00000          .          59
+      72  r     60    BS          .           1800.00000     -1800.00000      1800.00000          .          60
+      73  r     61    BS          .           1800.00000     -1800.00000      1800.00000          .          61
+      74  r     62    BS          .           1800.00000     -1800.00000      1800.00000          .          62
+      75  r     63    BS          .           1800.00000     -1800.00000      1800.00000          .          63
+      76  r     64    BS          .           1800.00000     -1800.00000      1800.00000          .          64
+      77  r     65    BS          .           1800.00000     -1800.00000      1800.00000          .          65
+      78  r     66    BS          .           1800.00000     -1800.00000      1800.00000          .          66
+      79  r     67    BS          .           1800.00000     -1800.00000      1800.00000          .          67
+      80  r     68    BS          .           1800.00000     -1800.00000      1800.00000          .          68
+      81  r     69    BS          .           1800.00000     -1800.00000      1800.00000          .          69
+1
+ 
+ Section 2 - Variables
+
+  Number  .Column. State  ...Value......  .Obj Gradient.  ..Lower Limit.  ..Upper Limit.  .Dual Variable    m+j
+ 
+       1  x      1    BS         0.00000         0.00000    -10000.00000     10000.00000          .          70
+       2  x      2    BS          .              0.00000    -10000.00000     10000.00000          .          71
+       3  x      3    BS          .              0.00000    -10000.00000     10000.00000          .          72
+       4  x      4    BS          .              0.00000    -10000.00000     10000.00000          .          73
+       5  x      5    BS          .              0.00000    -10000.00000     10000.00000          .          74
+       6  x      6    BS          .              0.00000    -10000.00000     10000.00000        -0.00000     75
+       7  x      7    BS          .              0.00000    -10000.00000     10000.00000          .          76
+       8  x      8    BS          .              0.00000    -10000.00000     10000.00000          .          77
+       9  x      9 A  FR          .              0.00000    -10000.00000     10000.00000         0.00000     78
+      10  x     10    BS          .              0.00000    -10000.00000     10000.00000        -0.00000     79
+      11  x     11    BS          .              0.00000    -10000.00000     10000.00000          .          80
+      12  x     12    BS          .              0.00000    -10000.00000     10000.00000        -0.00000     81
+ 
+ Time for MPS input                             0.00 seconds
+ Time for solving problem                       0.05 seconds
+ Time for solution output                       0.00 seconds
+ Time for constraint functions                  0.06 seconds
+ Time for objective function                    0.00 seconds
+1
+ 
+ SNMEMA EXIT 100 -- finished successfully
+ SNMEMA INFO 104 -- memory requirements estimated
+
+ Nonzero derivs  Jij       202
+ Non-constant    Jij's      12     Constant Jij's         190
+1
+ 
+ SNJAC  EXIT 100 -- finished successfully
+ SNJAC  INFO 102 -- Jacobian structure estimated
+
+ 
+ ===>  WARNING - Row        54 of the Jacobian is empty.
+ ===>  WARNING - Row        55 of the Jacobian is empty.
+ ===>  WARNING - Row        56 of the Jacobian is empty.
+ ===>  WARNING - Row        57 of the Jacobian is empty.
+ ===>  WARNING - Row        58 of the Jacobian is empty.
+ ===>  WARNING - Row        59 of the Jacobian is empty.
+ ===>  WARNING - Row        60 of the Jacobian is empty.
+ ===>  WARNING - Row        61 of the Jacobian is empty.
+ ===>  WARNING - Row        62 of the Jacobian is empty.
+ ===>  WARNING - Row        63 of the Jacobian is empty.
+ ===>  WARNING - Row        64 of the Jacobian is empty.
+ ===>  WARNING - Row        65 of the Jacobian is empty.
+ ===>  WARNING - Row        66 of the Jacobian is empty.
+ ===>  WARNING - Row        67 of the Jacobian is empty.
+ ===>  WARNING - Row        68 of the Jacobian is empty.
+ ===>  WARNING - Row        69 of the Jacobian is empty.
+1
+ 
+ Parameters
+ ==========
+
+ Files
+ -----
+ Solution file..........         0       Old basis file ........         0       Standard input.........         5
+ Insert file............         0       New basis file ........         0       (Printer)..............        10
+ Punch file.............         0       Backup basis file......         0       (Specs file)...........         0
+ Load file..............         0       Dump file..............         0       Standard output........         6
+
+ Frequencies
+ -----------
+ Print frequency........       100       Check frequency........        60       Save new basis map.....       100
+ Summary frequency......       100       Factorization frequency        50       Expand frequency.......     10000
+
+ QP subproblems
+ --------------
+ QPsolver Cholesky......
+ Scale tolerance........     0.900       Minor feasibility tol..  1.00E-06       Iteration limit........     10000
+ Scale option...........         0       Minor optimality  tol..  1.00E-06       Minor print level......         1
+ Crash tolerance........     0.100       Pivot tolerance........  3.25E-11       New superbasics........        99
+ Crash option...........         3       Elastic weight.........  1.00E+00
+
+ Partial pricing
+ ---------------
+ LP Partial price.......         1       Prtl price section ( A)        12       Prtl price section (-I)        69
+ QP Partial price.......         1       Prtl price section ( A)        12       Prtl price section (-I)        69
+
+ The SQP Method
+ --------------
+ Minimize...............                 Cold start.............                 Proximal Point method..         1
+ Nonlinear objectiv vars        12       Objective Row..........         1       Function precision.....  3.00E-13
+ Unbounded step size....  1.00E+20       Superbasics limit......        12       Difference interval....  5.48E-07
+ Unbounded objective....  1.00E+10       Reduced Hessian dim....        12       Central difference int.  6.70E-05
+ Major step limit.......  2.00E+00       Nonderiv.  linesearch..                 Derivative option......         0
+ Major iterations limit.      1000       Linesearch tolerance...   0.90000       Verify level...........         3
+ Minor iterations limit.       500       Penalty parameter......  0.00E+00       Major Print Level......         1
+ Time limit (secs)...... 9999999.0       Major optimality tol...  2.00E-06
+
+ Hessian Approximation
+ ---------------------
+ Hessian full-memory....                 Hessian updates........  99999999       Hessian frequency......  99999999
+                                                                                 Hessian flush..........  99999999
+
+ Miscellaneous
+ -------------
+ LU factor tolerance....      3.99       LU singularity tol.....  3.25E-11       Timing level...........         3
+ LU update tolerance....      3.99       LU swap tolerance......  1.22E-04       Debug level............         0
+ LU partial  pivoting...                 eps (machine precision)  2.22E-16       System information.....        No
+                                                                                 Sticky parameters......        No
+1
+ 
+
+ 
+
+ Matrix statistics
+ -----------------
+               Total      Normal        Free       Fixed     Bounded
+ Rows             69          34           1           6          28
+ Columns          12           0           0           0          12
+
+ No. of matrix elements                  190     Density      22.947
+ Biggest                          1.1306E+00  (excluding fixed columns,
+ Smallest                         5.1610E-03   free rows, and RHS)
+
+ No. of objective coefficients             0
+
+ Nonlinear constraints       0     Linear constraints      69
+ Nonlinear variables        12     Linear variables         0
+ Jacobian  variables         0     Objective variables     12
+ Total constraints          69     Total variables         12
+1
+ 
+
+ 
+ The user has defined       0   out of      12   first  derivatives
+
+ 
+ Column       x(j)        dx(j)    Element no.    Row        Derivative    Difference approxn
+1
+ 
+ 
+
+   Itns Major Minors    Step   nObj Feasible  Optimal      Objective     L+U BSwap     nS condZHZ
+      0     0      0              1          (2.7E-07) 0.0000000E+00     238                      _  r
+1
+ 
+ SNOPTA EXIT   0 -- finished successfully
+ SNOPTA INFO   1 -- optimality conditions satisfied
+
+ Problem name                 WBDC Fr
+ No. of iterations                   0   Objective            0.0000000000E+00
+ No. of major iterations             0   Linear    obj. term  0.0000000000E+00
+                                         Nonlinear obj. term  0.0000000000E+00
+ User function calls (total)        13   Calls with modes 1,2 (known g)      1
+ Calls for forward differencing     12   Calls for central differencing      0
+ No. of degenerate steps             0   Percentage                       0.00
+ Max x                       1 1.0-316   Max pi                     53 1.0E+00
+ Max Primal infeas           0 0.0E+00   Max Dual infeas            37 2.7E-07
+1
+ 
+ Name           WBDC Fr                  Objective Value      0.0000000000E+00
+
+ Status         Optimal Soln             Iteration      0    Superbasics     0
+
+ Objective               (Min)
+ RHS
+ Ranges
+ Bounds
+
+ Section 1 - Constraints
+
+  Number  ...Row.. State  ...Value......  Slack Value...  ..Lower Limit.  ..Upper Limit.  .Dual Variable    ..i
+ 
+      13  r      1    BS          .               .                None            None         -1.0          1
+      14  r      2 A  EQ          .               .               .               .             -0.00000      2
+      15  r      3 A  EQ          .               .               .               .              0.00000      3
+      16  r      4 A  EQ          .               .               .               .             -0.00000      4
+      17  r      5 A  EQ          .               .               .               .             -0.00000      5
+      18  r      6 A  EQ          .               .               .               .             -0.00000      6
+      19  r      7 A  EQ          .               .               .               .             -0.00000      7
+      20  r      8 D  BS          .               .               .                None           .           8
+      21  r      9 D  BS          .               .               .                None           .           9
+      22  r     10 D  BS          .               .               .                None           .          10
+      23  r     11 D  BS          .               .               .                None           .          11
+      24  r     12 D  BS          .               .               .                None           .          12
+      25  r     13 D  BS          .               .               .                None           .          13
+      26  r     14 D  BS          .               .               .                None           .          14
+      27  r     15 D  BS          .               .               .                None           .          15
+      28  r     16 D  BS          .               .               .                None           .          16
+      29  r     17 D  BS          .               .               .                None           .          17
+      30  r     18 D  BS          .               .               .                None           .          18
+      31  r     19 D  BS          .               .               .                None           .          19
+      32  r     20 D  BS          .               .               .                None           .          20
+      33  r     21 D  BS          .               .               .                None           .          21
+      34  r     22 D  BS          .               .               .                None           .          22
+      35  r     23 D  BS          .               .               .                None           .          23
+      36  r     24 D  BS          .               .               .                None           .          24
+      37  r     25 A  LL          .               .               .                None         -0.00000     25
+      38  r     26 A  LL          .               .               .                None          0.00000     26
+      39  r     27 D  BS          .               .               .                None           .          27
+      40  r     28 A  LL          .               .               .                None           .          28
+      41  r     29 D  BS          .               .               .                None           .          29
+      42  r     30 A  LL          .               .               .                None           .          30
+      43  r     31 D  BS          .               .               .                None           .          31
+      44  r     32 A  LL          .               .               .                None           .          32
+      45  r     33 D  BS          .               .               .                None           .          33
+      46  r     34 D  BS          .               .               .                None           .          34
+      47  r     35 D  BS          .               .               .                None           .          35
+      48  r     36 D  BS          .               .               .                None           .          36
+      49  r     37 D  BS          .               .               .                None           .          37
+      50  r     38 D  BS          .               .               .                None           .          38
+      51  r     39 D  BS          .               .               .                None           .          39
+      52  r     40 D  BS          .               .               .                None           .          40
+      53  r     41 D  BS          .               .               .                None           .          41
+      54  r     42    BS          .           1800.00000     -1800.00000      1800.00000          .          42
+      55  r     43    BS          .           1800.00000     -1800.00000      1800.00000          .          43
+      56  r     44    BS          .           1800.00000     -1800.00000      1800.00000          .          44
+      57  r     45    BS          .           1800.00000     -1800.00000      1800.00000          .          45
+      58  r     46    BS          .           1800.00000     -1800.00000      1800.00000          .          46
+      59  r     47    BS          .           1800.00000     -1800.00000      1800.00000          .          47
+      60  r     48    BS          .           1800.00000     -1800.00000      1800.00000          .          48
+      61  r     49    BS          .           1800.00000     -1800.00000      1800.00000          .          49
+      62  r     50    BS          .           1800.00000     -1800.00000      1800.00000          .          50
+      63  r     51    BS          .           1800.00000     -1800.00000      1800.00000          .          51
+      64  r     52    BS          .           1800.00000     -1800.00000      1800.00000          .          52
+      65  r     53    BS          .           1800.00000     -1800.00000      1800.00000          .          53
+      66  r     54    BS          .           1800.00000     -1800.00000      1800.00000          .          54
+      67  r     55    BS          .           1800.00000     -1800.00000      1800.00000          .          55
+      68  r     56    BS          .           1800.00000     -1800.00000      1800.00000          .          56
+      69  r     57    BS          .           1800.00000     -1800.00000      1800.00000          .          57
+      70  r     58    BS          .           1800.00000     -1800.00000      1800.00000          .          58
+      71  r     59    BS          .           1800.00000     -1800.00000      1800.00000          .          59
+      72  r     60    BS          .           1800.00000     -1800.00000      1800.00000          .          60
+      73  r     61    BS          .           1800.00000     -1800.00000      1800.00000          .          61
+      74  r     62    BS          .           1800.00000     -1800.00000      1800.00000          .          62
+      75  r     63    BS          .           1800.00000     -1800.00000      1800.00000          .          63
+      76  r     64    BS          .           1800.00000     -1800.00000      1800.00000          .          64
+      77  r     65    BS          .           1800.00000     -1800.00000      1800.00000          .          65
+      78  r     66    BS          .           1800.00000     -1800.00000      1800.00000          .          66
+      79  r     67    BS          .           1800.00000     -1800.00000      1800.00000          .          67
+      80  r     68    BS          .           1800.00000     -1800.00000      1800.00000          .          68
+      81  r     69    BS          .           1800.00000     -1800.00000      1800.00000          .          69
+1
+ 
+ Section 2 - Variables
+
+  Number  .Column. State  ...Value......  .Obj Gradient.  ..Lower Limit.  ..Upper Limit.  .Dual Variable    m+j
+ 
+       1  x      1    BS         0.00000         0.00000    -10000.00000     10000.00000          .          70
+       2  x      2    BS          .              0.00000    -10000.00000     10000.00000          .          71
+       3  x      3    BS          .              0.00000    -10000.00000     10000.00000          .          72
+       4  x      4    BS          .              0.00000    -10000.00000     10000.00000          .          73
+       5  x      5    BS          .              0.00000    -10000.00000     10000.00000          .          74
+       6  x      6    BS          .              0.00000    -10000.00000     10000.00000        -0.00000     75
+       7  x      7    BS          .              0.00000    -10000.00000     10000.00000          .          76
+       8  x      8    BS          .              0.00000    -10000.00000     10000.00000          .          77
+       9  x      9 A  FR          .              0.00000    -10000.00000     10000.00000         0.00000     78
+      10  x     10    BS          .              0.00000    -10000.00000     10000.00000        -0.00000     79
+      11  x     11    BS          .              0.00000    -10000.00000     10000.00000          .          80
+      12  x     12    BS          .              0.00000    -10000.00000     10000.00000        -0.00000     81
+ 
+ Time for MPS input                             0.00 seconds
+ Time for solving problem                       0.05 seconds
+ Time for solution output                       0.00 seconds
+ Time for constraint functions                  0.06 seconds
+ Time for objective function                    0.00 seconds

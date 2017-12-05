@@ -8,6 +8,14 @@
 #include "wbt_optimization.h"
 #include <Optimizer/snopt/include/snoptProblem.hpp>
 
+void test_snopt_wbdc_fun(int    *Status, int *n,    double x[],
+       int    *needF,  int *neF,  double F[],
+       int    *needG,  int *neG,  double G[],
+       char      *cu,  int *lencu,
+       int    iu[],    int *leniu,
+       double ru[],    int *lenru);
+void test_snopt_solve_wbdc();
+
 void snopt_user_fun(int    *Status, int *n,    double x[],
        int    *needF,  int *neF,  double F[],
        int    *needG,  int *neG,  double G[],

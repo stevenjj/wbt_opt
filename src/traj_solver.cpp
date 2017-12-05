@@ -4,13 +4,30 @@ void test_get_funcs(){
   WBT_Optimization* opt_obj;
   opt_obj = WBT_Optimization::GetWBT_Optimization();  
 
-  std::vector<double> x;
-  std::vector<double> F;
-  std::vector<double> G;
+  std::cout << "(n_states, neF) = (" << opt_obj->n_states_to_optimize << ", " <<
+                                  opt_obj->neF_problems << ")" << std::endl;
+
+  std::vector<double> x_in;
+  std::vector<double> F_out;
+  std::vector<double> G_out;
+
+  int n_states = opt_obj->n_states_to_optimize;
+  int neF_probs = opt_obj->neF_problems;
+
+  for(size_t i = 0; i < n_states; i++){
+    x_in.push_back(0);
+  }
+
+  opt_obj->get_problem_functions(x_in, F_out, G_out);
+
+  std::cout << "F_out size:" << F_out.size() << std::endl;
+  double *F      = new double[neF_probs];
+  for(size_t i = 0; i < neF_probs; i++){
+    F[i] = F_out[i];
+  }
 
 
-  std::cout << "hello!" << std::endl;
-  opt_obj->get_problem_functions(x, F, G);
+
 }
 
 
@@ -69,6 +86,114 @@ void test_bounds_prep(){
   for(size_t i = 0; i < neF; i++){
     Flow[i] = Flow_vec[i];
     Fupp[i] = Fupp_vec[i];              
+  }
+
+}
+
+void test_snopt_wbdc_fun(int    *Status, int *n,    double x[],
+       int    *needF,  int *neF,  double F[],
+       int    *needG,  int *neG,  double G[],
+       char      *cu,  int *lencu,
+       int    iu[],    int *leniu,
+       double ru[],    int *lenru){
+
+  WBT_Optimization* opt_obj;
+  opt_obj = WBT_Optimization::GetWBT_Optimization();  
+
+  std::vector<double> x_in;
+  std::vector<double> F_out;
+  std::vector<double> G_out;
+
+  int n_states = opt_obj->n_states_to_optimize;
+  int neF_probs = opt_obj->neF_problems;
+
+  // Populate x states
+  for(size_t i = 0; i < n_states; i++){
+    x_in.push_back(x[i]);
+  }
+
+//  opt_obj->get_problem_functions(x_in, F_out, G_out);
+  opt_obj->simple_get_problem_functions(x_in, F_out, G_out);
+
+  for(size_t i = 0; i < neF_probs; i++){
+    F[i] = F_out[i];
+    std::cout << "F[i] = " << F_out[i] << std::endl;
+  }
+
+
+}
+
+void test_snopt_solve_wbdc(){
+  snoptProblemA wbdc_prob;   
+  WBT_Optimization* opt_obj;
+  opt_obj = WBT_Optimization::GetWBT_Optimization();  
+  std::vector<double> xlow_vec;
+  std::vector<double> xupp_vec;
+  std::vector<double> Flow_vec; 
+  std::vector<double> Fupp_vec;
+
+
+  // Allocate and initialize;
+  int Cold = 0, Basis = 1, Warm = 2;
+  int n     =  0; // Number of Optimization Variables
+  int neF   =  0; // Number of Problem Functions (constraints + objective function - state bounds constraints)
+  int nS = 0, nInf;
+  double sInf;
+  int ObjRow = 0;
+  double ObjAdd  = 0; 
+
+  //opt_obj->prepare_state_problem_bounds(n, neF, ObjRow, xlow_vec, xupp_vec, Flow_vec, Fupp_vec);
+  opt_obj->simple_prepare_state_problem_bounds(n, neF, ObjRow, xlow_vec, xupp_vec, Flow_vec, Fupp_vec);  
+
+  double *x      = new double[n];
+  double *xlow   = new double[n];
+  double *xupp   = new double[n];
+  double *xmul   = new double[n];
+  int    *xstate = new    int[n];
+
+  double *F      = new double[neF];
+  double *Flow   = new double[neF];
+  double *Fupp   = new double[neF];
+  double *Fmul   = new double[neF];
+  int    *Fstate = new int[neF];
+
+
+
+  for(size_t i = 0; i < n; i++){
+    xlow[i] = xlow_vec[i];
+    xupp[i] = xupp_vec[i];
+  }
+
+  for(size_t i = 0; i < neF; i++){
+    Flow[i] = Flow_vec[i];
+    Fupp[i] = Fupp_vec[i];              
+  }
+
+  for(size_t i = 0; i < neF; i++){
+    std::cout << "i:" << i << " F minimums:" << Flow[i] << std::endl;
+  }
+
+  for(size_t i = 0; i < neF; i++){
+    std::cout << "i:" << i << " F maximums:" << Fupp[i] << std::endl;
+  }
+
+  wbdc_prob.initialize     ("", 1);  // no print file, summary on
+  wbdc_prob.setProbName("WBDC Fr Minimization");
+  wbdc_prob.setPrintFile("WBDC.out"); 
+  // snopta will compute the Jacobian by finite-differences.
+  // snJac will be called  to define the
+  // coordinate arrays (iAfun,jAvar,A) and (iGfun, jGvar).
+  wbdc_prob.setIntParameter("Derivative option", 0);
+  wbdc_prob.setIntParameter("Verify level ", 3);
+
+  wbdc_prob.solve(Cold, neF, n, ObjAdd, ObjRow, test_snopt_wbdc_fun,
+            xlow, xupp, Flow, Fupp,
+            x, xstate, xmul, F, Fstate, Fmul,
+            nS, nInf, sInf);  
+
+  std::cout << "Found Solutions:" << std::endl;
+  for(size_t i = 0; i < n; i++){
+   std::cout << x[i] << std::endl; 
   }
 
 }

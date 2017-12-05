@@ -7,7 +7,7 @@ WBT_Optimization* WBT_Optimization::GetWBT_Optimization(){
     return &wbt_opt_obj;
 }
 
-WBT_Optimization::WBT_Optimization():m_q(NUM_Q), m_qdot(NUM_QDOT),
+WBT_Optimization::WBT_Optimization():n_states_to_optimize(0), neF_problems(0), m_q(NUM_Q), m_qdot(NUM_QDOT),
                                     m_tau(NUM_QDOT), cori_(NUM_QDOT),
                                     grav_(NUM_QDOT), A_(NUM_QDOT, NUM_QDOT), Ainv_(NUM_QDOT, NUM_QDOT){
   robot_model_ = RobotModel::GetRobotModel();	
@@ -28,6 +28,8 @@ WBT_Optimization::WBT_Optimization():m_q(NUM_Q), m_qdot(NUM_QDOT),
   grav_.setZero(); 
   A_.setZero();
   Ainv_.setZero();  
+
+  
 
   Initialization();
 
@@ -91,7 +93,101 @@ void WBT_Optimization::test_get_problem_functions(){
 }
 
 void WBT_Optimization::run_solver_test(){
-  snopt_solve_opt_problem();
+  test_snopt_solve_wbdc();
+  //snopt_solve_opt_problem();
+}
+
+
+void WBT_Optimization::simple_prepare_state_problem_bounds(int &n, int &neF, int &ObjRow,
+                                            std::vector<double> &xlow, std::vector<double> &xupp,
+                                            std::vector<double> &Flow, std::vector<double> &Fupp){
+
+  sejong::Vector Fr_states(6); Fr_states.setZero(); // 6 Generalized Contact Forces
+
+  std::vector<double> xupp_states;
+  std::vector<double> xlow_states; 
+  // Set Number of States
+  n = Fr_states.rows();
+
+  // Assign Reaction Force Bounds
+  for(size_t i = 0; i < Fr_states.rows(); i++){
+    xupp_states.push_back(10000);
+    xlow_states.push_back(-10000);    
+  }
+
+  xupp = xupp_states;  
+  xlow = xlow_states;
+
+  sejong::Vector WBC_virtual_constraints(6); WBC_virtual_constraints.setZero();
+  std::vector<double> Fupp_;
+  std::vector<double> Flow_;  
+  neF = 1 + 1;
+
+  // Assign Objective Row
+  double inf = 1e20;
+  Fupp_.push_back(inf);
+  Flow_.push_back(-inf);  
+  ObjRow = 0; 
+
+  Fupp_.push_back(100.0);
+  Flow_.push_back(100.0);      
+
+/*  // Assign WBC Bounds
+  for(size_t i = 0; i < WBC_virtual_constraints.rows(); i++){
+    Fupp_.push_back(0.0);
+    Flow_.push_back(0.0);    
+  }*/
+
+  // Set Problem Function Bounds
+  Fupp = Fupp_;
+  Flow = Flow_;  
+
+  // store number of states to optimize
+  n_states_to_optimize = n;
+  neF_problems = neF;
+}
+
+
+
+void WBT_Optimization::simple_get_problem_functions(std::vector<double> &x, std::vector<double> &F, std::vector<double> &G){
+  // Extract states x:
+  sejong::Vector Fr_states(6); Fr_states.setZero(); // 6 Generalized Contact Forces
+
+  int offset = 0;
+  for(size_t i = 0; i < Fr_states.rows(); i++){
+    Fr_states[i] = x[i + offset];
+  }
+
+  // Problem functions
+  std::vector<double> F_;
+
+  // Set Objective function: -----------------------------------------------------------------
+  sejong::Matrix Q_Fr = sejong::Matrix::Identity(Fr_states.rows(), Fr_states.rows());
+  sejong::Vector objective_function = Fr_states.transpose()*Q_Fr*Fr_states;
+
+  // Add to Problem Function
+  F_.push_back(objective_function[0]);
+
+  // Set WBC Virtual Constraints -------------------------------------------------------------
+  sejong::Matrix A(NUM_QDOT, NUM_QDOT);
+  sejong::Vector b(NUM_QDOT);
+  sejong::Vector g(NUM_QDOT);
+  UpdateModel(m_q, m_qdot, A, g, b);  
+
+  //sejong::Vector WB_des = Fr_states[0] + Fr_states[1] + Fr_states[2] + Fr_states[3] + Fr_states[4] + Fr_states[5];//Sv*(b + g) - Fr_states; // Aqddot_des + b + g - J^Tc Fr = [0, tau]^T
+  //sejong::Vector WBC_virtual_constraints = WB_des;
+
+  double constraint = Fr_states[0] + Fr_states[1];
+
+  F_.push_back(constraint);
+/*  // Add to Problem Function
+  for(size_t i = 0; i < WBC_virtual_constraints.size(); i++){
+    F_.push_back(WBC_virtual_constraints[i]);
+  }
+*/
+  // Set problem functions
+  F = F_;
+
 }
 
 
@@ -110,18 +206,18 @@ void WBT_Optimization::prepare_state_problem_bounds(int &n, int &neF, int &ObjRo
   */
 
   sejong::Vector Fr_states(12); Fr_states.setZero(); // 6 Generalized Contact Forces
-  sejong::Vector phi_states(2); Fr_states.setZero(); // 2 for each generalized contact
+  //sejong::Vector phi_states(2); Fr_states.setZero(); // 2 for each generalized contact
 
   sejong::Vector Fr_upperbound(Fr_states.rows()); Fr_upperbound.setZero();
   sejong::Vector Fr_lowerbound(Fr_states.rows()); Fr_lowerbound.setZero(); 
-  sejong::Vector phi_upperbound(phi_states.rows()); phi_upperbound.setZero();
+/*  sejong::Vector phi_upperbound(phi_states.rows()); phi_upperbound.setZero();
   sejong::Vector phi_lowerbound(phi_states.rows()); phi_lowerbound.setZero();   
-
+*/
 
   std::vector<double> xupp_states;
   std::vector<double> xlow_states; 
   // Set Number of States
-  n = Fr_states.rows() + phi_states.rows();
+  n = Fr_states.rows();// + phi_states.rows();
 
   // Assign Reaction Force Bounds
   for(size_t i = 0; i < Fr_states.rows(); i++){
@@ -132,14 +228,14 @@ void WBT_Optimization::prepare_state_problem_bounds(int &n, int &neF, int &ObjRo
   }
 
   // Assign Phi(q) bounds
-  for(size_t i = 0; i < phi_states.rows(); i++){
+/*  for(size_t i = 0; i < phi_states.rows(); i++){
     phi_upperbound[i] = 10;
     phi_lowerbound[i] = -1;    
     xupp_states.push_back(phi_upperbound[i]);
     xlow_states.push_back(phi_lowerbound[i]);        
-  }
+  }*/
 
-  // Assign to actual states
+  // Set bounds to actual states
   xupp = xupp_states;  
   xlow = xlow_states;
 
@@ -149,7 +245,6 @@ void WBT_Optimization::prepare_state_problem_bounds(int &n, int &neF, int &ObjRo
   (6)              WBC_virtual_states: Sv(Aqddot_des + b + g - U^t + Jc^Fr = 0)
   (17*2)           Fr contact constraint UFr >= 0
   (NUM_ACT_JOINT)  torque_constraints: -1800 <= Sa * (Aqddot_des + b + g - Jc^Fr) <= 1800
-  (2)              Phi constraint phi*Fr = 0
   */
   sejong::Vector WBC_virtual_constraints(6); WBC_virtual_constraints.setZero();
   sejong::Vector Fr_contact_constraints(17*2); Fr_contact_constraints.setZero();
@@ -160,8 +255,7 @@ void WBT_Optimization::prepare_state_problem_bounds(int &n, int &neF, int &ObjRo
   std::vector<double> Flow_; 
   neF = 1 + WBC_virtual_constraints.rows() + 
             Fr_contact_constraints.rows() + 
-            torque_constraints.rows() + 
-            phi_constraints.rows();
+            torque_constraints.rows();// + phi_constraints.rows();
 
   //Assign Objective Function Bounds
   double inf = 1e20;
@@ -188,15 +282,19 @@ void WBT_Optimization::prepare_state_problem_bounds(int &n, int &neF, int &ObjRo
     Flow_.push_back(-torque_max);    
   }
 
-  // Assign Phi Constraints
+/*  // Assign Phi Constraints
   for(size_t i = 0; i < phi_constraints.rows(); i++){
     Fupp_.push_back(0);
     Flow_.push_back(0);    
-  }
+  }*/
 
-  // Problem Function Bounds
+  // Set Problem Function Bounds
   Fupp = Fupp_;
   Flow = Flow_;  
+
+  // store number of states to optimize
+  n_states_to_optimize = n;
+  neF_problems = neF;
 
 }
 
@@ -205,12 +303,13 @@ void WBT_Optimization::get_problem_functions(std::vector<double> &x, std::vector
   sejong::Vector Fr_states(12); Fr_states.setZero(); // 6 Generalized Contact Forces
   sejong::Vector phi_states(2); Fr_states.setZero(); // 2 for each generalized contact
 
-/*  int offset = 0;
+  int offset = 0;
   for(size_t i = 0; i < Fr_states.rows(); i++){
     Fr_states[i] = x[i + offset];
   }
   offset += Fr_states.rows();
 
+/*
   for(size_t i = 0; i < phi_states.rows(); i++){
     phi_states[i] = x[i + offset];
   }  */
@@ -234,10 +333,12 @@ void WBT_Optimization::get_problem_functions(std::vector<double> &x, std::vector
   UpdateModel(m_q, m_qdot, A, g, b);
 
   // Find desired actuation
-  // needs tau_des =  A(B*xddot_des + c) + b + g
-  sejong::Vector tau_des = b + g;
+  // needs tau_des =  A(B*xddot_des + c)
+
+/*  sejong::Vector tau_des = b + g;
   sejong::Vector tau_act(NUM_QDOT); tau_act.setZero();
   tau_act.tail(NUM_ACT_JOINT) = tau_des.tail(NUM_ACT_JOINT);
+*/
   // Set Foot Contact Jacobian
   sejong::Matrix Jc(Fr_states.rows(), NUM_QDOT);
   sejong::Matrix Jtmp;
@@ -245,7 +346,13 @@ void WBT_Optimization::get_problem_functions(std::vector<double> &x, std::vector
   Jc.block(0, 0, 6, NUM_QDOT) = Jtmp;
   robot_model_->getFullJacobian(m_q, SJLinkID::LK_leftCOP_Frame, Jtmp);
   Jc.block(6, 0, 6, NUM_QDOT) = Jtmp;  
-  sejong::Vector WBC_virtual_constraints = Sv*(b + g - tau_act - Jc.transpose()*Fr_states);
+  sejong::Vector WB_des = b + g - Jc.transpose()*Fr_states; // Aqddot_des + b + g - J^Tc Fr = [0, tau]^T
+  sejong::Vector WBC_virtual_constraints = Sv*(WB_des);
+
+  sejong::Vector reaction_forces = - Jc.transpose()*Fr_states;
+  sejong::pretty_print(g, std::cout, "g");
+  sejong::pretty_print(reaction_forces, std::cout, "reaction_forces");  
+  sejong::pretty_print(WBC_virtual_constraints, std::cout, "WBC_virtual_constraints");
 
   // Add to Problem Function
   for(size_t i = 0; i < WBC_virtual_constraints.size(); i++){
@@ -259,7 +366,7 @@ void WBT_Optimization::get_problem_functions(std::vector<double> &x, std::vector
   sejong::Vector UFr_constraints(17*2);
   UFr_constraints = Uf*Fr_states;
 
-  sejong::pretty_print(UFr_constraints, std::cout, "UFr_constraints");
+  //sejong::pretty_print(UFr_constraints, std::cout, "UFr_constraints");
 
   // Add to Problem Function
   for(size_t i = 0; i < UFr_constraints.size(); i++){
@@ -268,13 +375,15 @@ void WBT_Optimization::get_problem_functions(std::vector<double> &x, std::vector
 
   // Set Torque Constraints -------------------------------------------------------------------
   sejong::Vector tau_constraints(NUM_ACT_JOINT);
-  tau_constraints = tau_act.tail(NUM_ACT_JOINT);
+  tau_constraints = Sa*WB_des;
 
   // Add to Problem Function
   for(size_t i = 0; i < tau_constraints.size(); i++){
     F_.push_back(tau_constraints[i]);
   }
 
+  // Set problem functions
+  F = F_;
 
 }
 
