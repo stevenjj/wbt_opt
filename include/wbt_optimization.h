@@ -47,6 +47,9 @@ public:
 
 
 private:
+  bool _UpdateUf(const sejong::Vector &q_state, sejong::Matrix &Uf_);
+  void _setU(const double x, const double y, const double mu, sejong::Matrix & U);
+
 	WBT_Optimization();
 	~WBT_Optimization();	
 
