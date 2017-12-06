@@ -8,6 +8,8 @@
 #include <Optimizer/snopt/include/snoptProblem.hpp>
 #include "valkyrie_definition.h"
 #include "RobotModel.hpp"
+#include "wbt_task.h"
+#include <Utils/pseudo_inverse.hpp>
 
 class WBT_Optimization{
 public:
@@ -36,6 +38,9 @@ public:
                                             std::vector<double> &Flow, std::vector<double> &Fupp);
   void simple_get_problem_functions(std::vector<double> &x, std::vector<double> &F, std::vector<double> &G);
 
+
+  void getB_c();
+  void build_tasks();
 
   double zero_eps;
 
@@ -66,6 +71,15 @@ public:
 private:
   bool _UpdateUf(const sejong::Vector &q_state, sejong::Matrix &Uf_);
   void _setU(const double x, const double y, const double mu, sejong::Matrix & U);
+
+  void _WeightedInverse(const sejong::Matrix & J,
+                        const sejong::Matrix & Winv,
+                        sejong::Matrix & Jinv){
+    sejong::Matrix lambda(J* Winv * J.transpose());
+    sejong::Matrix lambda_inv;
+    sejong::pseudoInverse(lambda, 0.0001, lambda_inv);
+    Jinv = Winv * J.transpose() * lambda_inv;
+  }
 
 	WBT_Optimization();
 	~WBT_Optimization();	
