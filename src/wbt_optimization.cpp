@@ -2,7 +2,7 @@
 #include "traj_solver.h"
 #include <Utils/utilities.hpp>
 
-#define WBDC_ONLY
+//#define WBDC_ONLY
 
 WBT_Optimization* WBT_Optimization::GetWBT_Optimization(){
     static WBT_Optimization wbt_opt_obj;
@@ -107,8 +107,8 @@ void WBT_Optimization::run_solver_test(){
   #endif
 
   #ifndef WBDC_ONLY
-//    test_snopt_solve_wbdc();
-    snopt_solve_opt_problem();
+    test_snopt_solve_wbdc();
+//    snopt_solve_opt_problem();
   #endif
 }
 
@@ -227,8 +227,8 @@ void WBT_Optimization::initialize_state_guess(std::vector<double> &x){
   offset += qdot_init_states.size();  
 
   for(size_t i = 0; i < Fr_states.size(); i++){
-   initial_states.push_back(0.0);
-  }
+   initial_states.push_back(0.0)
+;  }
   initial_states[offset+5] = 690.0;
   initial_states[offset+11] = 640.0;  
   offset += Fr_states.size();    
