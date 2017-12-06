@@ -7,9 +7,10 @@ WBT_Optimization* WBT_Optimization::GetWBT_Optimization(){
     return &wbt_opt_obj;
 }
 
-WBT_Optimization::WBT_Optimization():n_states_to_optimize(0), neF_problems(0), m_q(NUM_Q), m_qdot(NUM_QDOT),
-                                    m_tau(NUM_QDOT), cori_(NUM_QDOT),
-                                    grav_(NUM_QDOT), A_(NUM_QDOT, NUM_QDOT), Ainv_(NUM_QDOT, NUM_QDOT){
+WBT_Optimization::WBT_Optimization():n_states_to_optimize(0), neF_problems(0), m_q(NUM_Q), 
+                                     m_q_init(NUM_Q), m_qdot(NUM_QDOT), m_qdot_init(NUM_QDOT),
+                                     m_tau(NUM_QDOT), cori_(NUM_QDOT),
+                                     grav_(NUM_QDOT), A_(NUM_QDOT, NUM_QDOT), Ainv_(NUM_QDOT, NUM_QDOT){
   robot_model_ = RobotModel::GetRobotModel();	
 
   // Prepare Selection Matrix
@@ -20,6 +21,9 @@ WBT_Optimization::WBT_Optimization():n_states_to_optimize(0), neF_problems(0), m
 
   Sv.block(0,0, NUM_VIRTUAL, NUM_VIRTUAL) = sejong::Matrix::Identity(NUM_VIRTUAL, NUM_VIRTUAL);
   Sa.block(0, NUM_VIRTUAL, NUM_ACT_JOINT, NUM_ACT_JOINT) = sejong::Matrix::Identity(NUM_ACT_JOINT, NUM_ACT_JOINT);
+
+  m_q_init.setZero();
+  m_qdot_init.setZero();
 
   m_q.setZero();  
   m_qdot.setZero();  
@@ -67,6 +71,9 @@ void WBT_Optimization::Initialization(){
   m_q[NUM_VIRTUAL + SJJointID::leftShoulderRoll] = -1.1;  //r_joint_[r_joint_idx_map_.find("rightShoulderRoll" )->second]->m_State.m_rValue[0] = 1.1;
   m_q[NUM_VIRTUAL + SJJointID::leftElbowPitch] = -0.4;//0.4;  //r_joint_[r_joint_idx_map_.find("rightElbowPitch"   )->second]->m_State.m_rValue[0] = 0.4;
   m_q[NUM_VIRTUAL + SJJointID::leftForearmYaw] = 1.5;  //r_joint_[r_joint_idx_map_.find("rightForearmYaw" )->second]->m_State.m_rValue[0] = 1.5;	
+
+
+  m_q_init = m_q;
   std::cout << "[WBT] Robot Starting State Initialized" << std::endl;
 }
 
@@ -194,17 +201,20 @@ void WBT_Optimization::simple_get_problem_functions(std::vector<double> &x, std:
 void WBT_Optimization::prepare_state_problem_bounds(int &n, int &neF, int &ObjRow,
                                             std::vector<double> &xlow, std::vector<double> &xupp,
                                             std::vector<double> &Flow, std::vector<double> &Fupp){
-  /* State Order. All the sizes of the state vector are equal to the number of timesteps.
-  std::vector<double> time_state;
+  /* State Order. All the sizes of the state vector are equal to the number of timesteps. 
+  std::vector<sejong::Vector> q_init_states;
+  std::vector<sejong::Vector> qdot_init_states;  
+
   std::vector<sejong::Vector> Fr_states;
   std::vector<sejong::Vector> xddot_des_states;
   std::vector<sejong::Vector> Fn_states;
   std::vector<sejong::Vector> Fd_states;
   std::vector<sejong::Vector> phi_states;  
-  std::vector<sejong::Vector> q_states;
   std::vector<sejong::Vector> qdot_states;
   */
 
+  sejong::Vector q_init_states(NUM_Q); q_init_states.setZero(); //
+  sejong::Vector qdot_init_states(NUM_QDOT); qdot_init_states.setZero(); // 6 Generalized Contact Forces  
   sejong::Vector Fr_states(12); Fr_states.setZero(); // 6 Generalized Contact Forces
   //sejong::Vector phi_states(2); Fr_states.setZero(); // 2 for each generalized contact
 
@@ -217,10 +227,22 @@ void WBT_Optimization::prepare_state_problem_bounds(int &n, int &neF, int &ObjRo
   std::vector<double> xupp_states;
   std::vector<double> xlow_states; 
   // Set Number of States
-  n = Fr_states.rows();// + phi_states.rows();
+  n = q_init_states.size() + qdot_init_states.size() + Fr_states.size();// + phi_states.rows();  
+
+  // Assign initial q_states
+  for(size_t i = 0; i < q_init_states.size(); i++){
+    xupp_states.push_back(m_q_init[i]);
+    xlow_states.push_back(m_q_init[i]);    
+  }
+
+  // Assign initial qdot_states
+  for(size_t i = 0; i < qdot_init_states.size(); i++){
+    xupp_states.push_back(m_qdot_init[i]);
+    xlow_states.push_back(m_qdot_init[i]);    
+  }  
 
   // Assign Reaction Force Bounds
-  for(size_t i = 0; i < Fr_states.rows(); i++){
+  for(size_t i = 0; i < Fr_states.size(); i++){
     Fr_upperbound[i] = 10000;
     Fr_lowerbound[i] = -10000;
     xupp_states.push_back(Fr_upperbound[i]);
@@ -300,14 +322,24 @@ void WBT_Optimization::prepare_state_problem_bounds(int &n, int &neF, int &ObjRo
 
 void WBT_Optimization::get_problem_functions(std::vector<double> &x, std::vector<double> &F, std::vector<double> &G){
   // Extract states x:
+  sejong::Vector q_init_states(NUM_Q); q_init_states.setZero(); //
+  sejong::Vector qdot_init_states(NUM_QDOT); qdot_init_states.setZero();  
   sejong::Vector Fr_states(12); Fr_states.setZero(); // 6 Generalized Contact Forces
   sejong::Vector phi_states(2); Fr_states.setZero(); // 2 for each generalized contact
 
   int offset = 0;
+  for(size_t i = 0; i < q_init_states.size(); i++){
+    q_init_states[i] = x[i + offset];
+  }
+  offset += q_init_states.size();
+  for(size_t i = 0; i < qdot_init_states.size(); i++){
+    qdot_init_states[i] = x[i + offset];
+  }
+  offset += qdot_init_states.rows();
   for(size_t i = 0; i < Fr_states.rows(); i++){
     Fr_states[i] = x[i + offset];
   }
-  offset += Fr_states.rows();
+
 
 /*
   for(size_t i = 0; i < phi_states.rows(); i++){
@@ -330,7 +362,7 @@ void WBT_Optimization::get_problem_functions(std::vector<double> &x, std::vector
   sejong::Matrix A(NUM_QDOT, NUM_QDOT);
   sejong::Vector b(NUM_QDOT);
   sejong::Vector g(NUM_QDOT);
-  UpdateModel(m_q, m_qdot, A, g, b);
+  UpdateModel(q_init_states, qdot_init_states, A, g, b);
 
   // Find desired actuation
   // needs tau_des =  A(B*xddot_des + c)
@@ -342,18 +374,18 @@ void WBT_Optimization::get_problem_functions(std::vector<double> &x, std::vector
   // Set Foot Contact Jacobian
   sejong::Matrix Jc(Fr_states.rows(), NUM_QDOT);
   sejong::Matrix Jtmp;
-  robot_model_->getFullJacobian(m_q, SJLinkID::LK_rightCOP_Frame, Jtmp);
+  robot_model_->getFullJacobian(q_init_states, SJLinkID::LK_rightCOP_Frame, Jtmp);
   Jc.block(0, 0, 6, NUM_QDOT) = Jtmp;
-  robot_model_->getFullJacobian(m_q, SJLinkID::LK_leftCOP_Frame, Jtmp);
+  robot_model_->getFullJacobian(q_init_states, SJLinkID::LK_leftCOP_Frame, Jtmp);
   Jc.block(6, 0, 6, NUM_QDOT) = Jtmp;  
   sejong::Vector WB_des = b + g - Jc.transpose()*Fr_states; // Aqddot_des + b + g - J^Tc Fr = [0, tau]^T
   sejong::Vector WBC_virtual_constraints = Sv*(WB_des);
 
-  sejong::Vector reaction_forces = - Jc.transpose()*Fr_states;
+/*  sejong::Vector reaction_forces = - Jc.transpose()*Fr_states;
   sejong::pretty_print(g, std::cout, "g");
   sejong::pretty_print(reaction_forces, std::cout, "reaction_forces");  
   sejong::pretty_print(WBC_virtual_constraints, std::cout, "WBC_virtual_constraints");
-
+*/
   // Add to Problem Function
   for(size_t i = 0; i < WBC_virtual_constraints.size(); i++){
     F_.push_back(WBC_virtual_constraints[i]);
@@ -361,7 +393,7 @@ void WBT_Optimization::get_problem_functions(std::vector<double> &x, std::vector
 
   // Set UFr Contact Constraints -------------------------------------------------------------
   sejong::Matrix Uf;
-  _UpdateUf(m_q, Uf);
+  _UpdateUf(q_init_states, Uf);
 
   sejong::Vector UFr_constraints(17*2);
   UFr_constraints = Uf*Fr_states;

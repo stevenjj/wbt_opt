@@ -112,12 +112,12 @@ void test_snopt_wbdc_fun(int    *Status, int *n,    double x[],
     x_in.push_back(x[i]);
   }
 
-//  opt_obj->get_problem_functions(x_in, F_out, G_out);
-  opt_obj->simple_get_problem_functions(x_in, F_out, G_out);
+  opt_obj->get_problem_functions(x_in, F_out, G_out);
+//  opt_obj->simple_get_problem_functions(x_in, F_out, G_out);
 
   for(size_t i = 0; i < neF_probs; i++){
     F[i] = F_out[i];
-    std::cout << "F[i] = " << F_out[i] << std::endl;
+//    std::cout << "F[i] = " << F_out[i] << std::endl;
   }
 
 
@@ -142,8 +142,8 @@ void test_snopt_solve_wbdc(){
   int ObjRow = 0;
   double ObjAdd  = 0; 
 
-  //opt_obj->prepare_state_problem_bounds(n, neF, ObjRow, xlow_vec, xupp_vec, Flow_vec, Fupp_vec);
-  opt_obj->simple_prepare_state_problem_bounds(n, neF, ObjRow, xlow_vec, xupp_vec, Flow_vec, Fupp_vec);  
+  opt_obj->prepare_state_problem_bounds(n, neF, ObjRow, xlow_vec, xupp_vec, Flow_vec, Fupp_vec);
+  //opt_obj->simple_prepare_state_problem_bounds(n, neF, ObjRow, xlow_vec, xupp_vec, Flow_vec, Fupp_vec);  
 
   double *x      = new double[n];
   double *xlow   = new double[n];
