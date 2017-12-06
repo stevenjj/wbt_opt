@@ -39,8 +39,7 @@ public:
   void simple_get_problem_functions(std::vector<double> &x, std::vector<double> &F, std::vector<double> &G);
 
 
-  void getB_c();
-  void build_tasks();
+  void getB_c(const sejong::Vector &q, const sejong::Vector &qdot, sejong::Matrix &B_out, sejong::Vector &c_out);
 
   std::vector<Task*> wb_task_list;
   int n_wbc_tasks;

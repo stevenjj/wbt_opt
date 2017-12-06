@@ -131,8 +131,8 @@ void WBT_Optimization::run_solver_test(){
   #endif
 
   #ifndef WBDC_ONLY
-//snopt_solve_opt_problem();
-  test_snopt_solve_wbdc();
+  snopt_solve_opt_problem();
+//  test_snopt_solve_wbdc();
   #endif
 }
 
@@ -524,6 +524,11 @@ void WBT_Optimization::get_problem_functions(std::vector<double> &x, std::vector
   Jc.block(0, 0, 6, NUM_QDOT) = Jtmp;
   robot_model_->getFullJacobian(q_init_states, SJLinkID::LK_leftCOP_Frame, Jtmp);
   Jc.block(6, 0, 6, NUM_QDOT) = Jtmp;  
+
+  sejong::Matrix B;
+  sejong::Vector c;  
+  getB_c(q_init_states, qdot_init_states, B, c);
+
   sejong::Vector WB_des = b + g - Jc.transpose()*Fr_states; // Aqddot_des + b + g - J^Tc Fr = [0, tau]^T
   sejong::Vector WBC_virtual_constraints = Sv*(WB_des);
 
@@ -733,16 +738,62 @@ void WBT_Optimization::_setU(const double x, const double y, const double mu, se
 }
 
 
-void WBT_Optimization::build_tasks(){
+void WBT_Optimization::getB_c(const sejong::Vector &q, const sejong::Vector &qdot, sejong::Matrix &B_out, sejong::Vector &c_out){
+  sejong::Matrix B;
+  sejong::Vector c;  
+
+  sejong::Matrix Ainv;
   sejong::Matrix Jt, JtPre;
   sejong::Matrix Jt_inv, JtPre_inv;
   sejong::Vector JtDotQdot;
   sejong::Vector xddot;
   sejong::Matrix Npre;
   sejong::Matrix I_JtPreInv_Jt;
-  //Task* task = task_list[0];
+  Task* task = wb_task_list[0];
 
   int tot_task_size(0);
+
+  robot_model_->getInverseMassInertia(Ainv);
+  task->getTaskJacobian(q, Jt);
+  task->getTaskJacobianDotQdot(q, qdot, JtDotQdot);
+
+  _WeightedInverse(Jt, Ainv, Jt_inv);
+  B = Jt_inv;
+  c = Jt_inv * JtDotQdot;
+
+  Npre = sejong::Matrix::Identity(NUM_QDOT, NUM_QDOT) - Jt_inv * Jt;
+  tot_task_size += task->task_dim;
+
+
+  for(int i(1); i<wb_task_list.size(); ++i){
+    // Obtaining Task
+    task = wb_task_list[i];
+
+    task->getTaskJacobian(q, Jt);
+    task->getTaskJacobianDotQdot(q, qdot, JtDotQdot);   
+    JtPre = Jt * Npre;
+    _WeightedInverse(JtPre, Ainv, JtPre_inv);
+    I_JtPreInv_Jt = sejong::Matrix::Identity(NUM_QDOT, NUM_QDOT) - JtPre_inv * Jt;
+
+    // B matrix building
+    B.conservativeResize(NUM_QDOT, tot_task_size + task->task_dim);
+    B.block(0, 0, NUM_QDOT, tot_task_size) =
+      I_JtPreInv_Jt * B.block(0, 0, NUM_QDOT, tot_task_size);
+    B.block(0, tot_task_size, NUM_QDOT, task->task_dim) = JtPre_inv;
+    // c vector building
+    c = I_JtPreInv_Jt * c - JtPre_inv * JtDotQdot;
+
+    // Build for Next
+    Npre = Npre * ( sejong::Matrix::Identity(NUM_QDOT, NUM_QDOT) - JtPre_inv * JtPre);
+    tot_task_size += task->task_dim;
+
+  }
+
+  sejong::pretty_print(B, std::cout, "WBDC: B");
+  sejong::pretty_print(c, std::cout, "WBDC: c");
+
+  B_out = B;
+  c_out = c;
 
 /*  // First Task: Contact Constraint
   Jt = Jc_;
