@@ -37,6 +37,8 @@ public:
   void simple_get_problem_functions(std::vector<double> &x, std::vector<double> &F, std::vector<double> &G);
 
 
+  double zero_eps;
+
   sejong::Vector m_q_init;
   sejong::Vector m_qdot_init;  
 

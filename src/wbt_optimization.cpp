@@ -35,7 +35,7 @@ WBT_Optimization::WBT_Optimization():n_states_to_optimize(0), neF_problems(0), m
   A_.setZero();
   Ainv_.setZero();  
 
-  
+  zero_eps = 1e-4;
 
   Initialization();
 
@@ -227,10 +227,10 @@ void WBT_Optimization::initialize_state_guess(std::vector<double> &x){
   offset += qdot_init_states.size();  
 
   for(size_t i = 0; i < Fr_states.size(); i++){
-   initial_states.push_back(0.0)
-;  }
-  initial_states[offset+5] = 690.0;
-  initial_states[offset+11] = 640.0;  
+   initial_states.push_back(0.0);  
+ }
+  /*initial_states[offset+5] = 690.0;
+  initial_states[offset+11] = 640.0; */ 
   offset += Fr_states.size();    
 
   #ifndef WBDC_ONLY
@@ -285,15 +285,15 @@ void WBT_Optimization::prepare_state_problem_bounds(int &n, int &neF, int &ObjRo
 
   // Assign initial q_states
   for(size_t i = 0; i < q_init_states.size(); i++){
-    xupp_states.push_back(m_q_init[i]);
-    xlow_states.push_back(m_q_init[i]);    
+    xupp_states.push_back(m_q_init[i] + zero_eps);
+    xlow_states.push_back(m_q_init[i] - zero_eps);    
   }
   n += q_init_states.size();
 
   // Assign initial qdot_states
   for(size_t i = 0; i < qdot_init_states.size(); i++){
-    xupp_states.push_back(m_qdot_init[i]);
-    xlow_states.push_back(m_qdot_init[i]);    
+    xupp_states.push_back(m_qdot_init[i] + zero_eps);
+    xlow_states.push_back(m_qdot_init[i] - zero_eps);    
   }  
   n += qdot_init_states.size();
 
@@ -358,8 +358,8 @@ void WBT_Optimization::prepare_state_problem_bounds(int &n, int &neF, int &ObjRo
 
   // Assign WBC Bounds
   for(size_t i = 0; i < WBC_virtual_constraints.size(); i++){
-    Fupp_.push_back(0);
-    Flow_.push_back(0);    
+    Fupp_.push_back(zero_eps);
+    Flow_.push_back(-zero_eps);    
   }
   neF += WBC_virtual_constraints.size();
 
@@ -381,15 +381,15 @@ void WBT_Optimization::prepare_state_problem_bounds(int &n, int &neF, int &ObjRo
 #ifndef WBDC_ONLY 
   // Assign Time Integration Constraints
   for(size_t i = 0; i < q_ti.size(); i++){
-    Fupp_.push_back(0);
-    Flow_.push_back(0);    
+    Fupp_.push_back(zero_eps);
+    Flow_.push_back(-zero_eps);    
   }
   neF += q_ti.size();    
 
   // Assign Time Integration Constraints
   for(size_t i = 0; i < qdot_ti.size(); i++){
-    Fupp_.push_back(0);
-    Flow_.push_back(0);    
+    Fupp_.push_back(zero_eps);
+    Flow_.push_back(-zero_eps);    
   }
   neF += qdot_ti.size();    
 #endif
@@ -537,7 +537,7 @@ void WBT_Optimization::get_problem_functions(std::vector<double> &x, std::vector
   TI_qdot = qdot_next_states - qdot_init_states - qddot_next*dt; 
 
   // Backwards Euler Time Integrate Linear Virtual Joints
-  TI_q.head(3) = q_next_states.head(3) - q_next_states.head(3) - qdot_next_states.head(3)*dt;   
+  TI_q.head(3) = q_next_states.head(3) - q_init_states.head(3) - qdot_next_states.head(3)*dt;   
 
   // Backwards Euler Time Integrate Virtual Sphere Joints
     // Get the Pelvis angular velocity
