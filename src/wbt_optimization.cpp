@@ -88,9 +88,19 @@ void WBT_Optimization::Initialization(){
   m_q[NUM_VIRTUAL + SJJointID::leftElbowPitch] = -0.4;//0.4;  //r_joint_[r_joint_idx_map_.find("rightElbowPitch"   )->second]->m_State.m_rValue[0] = 0.4;
   m_q[NUM_VIRTUAL + SJJointID::leftForearmYaw] = 1.5;  //r_joint_[r_joint_idx_map_.find("rightForearmYaw" )->second]->m_State.m_rValue[0] = 1.5;	
 
-
   m_q_init = m_q;
   std::cout << "[WBT] Robot Starting State Initialized" << std::endl;
+
+  wb_task_list.push_back(new LeftFootTask());
+  wb_task_list.push_back(new COM_Task());  
+  wb_task_list.push_back(new RightFoot_Hand_Task());
+
+  n_wbc_tasks = 0;
+  for (size_t i = 0; i < wb_task_list.size(); i++){
+    n_wbc_tasks += wb_task_list[i]->task_dim;
+  }
+  std::cout << "[WBT] Has " << n_wbc_tasks << " WB tasks" << std::endl;
+
 }
 
 void WBT_Optimization::UpdateModel(const sejong::Vector &q, const sejong::Vector &qdot,

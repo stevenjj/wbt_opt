@@ -42,6 +42,9 @@ public:
   void getB_c();
   void build_tasks();
 
+  std::vector<Task*> wb_task_list;
+  int n_wbc_tasks;
+
   double zero_eps;
 
   sejong::Vector m_q_init;
