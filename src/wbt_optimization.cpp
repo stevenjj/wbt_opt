@@ -204,6 +204,49 @@ void WBT_Optimization::simple_get_problem_functions(std::vector<double> &x, std:
   F = F_;
 
 }
+void WBT_Optimization::initialize_state_guess(std::vector<double> &x){
+  sejong::Vector q_init_states(NUM_Q); q_init_states.setZero(); //
+  sejong::Vector qdot_init_states(NUM_QDOT); qdot_init_states.setZero(); // 6 Generalized Contact Forces  
+  sejong::Vector Fr_states(12); Fr_states.setZero(); // 6 Generalized Contact Forces
+  //sejong::Vector phi_states(2); Fr_states.setZero(); // 2 for each generalized contact
+
+  sejong::Vector q_next_state(NUM_Q); q_next_state.setZero();
+  sejong::Vector qdot_next_state(NUM_QDOT); qdot_next_state.setZero();  
+
+  std::vector<double> initial_states;
+  int offset = 0;
+
+  for(size_t i = 0; i < q_init_states.size(); i++){
+    initial_states.push_back(m_q_init[i]);
+  }
+  offset += q_init_states.size();
+
+  for(size_t i = 0; i < qdot_init_states.size(); i++){
+    initial_states.push_back(m_qdot_init[i]);
+  }
+  offset += qdot_init_states.size();  
+
+  for(size_t i = 0; i < Fr_states.size(); i++){
+   initial_states.push_back(0.0);
+  }
+  initial_states[offset+5] = 690.0;
+  initial_states[offset+11] = 640.0;  
+  offset += Fr_states.size();    
+
+  #ifndef WBDC_ONLY
+  for(size_t i = 0; i < q_next_state.size(); i++){
+     initial_states.push_back(m_q_init[i]);
+  }
+  offset += q_next_state.size();    
+  for(size_t i = 0; i < qdot_next_state.size(); i++){
+    initial_states.push_back(m_qdot_init[i]);
+  }
+  offset += qdot_next_state.size();      
+  #endif
+
+  x = initial_states;
+
+}
 
 
 void WBT_Optimization::prepare_state_problem_bounds(int &n, int &neF, int &ObjRow,

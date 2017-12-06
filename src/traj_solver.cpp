@@ -131,7 +131,7 @@ void test_snopt_solve_wbdc(){
   std::vector<double> xupp_vec;
   std::vector<double> Flow_vec; 
   std::vector<double> Fupp_vec;
-
+  std::vector<double> x_state_guess;
 
   // Allocate and initialize;
   int Cold = 0, Basis = 1, Warm = 2;
@@ -143,6 +143,7 @@ void test_snopt_solve_wbdc(){
   double ObjAdd  = 0; 
 
   opt_obj->prepare_state_problem_bounds(n, neF, ObjRow, xlow_vec, xupp_vec, Flow_vec, Fupp_vec);
+  opt_obj->initialize_state_guess(x_state_guess);
   //opt_obj->simple_prepare_state_problem_bounds(n, neF, ObjRow, xlow_vec, xupp_vec, Flow_vec, Fupp_vec);  
 
   double *x      = new double[n];
@@ -160,6 +161,10 @@ void test_snopt_solve_wbdc(){
   // Do some initializations on guess
   //x[69+6-1] = 680.0;
   //x[69+12-1] = 680.0;
+  for(size_t i = 0; i < n; i++){
+    x[i] = x_state_guess[i];
+    std::cout << "x_state_guess[" << i << "]: " << x_state_guess[i] << std::endl;
+  }
 
   for(size_t i = 0; i < n; i++){
     xlow[i] = xlow_vec[i];
