@@ -4,6 +4,20 @@
 
 //#define WBDC_ONLY
 
+/*To DO:
+
+Timesteps
+WBC inputs
+Real World Contact Constraint
+KeyFrames
+
+Function to extract q_states(t) from x
+n_subset = from q_state to Fr_states 
+for (size_t i = 0; i < NUM_Q; i++)
+  q_state(t) = x[n_subset*t + i]
+return q_state(t)
+*/
+
 WBT_Optimization* WBT_Optimization::GetWBT_Optimization(){
     static WBT_Optimization wbt_opt_obj;
     return &wbt_opt_obj;
@@ -576,7 +590,7 @@ void WBT_Optimization::get_problem_functions(std::vector<double> &x, std::vector
   sejong::Vector tau_input(NUM_QDOT); tau_input.setZero();
   tau_input.tail(NUM_ACT_JOINT) = Sa*WB_des;
 
-  qddot_next = A_next_inv*(tau_input - b_next - g_next); //missing contact constraints
+  qddot_next = A_next_inv*(tau_input - b_next - g_next + Jc.transpose()*Fr_states); 
 
   sejong::Vector TI_q(NUM_Q); TI_q.setZero();  
   sejong::Vector TI_qdot(NUM_QDOT); TI_qdot.setZero();
@@ -624,7 +638,7 @@ void WBT_Optimization::get_problem_functions(std::vector<double> &x, std::vector
 
   // Set Objective Function to Problem Function
   F_[0] = objective_function[0];
-  
+
   // Set problem functions
   F = F_;
 
