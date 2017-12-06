@@ -214,32 +214,29 @@ void WBT_Optimization::initialize_state_guess(std::vector<double> &x){
   sejong::Vector qdot_next_state(NUM_QDOT); qdot_next_state.setZero();  
 
   std::vector<double> initial_states;
-  int offset = 0;
 
+
+  // for size_t time_step = 0; time_step < total_timesteps; time_step++
+  // if time_step == 0: push_back the initial states. don't otherwise.
   for(size_t i = 0; i < q_init_states.size(); i++){
     initial_states.push_back(m_q_init[i]);
   }
-  offset += q_init_states.size();
 
   for(size_t i = 0; i < qdot_init_states.size(); i++){
     initial_states.push_back(m_qdot_init[i]);
   }
-  offset += qdot_init_states.size();  
 
   for(size_t i = 0; i < Fr_states.size(); i++){
    initial_states.push_back(0.0);  
  }
-  offset += Fr_states.size();
 
   #ifndef WBDC_ONLY
   for(size_t i = 0; i < q_next_state.size(); i++){
      initial_states.push_back(m_q_init[i]);
   }
-  offset += q_next_state.size();    
   for(size_t i = 0; i < qdot_next_state.size(); i++){
     initial_states.push_back(m_qdot_init[i]);
   }
-  offset += qdot_next_state.size();      
   #endif
 
   x = initial_states;
@@ -277,8 +274,21 @@ void WBT_Optimization::prepare_state_problem_bounds(int &n, int &neF, int &ObjRo
 
   std::vector<double> xupp_states;
   std::vector<double> xlow_states; 
+  std::vector<double> Fupp_;
+  std::vector<double> Flow_;  
   // Initialize Number of States
   n = 0;
+  // Initialize Number of Problem Functions 
+  neF = 0;
+
+  //Assign Objective Function Bounds
+  Fupp_.push_back(inf);
+  Flow_.push_back(-inf);  
+  ObjRow = 0; // Assign Objective Row
+  neF += 1;
+
+  // for size_t time_step = 0; time_step < total_timesteps; time_step++
+  // if time_step == 0: push_back the initial states. don't otherwise.
 
   // Assign initial q_states
   for(size_t i = 0; i < q_init_states.size(); i++){
@@ -345,17 +355,8 @@ void WBT_Optimization::prepare_state_problem_bounds(int &n, int &neF, int &ObjRo
   sejong::Vector q_ti(NUM_Q); q_ti.setZero();
   sejong::Vector qdot_ti(NUM_QDOT); qdot_ti.setZero();
 
-  std::vector<double> Fupp_;
-  std::vector<double> Flow_;
-
-  // Initialize Number of Problem Functions 
-  neF = 0;
-
-  //Assign Objective Function Bounds
-  Fupp_.push_back(inf);
-  Flow_.push_back(-inf);  
-  ObjRow = 0; // Assign Objective Row
-  neF += 1;
+  // for size_t time_step = 0; time_step < total_timesteps; time_step++
+  // just repeat
 
   // Assign WBC Bounds
   for(size_t i = 0; i < WBC_virtual_constraints.size(); i++){
@@ -430,7 +431,19 @@ void WBT_Optimization::get_problem_functions(std::vector<double> &x, std::vector
   sejong::Vector q_next_states(NUM_Q); q_next_states.setZero(); //
   sejong::Vector qdot_next_states(NUM_QDOT); qdot_next_states.setZero();  
 
+  // Initialize Problem functions
+  std::vector<double> F_;
+  // Initialize Objective Function
+  sejong::Vector objective_function(1);  objective_function.setZero();
+  F_.push_back(objective_function[0]);
 
+  // q_n = q_init_states
+  // for size_t time_step = 0; time_step < total_timesteps; time_step++
+  // x[time_step*n_states_to_optimize + i + offset]
+  // if i > 0: offset = offset - (NUM_Q + NUM_QDOT)
+  // q_n = x[t*n+ i + offset]
+  //  ....
+  // q_n = q_{n+q}
 
   int offset = 0;
   for(size_t i = 0; i < q_init_states.size(); i++){
@@ -462,18 +475,12 @@ void WBT_Optimization::get_problem_functions(std::vector<double> &x, std::vector
     phi_states[i] = x[i + offset];
   }  */
 
-  // Problem functions
-  std::vector<double> F_;
-
   // Set Objective function: -----------------------------------------------------------------
   sejong::Matrix Q_Fr = sejong::Matrix::Identity(Fr_states.rows(), Fr_states.rows());
   Q_Fr(5,5) = 0.001; // Z direction 
   Q_Fr(11,11) = 0.001; // Z direction
-  sejong::Vector objective_function = Fr_states.transpose()*Q_Fr*Fr_states;
+  objective_function += Fr_states.transpose()*Q_Fr*Fr_states;
   
-  // Add to Problem Function
-  F_.push_back(objective_function[0]);
-
   // Set WBC Virtual Constraints -------------------------------------------------------------
   sejong::Matrix A(NUM_QDOT, NUM_QDOT);
   sejong::Vector b(NUM_QDOT);
@@ -615,6 +622,9 @@ void WBT_Optimization::get_problem_functions(std::vector<double> &x, std::vector
 
   #endif
 
+  // Set Objective Function to Problem Function
+  F_[0] = objective_function[0];
+  
   // Set problem functions
   F = F_;
 
