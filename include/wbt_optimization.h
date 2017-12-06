@@ -67,7 +67,7 @@ public:
   int neF_problems;  
 
   double dt;
-  int    total_time_steps;
+  int    total_timesteps;
 
 
 private:

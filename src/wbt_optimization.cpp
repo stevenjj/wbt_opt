@@ -51,7 +51,10 @@ WBT_Optimization::WBT_Optimization():n_states_to_optimize(0), neF_problems(0), m
 
   zero_eps = 1e-4;
 
+  total_timesteps = 2;
+
   Initialization();
+
 
 }
 
@@ -239,33 +242,35 @@ void WBT_Optimization::initialize_state_guess(std::vector<double> &x){
 
   std::vector<double> initial_states;
 
+ 
+  for (size_t ts = 0; ts < total_timesteps; ts++){
+    // if time_step == 0: push_back the initial states. don't otherwise.
+    if (ts == 0){
+      for(size_t i = 0; i < q_init_states.size(); i++){
+        initial_states.push_back(m_q_init[i]);
+      }
+      for(size_t i = 0; i < qdot_init_states.size(); i++){
+        initial_states.push_back(m_qdot_init[i]);
+      }
+    }
 
-  // for size_t time_step = 0; time_step < total_timesteps; time_step++
-  // if time_step == 0: push_back the initial states. don't otherwise.
-  for(size_t i = 0; i < q_init_states.size(); i++){
-    initial_states.push_back(m_q_init[i]);
+    for(size_t i = 0; i < Fr_states.size(); i++){
+     initial_states.push_back(0.0);  
+   }
+
+    for(size_t i = 0; i < xddot_des_states.size(); i++){
+     initial_states.push_back(0.0);  
+   } 
+
+    #ifndef WBDC_ONLY
+    for(size_t i = 0; i < q_next_state.size(); i++){
+       initial_states.push_back(m_q_init[i]);
+    }
+    for(size_t i = 0; i < qdot_next_state.size(); i++){
+      initial_states.push_back(m_qdot_init[i]);
+    }
+    #endif
   }
-
-  for(size_t i = 0; i < qdot_init_states.size(); i++){
-    initial_states.push_back(m_qdot_init[i]);
-  }
-
-  for(size_t i = 0; i < Fr_states.size(); i++){
-   initial_states.push_back(0.0);  
- }
-
-  for(size_t i = 0; i < xddot_des_states.size(); i++){
-   initial_states.push_back(0.0);  
- } 
-
-  #ifndef WBDC_ONLY
-  for(size_t i = 0; i < q_next_state.size(); i++){
-     initial_states.push_back(m_q_init[i]);
-  }
-  for(size_t i = 0; i < qdot_next_state.size(); i++){
-    initial_states.push_back(m_qdot_init[i]);
-  }
-  #endif
 
   x = initial_states;
 
@@ -316,57 +321,59 @@ void WBT_Optimization::prepare_state_problem_bounds(int &n, int &neF, int &ObjRo
   neF += 1;
 
   // for size_t time_step = 0; time_step < total_timesteps; time_step++
-  // if time_step == 0: push_back the initial states. don't otherwise.
+  for (size_t ts = 0; ts < total_timesteps; ts++){
+    // if time_step == 0: push_back the initial states. don't otherwise.
+    if (ts == 0){
+      // Assign initial q_states
+      for(size_t i = 0; i < q_init_states.size(); i++){
+        xupp_states.push_back(m_q_init[i] + zero_eps);
+        xlow_states.push_back(m_q_init[i] - zero_eps);    
+      }
+      xupp_states[2] = m_q_init[2] + 0.1; // Give more room for z direction due to lcp constraint
+      xlow_states[2] = m_q_init[2] - 0.1; // Give more room for z direction due to lcp constraint
+      n += q_init_states.size();
 
-  // Assign initial q_states
-  for(size_t i = 0; i < q_init_states.size(); i++){
-    xupp_states.push_back(m_q_init[i] + zero_eps);
-    xlow_states.push_back(m_q_init[i] - zero_eps);    
+      // Assign initial qdot_states
+      for(size_t i = 0; i < qdot_init_states.size(); i++){
+        xupp_states.push_back(m_qdot_init[i] + zero_eps);
+        xlow_states.push_back(m_qdot_init[i] - zero_eps);    
+      }  
+      n += qdot_init_states.size();
+    }
+    // Assign Reaction Force Bounds
+    for(size_t i = 0; i < Fr_states.size(); i++){
+      Fr_upperbound[i] = 10000;
+      Fr_lowerbound[i] = -10000;
+      xupp_states.push_back(Fr_upperbound[i]);
+      xlow_states.push_back(Fr_lowerbound[i]);    
+    }
+    n += Fr_states.size();    
+
+
+    // Assign xddot des Bounds
+    for(size_t i = 0; i < xddot_des_states.size(); i++){
+      xupp_states.push_back(2);
+      xlow_states.push_back(-2);    
+    }
+    n += xddot_des_states.size();    
+
+
+  #ifndef WBDC_ONLY 
+    // Assign next q_states
+    for(size_t i = 0; i < q_next_state.size(); i++){
+      xupp_states.push_back(10);
+      xlow_states.push_back(-10);    
+    }
+    n += q_next_state.size();    
+
+    // Assign next qdot_states
+    for(size_t i = 0; i < qdot_next_state.size(); i++){
+      xupp_states.push_back(inf);
+      xlow_states.push_back(-inf);    
+    }
+    n += qdot_next_state.size();
+  #endif
   }
-  xupp_states[2] = m_q_init[2] + 0.1; // Give more room for z direction due to lcp constraint
-  xlow_states[2] = m_q_init[2] - 0.1; // Give more room for z direction due to lcp constraint
-  n += q_init_states.size();
-
-  // Assign initial qdot_states
-  for(size_t i = 0; i < qdot_init_states.size(); i++){
-    xupp_states.push_back(m_qdot_init[i] + zero_eps);
-    xlow_states.push_back(m_qdot_init[i] - zero_eps);    
-  }  
-  n += qdot_init_states.size();
-
-  // Assign Reaction Force Bounds
-  for(size_t i = 0; i < Fr_states.size(); i++){
-    Fr_upperbound[i] = 10000;
-    Fr_lowerbound[i] = -10000;
-    xupp_states.push_back(Fr_upperbound[i]);
-    xlow_states.push_back(Fr_lowerbound[i]);    
-  }
-  n += Fr_states.size();    
-
-
-  // Assign xddot des Bounds
-  for(size_t i = 0; i < xddot_des_states.size(); i++){
-    xupp_states.push_back(2);
-    xlow_states.push_back(-2);    
-  }
-  n += xddot_des_states.size();    
-
-
-#ifndef WBDC_ONLY 
-  // Assign next q_states
-  for(size_t i = 0; i < q_next_state.size(); i++){
-    xupp_states.push_back(10);
-    xlow_states.push_back(-10);    
-  }
-  n += q_next_state.size();    
-
-  // Assign next qdot_states
-  for(size_t i = 0; i < qdot_next_state.size(); i++){
-    xupp_states.push_back(inf);
-    xlow_states.push_back(-inf);    
-  }
-  n += qdot_next_state.size();
-#endif
 
 
 
@@ -399,65 +406,67 @@ void WBT_Optimization::prepare_state_problem_bounds(int &n, int &neF, int &ObjRo
   // for size_t time_step = 0; time_step < total_timesteps; time_step++
   // just repeat
 
-  // Assign WBC Bounds
-  for(size_t i = 0; i < WBC_virtual_constraints.size(); i++){
-    Fupp_.push_back(zero_eps);
-    Flow_.push_back(-zero_eps);    
-  }
-  neF += WBC_virtual_constraints.size();
+  for(size_t ts = 0; ts < total_timesteps; ts++){
+    // Assign WBC Bounds
+    for(size_t i = 0; i < WBC_virtual_constraints.size(); i++){
+      Fupp_.push_back(zero_eps);
+      Flow_.push_back(-zero_eps);    
+    }
+    neF += WBC_virtual_constraints.size();
 
-  // Assign Fr Contact constraint bounds
-  for(size_t i = 0; i < Fr_contact_constraints.size(); i++){
-    Fupp_.push_back(inf);
-    Flow_.push_back(0);    
-  }
-  neF += Fr_contact_constraints.size();
+    // Assign Fr Contact constraint bounds
+    for(size_t i = 0; i < Fr_contact_constraints.size(); i++){
+      Fupp_.push_back(inf);
+      Flow_.push_back(0);    
+    }
+    neF += Fr_contact_constraints.size();
 
-  // Assign Phi(q) >= 0 Constraint
-  for(size_t i = 0; i < phi_constraints.size(); i++){
-    Fupp_.push_back(inf);
-    Flow_.push_back(0.0);    
-  }
-  neF += phi_constraints.size();  
+    // Assign Phi(q) >= 0 Constraint
+    for(size_t i = 0; i < phi_constraints.size(); i++){
+      Fupp_.push_back(inf);
+      Flow_.push_back(0.0);    
+    }
+    neF += phi_constraints.size();  
 
-  // Assign Phi*Fr = 0 Constraint
-  for(size_t i = 0; i < phi_Fr_LCP_constraints.size(); i++){
-    Fupp_.push_back(zero_eps);
-    Flow_.push_back(-zero_eps);    
-  }
-  neF += phi_Fr_LCP_constraints.size();  
+    // Assign Phi*Fr = 0 Constraint
+    for(size_t i = 0; i < phi_Fr_LCP_constraints.size(); i++){
+      Fupp_.push_back(zero_eps);
+      Flow_.push_back(-zero_eps);    
+    }
+    neF += phi_Fr_LCP_constraints.size();  
 
-  // Assign Phi*xddot_rf = 0 Constraint
-  for(size_t i = 0; i < phi_xddot_rf_LCP_constraints.size(); i++){
-    Fupp_.push_back(zero_eps);
-    Flow_.push_back(-zero_eps);    
-  }
-  neF += phi_xddot_rf_LCP_constraints.size();  
+    // Assign Phi*xddot_rf = 0 Constraint
+    for(size_t i = 0; i < phi_xddot_rf_LCP_constraints.size(); i++){
+      Fupp_.push_back(zero_eps);
+      Flow_.push_back(-zero_eps);    
+    }
+    neF += phi_xddot_rf_LCP_constraints.size();  
 
-  // Assign Torque constraint bounds
-  double torque_max = 1800.0;
-  for(size_t i = 0; i < torque_constraints.size(); i++){
-    Fupp_.push_back(torque_max);
-    Flow_.push_back(-torque_max);    
-  }
-  neF += torque_constraints.size();  
+    // Assign Torque constraint bounds
+    double torque_max = 1800.0;
+    for(size_t i = 0; i < torque_constraints.size(); i++){
+      Fupp_.push_back(torque_max);
+      Flow_.push_back(-torque_max);    
+    }
+    neF += torque_constraints.size();  
 
 
-#ifndef WBDC_ONLY 
-  // Assign Time Integration Constraints
-  for(size_t i = 0; i < q_ti.size(); i++){
-    Fupp_.push_back(zero_eps);
-    Flow_.push_back(-zero_eps);    
-  }
-  neF += q_ti.size();    
+  #ifndef WBDC_ONLY 
+    // Assign Time Integration Constraints
+    for(size_t i = 0; i < q_ti.size(); i++){
+      Fupp_.push_back(zero_eps);
+      Flow_.push_back(-zero_eps);    
+    }
+    neF += q_ti.size();    
 
-  // Assign Time Integration Constraints
-  for(size_t i = 0; i < qdot_ti.size(); i++){
-    Fupp_.push_back(zero_eps);
-    Flow_.push_back(-zero_eps);    
+    // Assign Time Integration Constraints
+    for(size_t i = 0; i < qdot_ti.size(); i++){
+      Fupp_.push_back(zero_eps);
+      Flow_.push_back(-zero_eps);    
+    }
+    neF += qdot_ti.size();    
+  #endif
   }
-  neF += qdot_ti.size();    
-#endif
 
   // Set Problem Function Bounds
   Fupp = Fupp_;
@@ -494,206 +503,214 @@ void WBT_Optimization::get_problem_functions(std::vector<double> &x, std::vector
   // q_n = q_{n+q}
 
   int offset = 0;
-  for(size_t i = 0; i < q_init_states.size(); i++){
-    q_init_states[i] = x[i + offset];
-  }
-  offset += q_init_states.size();
-  for(size_t i = 0; i < qdot_init_states.size(); i++){
-    qdot_init_states[i] = x[i + offset];
-  }
-  offset += qdot_init_states.size();
-  for(size_t i = 0; i < Fr_states.rows(); i++){
-    Fr_states[i] = x[i + offset];
-  }
-  offset += Fr_states.size();
 
-  for(size_t i = 0; i < xddot_des_states.rows(); i++){
-    xddot_des_states[i] = x[i + offset];
-  }
-  offset += xddot_des_states.size();
+  for(size_t ts = 0; ts < total_timesteps; ts++){
+    if (ts > 0){
+      offset = offset - (NUM_Q + NUM_QDOT);
+    }
 
-  
+    for(size_t i = 0; i < q_init_states.size(); i++){
+      q_init_states[i] = x[i + offset];
+    }
+    offset += q_init_states.size();
+    for(size_t i = 0; i < qdot_init_states.size(); i++){
+      qdot_init_states[i] = x[i + offset];
+    }
+    offset += qdot_init_states.size();
+    for(size_t i = 0; i < Fr_states.rows(); i++){
+      Fr_states[i] = x[i + offset];
+    }
+    offset += Fr_states.size();
 
-#ifndef WBDC_ONLY
-  for(size_t i = 0; i < q_next_states.size(); i++){
-    q_next_states[i] = x[i + offset];
-  }
-  offset += q_next_states.size();
-  for(size_t i = 0; i < qdot_next_states.size(); i++){
-    qdot_next_states[i] = x[i + offset];
-  }
-#endif  
+    for(size_t i = 0; i < xddot_des_states.rows(); i++){
+      xddot_des_states[i] = x[i + offset];
+    }
+    offset += xddot_des_states.size();
 
-
-/*
-  for(size_t i = 0; i < phi_states.rows(); i++){
-    phi_states[i] = x[i + offset];
-  }  */
-
-  // Set Objective function: -----------------------------------------------------------------
-  sejong::Matrix Q_Fr = sejong::Matrix::Identity(Fr_states.rows(), Fr_states.rows());
-  double w_xdd = 0.01;
-  sejong::Matrix N_xddot = w_xdd * sejong::Matrix::Identity(xddot_des_states.rows(), xddot_des_states.rows());
-
-  Q_Fr(5,5) = 0.001; // Z direction 
-  Q_Fr(11,11) = 0.001; // Z direction
-  objective_function += Fr_states.transpose()*Q_Fr*Fr_states + xddot_des_states.transpose()*N_xddot*xddot_des_states;
-  
-  // Set WBC Virtual Constraints -------------------------------------------------------------
-  sejong::Matrix A(NUM_QDOT, NUM_QDOT);
-  sejong::Vector b(NUM_QDOT);
-  sejong::Vector g(NUM_QDOT);
-  UpdateModel(q_init_states, qdot_init_states, A, g, b);
-
-  // Find desired actuation
-  // needs tau_des =  A(B*xddot_des + c)
-
-/*  sejong::Vector tau_des = b + g;
-  sejong::Vector tau_act(NUM_QDOT); tau_act.setZero();
-  tau_act.tail(NUM_ACT_JOINT) = tau_des.tail(NUM_ACT_JOINT);
-*/
-  // Set Foot Contact Jacobian
-  sejong::Matrix Jc(Fr_states.rows(), NUM_QDOT);
-  sejong::Matrix Jtmp;
-  robot_model_->getFullJacobian(q_init_states, SJLinkID::LK_rightCOP_Frame, Jtmp);
-  Jc.block(0, 0, 6, NUM_QDOT) = Jtmp;
-  robot_model_->getFullJacobian(q_init_states, SJLinkID::LK_leftCOP_Frame, Jtmp);
-  Jc.block(6, 0, 6, NUM_QDOT) = Jtmp;  
-
-  sejong::Matrix B;
-  sejong::Vector c;  
-  getB_c(q_init_states, qdot_init_states, B, c);
-  sejong::Vector qddot_des = B*xddot_des_states + c;
-
-  sejong::Vector WB_des = b + g - Jc.transpose()*Fr_states; // Aqddot_des + b + g - J^Tc Fr = [0, tau]^T
-  sejong::Vector WBC_virtual_constraints = Sv*(WB_des);
-
-/*  sejong::Vector reaction_forces = - Jc.transpose()*Fr_states;
-  sejong::pretty_print(g, std::cout, "g");
-  sejong::pretty_print(reaction_forces, std::cout, "reaction_forces");  
-  sejong::pretty_print(WBC_virtual_constraints, std::cout, "WBC_virtual_constraints");
-*/
-  // Add to Problem Function
-  for(size_t i = 0; i < WBC_virtual_constraints.size(); i++){
-    F_.push_back(WBC_virtual_constraints[i]);
-  }
-
-  // Set UFr Contact Constraints -------------------------------------------------------------
-  sejong::Matrix Uf;
-  _UpdateUf(q_init_states, Uf);
-
-  sejong::Vector UFr_constraints(17*2);
-  UFr_constraints = Uf*Fr_states;
-
-  //sejong::pretty_print(UFr_constraints, std::cout, "UFr_constraints");
-
-  // Add to Problem Function
-  for(size_t i = 0; i < UFr_constraints.size(); i++){
-    F_.push_back(UFr_constraints[i]);
-  }
-
-  // Set Phi(q) >= 0 Constraint ------------------------------------------------------------
-  sejong::Vect3 rf_cop;
-  robot_model_->getPosition(q_init_states, SJLinkID::LK_rightFootOutFront, rf_cop);  
-  sejong::Vect3 lf_cop;
-  robot_model_->getPosition(q_init_states, SJLinkID::LK_leftCOP_Frame, lf_cop);  
-
-  sejong::Vector phi_Fr(2);
-  phi_Fr[0] = rf_cop[2];
-  phi_Fr[1] = lf_cop[2];  
-
-  for(size_t i = 0; i < phi_Fr.size(); i++){
-    F_.push_back(phi_Fr[i]); // Z height from ground
-  }
-
-  // Set Phi * Fr = 0 Constraint
-  sejong::Vector phi_ones(6); phi_ones.setOnes();
-  sejong::Vector phi_Fr_lcp(2); phi_Fr_lcp.setZero();
-  phi_Fr_lcp[0] = (phi_Fr[0]*phi_ones).transpose()*Fr_states.head(6);
-  phi_Fr_lcp[1] = (phi_Fr[1]*phi_ones).transpose()*Fr_states.tail(6);  
-
-  for(size_t i = 0; i < phi_Fr_lcp.size(); i++){
-    F_.push_back(phi_Fr_lcp[i]); // Z height from ground
-  }
-
-  // Set Phi * xddot_rf = 0 Constraint
-  sejong::Vector phi_xddot_ones(4); phi_xddot_ones.setOnes();
-  sejong::Vector phi_xddot_rf_lcp(1); phi_xddot_rf_lcp.setZero();
-  phi_xddot_rf_lcp[0] = (phi_Fr[1]*phi_xddot_ones).transpose()* xddot_des_states.segment(9, 4);
-
-  for(size_t i = 0; i < phi_xddot_rf_lcp.size(); i++){
-    F_.push_back(phi_xddot_rf_lcp[i]); // Z height from ground
-  }
-
-  // Set Torque Constraints -------------------------------------------------------------------
-  sejong::Vector tau_constraints(NUM_ACT_JOINT);
-  tau_constraints = Sa*WB_des;
-
-  // Add to Problem Function
-  for(size_t i = 0; i < tau_constraints.size(); i++){
-    F_.push_back(tau_constraints[i]);
-  }
+    
 
   #ifndef WBDC_ONLY
-  // Set Time Integration Constraints
-  sejong::Vector qddot_next(NUM_QDOT); qddot_next.size();
-  sejong::Matrix A_next(NUM_QDOT, NUM_QDOT);
-  sejong::Matrix A_next_inv(NUM_QDOT, NUM_QDOT);  
-  sejong::Vector b_next(NUM_QDOT);
-  sejong::Vector g_next(NUM_QDOT);
-
-  UpdateModel(q_next_states, qdot_next_states, A_next, g_next, b_next);
-  robot_model_->getInverseMassInertia(A_next_inv);
-  double dt = 0.01; // Time Step
-
-  sejong::Vector tau_input(NUM_QDOT); tau_input.setZero();
-  tau_input.tail(NUM_ACT_JOINT) = Sa*WB_des;
-
-  qddot_next = A_next_inv*(tau_input - b_next - g_next + Jc.transpose()*Fr_states); 
-
-  sejong::Vector TI_q(NUM_Q); TI_q.setZero();  
-  sejong::Vector TI_qdot(NUM_QDOT); TI_qdot.setZero();
-
-  // Backwards Euler Time Integrate qdot
-  TI_qdot = qdot_next_states - qdot_init_states - qddot_next*dt; 
-
-  // Backwards Euler Time Integrate Linear Virtual Joints
-  TI_q.head(3) = q_next_states.head(3) - q_init_states.head(3) - qdot_next_states.head(3)*dt;   
-
-  // Backwards Euler Time Integrate Virtual Sphere Joints
-    // Get the Pelvis angular velocity
-    sejong::Vect3 pelvis_omega;
-    pelvis_omega[0] = qdot_next_states[3];
-    pelvis_omega[1] = qdot_next_states[4];  
-    pelvis_omega[2] = qdot_next_states[5];
-
-    sejong::Quaternion quat_pelvis_current(q_init_states[NUM_QDOT], q_init_states[3], q_init_states[4], q_init_states[5]);   // w, x, y, z
-    sejong::Quaternion quat_world_rotate;
-    sejong::convert(pelvis_omega*dt, quat_world_rotate);
+    for(size_t i = 0; i < q_next_states.size(); i++){
+      q_next_states[i] = x[i + offset];
+    }
+    offset += q_next_states.size();
+    for(size_t i = 0; i < qdot_next_states.size(); i++){
+      qdot_next_states[i] = x[i + offset];
+    }
+    offset += qdot_next_states.size();    
+  #endif  
 
 
-    // Perform Extrinsic Quaternion Multiplication
-    sejong::Quaternion quat_result = sejong::QuatMultiply(quat_world_rotate, quat_pelvis_current, true);  
+  /*
+    for(size_t i = 0; i < phi_states.rows(); i++){
+      phi_states[i] = x[i + offset];
+    }  */
 
-    TI_q[3] = ((double) q_next_states[3]) - quat_result.x();   
-    TI_q[4] = ((double) q_next_states[4]) - quat_result.y();
-    TI_q[5] = ((double) q_next_states[5]) - quat_result.z();
-    TI_q[NUM_QDOT] = ((double) q_next_states[NUM_QDOT]) - quat_result.w();        
+    // Set Objective function: -----------------------------------------------------------------
+    sejong::Matrix Q_Fr = sejong::Matrix::Identity(Fr_states.rows(), Fr_states.rows());
+    double w_xdd = 0.01;
+    sejong::Matrix N_xddot = w_xdd * sejong::Matrix::Identity(xddot_des_states.rows(), xddot_des_states.rows());
 
-  // Backwards Euler Time Integrate Non Virtual Joints
-  TI_q.segment(NUM_VIRTUAL, NUM_QDOT-NUM_VIRTUAL) = q_next_states.segment(NUM_VIRTUAL, NUM_QDOT-NUM_VIRTUAL) 
-                                                   - q_init_states.segment(NUM_VIRTUAL, NUM_QDOT-NUM_VIRTUAL) 
-                                                   - dt*qdot_next_states.segment(NUM_VIRTUAL, NUM_QDOT-NUM_VIRTUAL);   
+    Q_Fr(5,5) = 0.001; // Z direction 
+    Q_Fr(11,11) = 0.001; // Z direction
+    objective_function += Fr_states.transpose()*Q_Fr*Fr_states + xddot_des_states.transpose()*N_xddot*xddot_des_states;
+    
+    // Set WBC Virtual Constraints -------------------------------------------------------------
+    sejong::Matrix A(NUM_QDOT, NUM_QDOT);
+    sejong::Vector b(NUM_QDOT);
+    sejong::Vector g(NUM_QDOT);
+    UpdateModel(q_init_states, qdot_init_states, A, g, b);
 
-  // Add Time Integration to problem function                                                    
-  for(size_t i = 0; i < TI_q.size(); i++){
-    F_.push_back(TI_q[i]);
+    // Find desired actuation
+    // needs tau_des =  A(B*xddot_des + c)
+
+  /*  sejong::Vector tau_des = b + g;
+    sejong::Vector tau_act(NUM_QDOT); tau_act.setZero();
+    tau_act.tail(NUM_ACT_JOINT) = tau_des.tail(NUM_ACT_JOINT);
+  */
+    // Set Foot Contact Jacobian
+    sejong::Matrix Jc(Fr_states.rows(), NUM_QDOT);
+    sejong::Matrix Jtmp;
+    robot_model_->getFullJacobian(q_init_states, SJLinkID::LK_rightCOP_Frame, Jtmp);
+    Jc.block(0, 0, 6, NUM_QDOT) = Jtmp;
+    robot_model_->getFullJacobian(q_init_states, SJLinkID::LK_leftCOP_Frame, Jtmp);
+    Jc.block(6, 0, 6, NUM_QDOT) = Jtmp;  
+
+    sejong::Matrix B;
+    sejong::Vector c;  
+    getB_c(q_init_states, qdot_init_states, B, c);
+    sejong::Vector qddot_des = B*xddot_des_states + c;
+
+    sejong::Vector WB_des = b + g - Jc.transpose()*Fr_states; // Aqddot_des + b + g - J^Tc Fr = [0, tau]^T
+    sejong::Vector WBC_virtual_constraints = Sv*(WB_des);
+
+  /*  sejong::Vector reaction_forces = - Jc.transpose()*Fr_states;
+    sejong::pretty_print(g, std::cout, "g");
+    sejong::pretty_print(reaction_forces, std::cout, "reaction_forces");  
+    sejong::pretty_print(WBC_virtual_constraints, std::cout, "WBC_virtual_constraints");
+  */
+    // Add to Problem Function
+    for(size_t i = 0; i < WBC_virtual_constraints.size(); i++){
+      F_.push_back(WBC_virtual_constraints[i]);
+    }
+
+    // Set UFr Contact Constraints -------------------------------------------------------------
+    sejong::Matrix Uf;
+    _UpdateUf(q_init_states, Uf);
+
+    sejong::Vector UFr_constraints(17*2);
+    UFr_constraints = Uf*Fr_states;
+
+    //sejong::pretty_print(UFr_constraints, std::cout, "UFr_constraints");
+
+    // Add to Problem Function
+    for(size_t i = 0; i < UFr_constraints.size(); i++){
+      F_.push_back(UFr_constraints[i]);
+    }
+
+    // Set Phi(q) >= 0 Constraint ------------------------------------------------------------
+    sejong::Vect3 rf_cop;
+    robot_model_->getPosition(q_init_states, SJLinkID::LK_rightFootOutFront, rf_cop);  
+    sejong::Vect3 lf_cop;
+    robot_model_->getPosition(q_init_states, SJLinkID::LK_leftCOP_Frame, lf_cop);  
+
+    sejong::Vector phi_Fr(2);
+    phi_Fr[0] = rf_cop[2];
+    phi_Fr[1] = lf_cop[2];  
+
+    for(size_t i = 0; i < phi_Fr.size(); i++){
+      F_.push_back(phi_Fr[i]); // Z height from ground
+    }
+
+    // Set Phi * Fr = 0 Constraint
+    sejong::Vector phi_ones(6); phi_ones.setOnes();
+    sejong::Vector phi_Fr_lcp(2); phi_Fr_lcp.setZero();
+    phi_Fr_lcp[0] = (phi_Fr[0]*phi_ones).transpose()*Fr_states.head(6);
+    phi_Fr_lcp[1] = (phi_Fr[1]*phi_ones).transpose()*Fr_states.tail(6);  
+
+    for(size_t i = 0; i < phi_Fr_lcp.size(); i++){
+      F_.push_back(phi_Fr_lcp[i]); // Z height from ground
+    }
+
+    // Set Phi * xddot_rf = 0 Constraint
+    sejong::Vector phi_xddot_ones(4); phi_xddot_ones.setOnes();
+    sejong::Vector phi_xddot_rf_lcp(1); phi_xddot_rf_lcp.setZero();
+    phi_xddot_rf_lcp[0] = (phi_Fr[1]*phi_xddot_ones).transpose()* xddot_des_states.segment(9, 4);
+
+    for(size_t i = 0; i < phi_xddot_rf_lcp.size(); i++){
+      F_.push_back(phi_xddot_rf_lcp[i]); // Z height from ground
+    }
+
+    // Set Torque Constraints -------------------------------------------------------------------
+    sejong::Vector tau_constraints(NUM_ACT_JOINT);
+    tau_constraints = Sa*WB_des;
+
+    // Add to Problem Function
+    for(size_t i = 0; i < tau_constraints.size(); i++){
+      F_.push_back(tau_constraints[i]);
+    }
+
+    #ifndef WBDC_ONLY
+    // Set Time Integration Constraints
+    sejong::Vector qddot_next(NUM_QDOT); qddot_next.size();
+    sejong::Matrix A_next(NUM_QDOT, NUM_QDOT);
+    sejong::Matrix A_next_inv(NUM_QDOT, NUM_QDOT);  
+    sejong::Vector b_next(NUM_QDOT);
+    sejong::Vector g_next(NUM_QDOT);
+
+    UpdateModel(q_next_states, qdot_next_states, A_next, g_next, b_next);
+    robot_model_->getInverseMassInertia(A_next_inv);
+    double dt = 0.01; // Time Step
+
+    sejong::Vector tau_input(NUM_QDOT); tau_input.setZero();
+    tau_input.tail(NUM_ACT_JOINT) = Sa*WB_des;
+
+    qddot_next = A_next_inv*(tau_input - b_next - g_next + Jc.transpose()*Fr_states); 
+
+    sejong::Vector TI_q(NUM_Q); TI_q.setZero();  
+    sejong::Vector TI_qdot(NUM_QDOT); TI_qdot.setZero();
+
+    // Backwards Euler Time Integrate qdot
+    TI_qdot = qdot_next_states - qdot_init_states - qddot_next*dt; 
+
+    // Backwards Euler Time Integrate Linear Virtual Joints
+    TI_q.head(3) = q_next_states.head(3) - q_init_states.head(3) - qdot_next_states.head(3)*dt;   
+
+    // Backwards Euler Time Integrate Virtual Sphere Joints
+      // Get the Pelvis angular velocity
+      sejong::Vect3 pelvis_omega;
+      pelvis_omega[0] = qdot_next_states[3];
+      pelvis_omega[1] = qdot_next_states[4];  
+      pelvis_omega[2] = qdot_next_states[5];
+
+      sejong::Quaternion quat_pelvis_current(q_init_states[NUM_QDOT], q_init_states[3], q_init_states[4], q_init_states[5]);   // w, x, y, z
+      sejong::Quaternion quat_world_rotate;
+      sejong::convert(pelvis_omega*dt, quat_world_rotate);
+
+
+      // Perform Extrinsic Quaternion Multiplication
+      sejong::Quaternion quat_result = sejong::QuatMultiply(quat_world_rotate, quat_pelvis_current, true);  
+
+      TI_q[3] = ((double) q_next_states[3]) - quat_result.x();   
+      TI_q[4] = ((double) q_next_states[4]) - quat_result.y();
+      TI_q[5] = ((double) q_next_states[5]) - quat_result.z();
+      TI_q[NUM_QDOT] = ((double) q_next_states[NUM_QDOT]) - quat_result.w();        
+
+    // Backwards Euler Time Integrate Non Virtual Joints
+    TI_q.segment(NUM_VIRTUAL, NUM_QDOT-NUM_VIRTUAL) = q_next_states.segment(NUM_VIRTUAL, NUM_QDOT-NUM_VIRTUAL) 
+                                                     - q_init_states.segment(NUM_VIRTUAL, NUM_QDOT-NUM_VIRTUAL) 
+                                                     - dt*qdot_next_states.segment(NUM_VIRTUAL, NUM_QDOT-NUM_VIRTUAL);   
+
+    // Add Time Integration to problem function                                                    
+    for(size_t i = 0; i < TI_q.size(); i++){
+      F_.push_back(TI_q[i]);
+    }
+    for(size_t i = 0; i < TI_qdot.size(); i++){
+      F_.push_back(TI_qdot[i]);
+    }
+
+    #endif
   }
-  for(size_t i = 0; i < TI_qdot.size(); i++){
-    F_.push_back(TI_qdot[i]);
-  }
-
-  #endif
 
   // Set Objective Function to Problem Function
   F_[0] = objective_function[0];
