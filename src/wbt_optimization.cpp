@@ -107,8 +107,8 @@ void WBT_Optimization::run_solver_test(){
   #endif
 
   #ifndef WBDC_ONLY
-    test_snopt_solve_wbdc();
 //    snopt_solve_opt_problem();
+  test_snopt_solve_wbdc();
   #endif
 }
 
@@ -208,7 +208,7 @@ void WBT_Optimization::initialize_state_guess(std::vector<double> &x){
   sejong::Vector q_init_states(NUM_Q); q_init_states.setZero(); //
   sejong::Vector qdot_init_states(NUM_QDOT); qdot_init_states.setZero(); // 6 Generalized Contact Forces  
   sejong::Vector Fr_states(12); Fr_states.setZero(); // 6 Generalized Contact Forces
-  //sejong::Vector phi_states(2); Fr_states.setZero(); // 2 for each generalized contact
+  sejong::Vector phi_states(2); phi_states.setZero(); // 2 for each generalized contact
 
   sejong::Vector q_next_state(NUM_Q); q_next_state.setZero();
   sejong::Vector qdot_next_state(NUM_QDOT); qdot_next_state.setZero();  
@@ -229,9 +229,7 @@ void WBT_Optimization::initialize_state_guess(std::vector<double> &x){
   for(size_t i = 0; i < Fr_states.size(); i++){
    initial_states.push_back(0.0);  
  }
-  /*initial_states[offset+5] = 690.0;
-  initial_states[offset+11] = 640.0; */ 
-  offset += Fr_states.size();    
+  offset += Fr_states.size();
 
   #ifndef WBDC_ONLY
   for(size_t i = 0; i < q_next_state.size(); i++){
@@ -267,7 +265,6 @@ void WBT_Optimization::prepare_state_problem_bounds(int &n, int &neF, int &ObjRo
   sejong::Vector q_init_states(NUM_Q); q_init_states.setZero(); //
   sejong::Vector qdot_init_states(NUM_QDOT); qdot_init_states.setZero(); // 6 Generalized Contact Forces  
   sejong::Vector Fr_states(12); Fr_states.setZero(); // 6 Generalized Contact Forces
-  //sejong::Vector phi_states(2); Fr_states.setZero(); // 2 for each generalized contact
 
   sejong::Vector q_next_state(NUM_Q); q_next_state.setZero();
   sejong::Vector qdot_next_state(NUM_QDOT); qdot_next_state.setZero();  
@@ -288,6 +285,8 @@ void WBT_Optimization::prepare_state_problem_bounds(int &n, int &neF, int &ObjRo
     xupp_states.push_back(m_q_init[i] + zero_eps);
     xlow_states.push_back(m_q_init[i] - zero_eps);    
   }
+  xupp_states[2] = m_q_init[2] + 0.1; // Give more room for z direction due to lcp constraint
+  xlow_states[2] = m_q_init[2] - 0.1; // Give more room for z direction due to lcp constraint
   n += q_init_states.size();
 
   // Assign initial qdot_states
@@ -332,15 +331,17 @@ void WBT_Optimization::prepare_state_problem_bounds(int &n, int &neF, int &ObjRo
   (1)              objective function
   (6)              WBC_virtual_states: Sv(Aqddot_des + b + g - U^t + Jc^Fr = 0)
   (17*2)           Fr contact constraint UFr >= 0
+  (2)              Phi Constraint phi(q) >= 0
+  (2)              Phi Fr LCP Constraint: phi^T Fr = 0
   (NUM_ACT_JOINT)  torque_constraints: -1800 <= Sa * (Aqddot_des + b + g - Jc^Fr) <= 1800
   (NUM_Q)          q_next_state
   (NUM_Q_DOT)      qdot_next_state  
   */
   sejong::Vector WBC_virtual_constraints(6); WBC_virtual_constraints.setZero();
   sejong::Vector Fr_contact_constraints(17*2); Fr_contact_constraints.setZero();
-  sejong::Vector torque_constraints(NUM_ACT_JOINT); torque_constraints.setZero();
   sejong::Vector phi_constraints(2); phi_constraints.setZero();  
-
+  sejong::Vector phi_Fr_LCP_constraints(2); phi_Fr_LCP_constraints.setZero();    
+  sejong::Vector torque_constraints(NUM_ACT_JOINT); torque_constraints.setZero();
   sejong::Vector q_ti(NUM_Q); q_ti.setZero();
   sejong::Vector qdot_ti(NUM_QDOT); qdot_ti.setZero();
 
@@ -370,6 +371,21 @@ void WBT_Optimization::prepare_state_problem_bounds(int &n, int &neF, int &ObjRo
   }
   neF += Fr_contact_constraints.size();
 
+  // Assign Phi(q) >= 0 Constraint
+  for(size_t i = 0; i < phi_constraints.size(); i++){
+    Fupp_.push_back(inf);
+    Flow_.push_back(0.0);    
+  }
+  neF += phi_constraints.size();  
+
+  // Assign Phi*Fr = 0 Constraint
+  for(size_t i = 0; i < phi_Fr_LCP_constraints.size(); i++){
+    Fupp_.push_back(zero_eps);
+    Flow_.push_back(-zero_eps);    
+  }
+  neF += phi_Fr_LCP_constraints.size();  
+
+
   // Assign Torque constraint bounds
   double torque_max = 1800.0;
   for(size_t i = 0; i < torque_constraints.size(); i++){
@@ -377,6 +393,7 @@ void WBT_Optimization::prepare_state_problem_bounds(int &n, int &neF, int &ObjRo
     Flow_.push_back(-torque_max);    
   }
   neF += torque_constraints.size();  
+
 
 #ifndef WBDC_ONLY 
   // Assign Time Integration Constraints
@@ -413,7 +430,7 @@ void WBT_Optimization::get_problem_functions(std::vector<double> &x, std::vector
   sejong::Vector q_next_states(NUM_Q); q_next_states.setZero(); //
   sejong::Vector qdot_next_states(NUM_QDOT); qdot_next_states.setZero();  
 
-  sejong::Vector phi_states(2); Fr_states.setZero(); // 2 for each generalized contact
+
 
   int offset = 0;
   for(size_t i = 0; i < q_init_states.size(); i++){
@@ -427,9 +444,9 @@ void WBT_Optimization::get_problem_functions(std::vector<double> &x, std::vector
   for(size_t i = 0; i < Fr_states.rows(); i++){
     Fr_states[i] = x[i + offset];
   }
+  offset += Fr_states.size();
 
 #ifndef WBDC_ONLY
-  offset += Fr_states.size();
   for(size_t i = 0; i < q_next_states.size(); i++){
     q_next_states[i] = x[i + offset];
   }
@@ -502,6 +519,30 @@ void WBT_Optimization::get_problem_functions(std::vector<double> &x, std::vector
   // Add to Problem Function
   for(size_t i = 0; i < UFr_constraints.size(); i++){
     F_.push_back(UFr_constraints[i]);
+  }
+
+  // Set Phi(q) >= 0 Constraint ------------------------------------------------------------
+  sejong::Vect3 rf_cop;
+  robot_model_->getPosition(q_init_states, SJLinkID::LK_rightFootOutFront, rf_cop);  
+  sejong::Vect3 lf_cop;
+  robot_model_->getPosition(q_init_states, SJLinkID::LK_leftCOP_Frame, lf_cop);  
+
+  sejong::Vector phi_Fr(2);
+  phi_Fr[0] = rf_cop[2];
+  phi_Fr[1] = lf_cop[2];  
+
+  for(size_t i = 0; i < phi_Fr.size(); i++){
+    F_.push_back(phi_Fr[i]); // Z height from ground
+  }
+
+  // Set Phi * Fr = 0 Constraint
+  sejong::Vector phi_ones(6); phi_ones.setOnes();
+  sejong::Vector phi_Fr_lcp(2); phi_Fr_lcp.setZero();
+  phi_Fr_lcp[0] = (phi_Fr[0]*phi_ones).transpose()*Fr_states.head(6);
+  phi_Fr_lcp[1] = (phi_Fr[1]*phi_ones).transpose()*Fr_states.tail(6);  
+
+  for(size_t i = 0; i < phi_Fr_lcp.size(); i++){
+    F_.push_back(phi_Fr_lcp[i]); // Z height from ground
   }
 
   // Set Torque Constraints -------------------------------------------------------------------
