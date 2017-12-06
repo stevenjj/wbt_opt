@@ -157,7 +157,9 @@ void test_snopt_solve_wbdc(){
   double *Fmul   = new double[neF];
   int    *Fstate = new int[neF];
 
-
+  // Do some initializations on guess
+  //x[69+6-1] = 680.0;
+  //x[69+12-1] = 680.0;
 
   for(size_t i = 0; i < n; i++){
     xlow[i] = xlow_vec[i];
