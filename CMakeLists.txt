@@ -87,10 +87,13 @@ set(wbt_task_sources src/wbt_src/tasks/wbt_task_com.cpp
 					 src/wbt_src/tasks/wbt_task_leftfoot.cpp
 					 src/wbt_src/tasks/wbt_task_rightfoot_righthand.cpp)
 
+set(wbt_containers_sources src/wbt_src/containers/wbt_wholebody_task_list.cpp)		 
+
 add_executable(wbt_main src/wbt_src/main.cpp 
 						src/wbt_src/wbt_opt_variable.cpp 
 						${wbt_task_sources}
-						${val_sim_model_sources})
+						${val_sim_model_sources}
+						${wbt_containers_sources})
 target_link_libraries(wbt_main ${catkin_LIBRARIES} ${SJUtils}
   								  				   ${SJurdf}
 												   ${SJrbdl}

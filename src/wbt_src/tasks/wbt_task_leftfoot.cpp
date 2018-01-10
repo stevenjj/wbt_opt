@@ -5,6 +5,7 @@
 LeftFoot_Task::LeftFoot_Task(){
 	robot_model_ = RobotModel::GetRobotModel();
 	task_dim = 6;
+    task_name = "Left Foot Task";
 }
 LeftFoot_Task::~LeftFoot_Task(){}
 

@@ -5,6 +5,7 @@
 COM_Task::COM_Task(){
   robot_model_ = RobotModel::GetRobotModel();	
   task_dim = 3;
+  task_name = "COM Task";
 }
 COM_Task::~COM_Task(){}
 void COM_Task::getTaskJacobian(const sejong::Vector &q_state, sejong::Matrix & Jt){

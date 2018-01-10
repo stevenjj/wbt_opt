@@ -5,6 +5,7 @@
 RightFoot_RightHand_Task::RightFoot_RightHand_Task(){
 	robot_model_ = RobotModel::GetRobotModel();
 	task_dim = 7; // 4 for the right foot, and 3 for the right hand 	
+	task_name = "Right Foot Task";
 }
 RightFoot_RightHand_Task::~RightFoot_RightHand_Task(){}
 
