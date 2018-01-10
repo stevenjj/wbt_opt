@@ -10,7 +10,10 @@ public:
 	~WholeBody_Task_List();	
 
 	void append_task(Task* whole_body_task);
-	void get_task_list_copy(std::vector<Task*> &task_list_out);
+	void get_task_list_copy(std::vector<Task*>& task_list_out);
+
+	int get_size();
+	Task* get_task(int index);
 
 private:
 	std::vector<Task*> task_list;
