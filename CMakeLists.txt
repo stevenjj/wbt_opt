@@ -79,7 +79,15 @@ add_executable(traj_gen_main ${wbt_opt_sources} ${val_sim_model_sources})
 target_link_libraries(traj_gen_main ${catkin_LIBRARIES} ${SJUtils}
   								  					       ${SJurdf}
 														   ${SJrbdl}
-														   ${SJsnopt})										
+														   ${SJsnopt})
+
+
+add_executable(wbt_main src/wbt_src/main.cpp src/wbt_src/wbt_opt_variable.cpp)
+target_link_libraries(wbt_main ${catkin_LIBRARIES} ${SJUtils}
+  								  					       ${SJurdf}
+														   ${SJrbdl}
+														   ${SJsnopt})
+
 
 
 SET (THIS_PACKAGE_PATH "${PROJECT_SOURCE_DIR}/" )
