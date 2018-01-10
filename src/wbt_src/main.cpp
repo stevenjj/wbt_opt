@@ -5,10 +5,19 @@
 #include <wbt/wbt_opt_variable.hpp>
 #include <wbt/optimization_constants.hpp>
 
+
+#include <wbt/tasks/wbt_task_com.hpp>
+#include <wbt/tasks/wbt_task_leftfoot.hpp>
+#include <wbt/tasks/wbt_task_rightfoot_righthand.hpp>
+
 int main(int argc, char **argv)
 {
 	std::cout << "[WBT] Hello world" << std::endl;
 	WBT_Opt_Variable xddot;
+
+	COM_Task com_task;
+	LeftFoot_Task lf_task;	
+	RightFoot_RightHand_Task rf_rh_task;		
 
 	xddot.value = 10;
 	std::cout << "[WBT] xddot test value:" << xddot.value << std::endl;
