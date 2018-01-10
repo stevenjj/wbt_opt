@@ -88,9 +88,10 @@ set(wbt_task_sources src/wbt_src/tasks/wbt_task_com.cpp
 					 src/wbt_src/tasks/wbt_task_rightfoot_righthand.cpp)
 
 set(wbt_containers_sources src/wbt_src/containers/wbt_wholebody_task_list.cpp)		 
+set(wbt_opt_var_container src/wbt_src/containers/wbt_opt_variable.cpp)
 
 add_executable(wbt_main src/wbt_src/main.cpp 
-						src/wbt_src/wbt_opt_variable.cpp 
+						${wbt_opt_var_container}
 						${wbt_task_sources}
 						${val_sim_model_sources}
 						${wbt_containers_sources})

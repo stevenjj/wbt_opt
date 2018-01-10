@@ -2,9 +2,9 @@
 #include <string.h>
 #include <iostream>
 
-#include <wbt/wbt_opt_variable.hpp>
 #include <wbt/optimization_constants.hpp>
 
+#include <wbt/containers/wbt_opt_variable.hpp>
 #include <wbt/containers/wbt_wholebody_task_list.hpp>
 #include <wbt/tasks/wbt_task_com.hpp>
 #include <wbt/tasks/wbt_task_leftfoot.hpp>
@@ -50,7 +50,7 @@ void test_wholebody_task_objects(){
 
 int main(int argc, char **argv)
 {
-	std::cout << "[WBT] Hello world" << std::endl;
+	std::cout << "[WBT] Testing object and argument calls" << std::endl;
 
 	test_wbt_opt_variable();
 	test_wholebody_task_objects();
