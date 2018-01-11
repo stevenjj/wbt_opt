@@ -16,6 +16,7 @@ public:
 	Task* get_task(int index);
 
 private:
+	sejong::Matrix N_matrix; // task_acceleration cost matrix
 	std::vector<Task*> task_list;
 };
 
