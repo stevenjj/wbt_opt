@@ -2,7 +2,12 @@
 
 #include <iostream>
 WholeBody_Task_List::WholeBody_Task_List(){}
-WholeBody_Task_List::~WholeBody_Task_List(){}
+WholeBody_Task_List::~WholeBody_Task_List(){
+	for(size_t i = 0; i < task_list.size(); i++){
+		delete task_list[i];
+	}
+	task_list.clear();
+}
 
 void WholeBody_Task_List::append_task(Task* whole_body_task){
 	task_list.push_back(whole_body_task);

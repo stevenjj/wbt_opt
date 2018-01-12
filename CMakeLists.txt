@@ -82,19 +82,20 @@ target_link_libraries(traj_gen_main ${catkin_LIBRARIES} ${SJUtils}
 														   ${SJsnopt})
 
 
+set(wbt_containers_sources  src/wbt_src/containers/wbt_opt_variable.cpp
+							src/wbt_src/containers/wbt_wholebody_task_list.cpp)	 
 
 set(wbt_task_sources src/wbt_src/tasks/wbt_task_com.cpp
 					 src/wbt_src/tasks/wbt_task_leftfoot.cpp
 					 src/wbt_src/tasks/wbt_task_rightfoot_righthand.cpp)
 
-set(wbt_containers_sources src/wbt_src/containers/wbt_wholebody_task_list.cpp)		 
-set(wbt_opt_var_container src/wbt_src/containers/wbt_opt_variable.cpp)
+set(wbt_soft_constraint_sources src/wbt_src/soft_constraints/wbt_keyframe_position.cpp)
 
 add_executable(wbt_main src/wbt_src/main.cpp 
-						${wbt_opt_var_container}
+						${wbt_containers_sources}
 						${wbt_task_sources}
-						${val_sim_model_sources}
-						${wbt_containers_sources})
+						${wbt_soft_constraint_sources}
+						${val_sim_model_sources})
 target_link_libraries(wbt_main ${catkin_LIBRARIES} ${SJUtils}
   								  				   ${SJurdf}
 												   ${SJrbdl}

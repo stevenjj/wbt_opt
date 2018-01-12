@@ -9,6 +9,8 @@
 #include <wbt/tasks/wbt_task_com.hpp>
 #include <wbt/tasks/wbt_task_leftfoot.hpp>
 #include <wbt/tasks/wbt_task_rightfoot_righthand.hpp>
+#include <wbt/soft_constraints/wbt_keyframe.hpp>
+#include <wbt/soft_constraints/wbt_keyframe_position.hpp>
 
 
 void test_wbt_opt_variable(){
@@ -48,12 +50,32 @@ void test_wholebody_task_objects(){
 
 }
 
+void test_wbt_keyframe(){
+	std::cout << "[WBT] Testing KeyFrame object" << std::endl;
+	KeyFrame sample_kf;
+	std::string keyframe_name;
+
+	sample_kf.get_keyframe_name(keyframe_name);
+	std::cout << "Keyframe name: " << keyframe_name << std::endl;
+
+	Position_KeyFrame pos_kf;
+	std::cout << "Position KF timestep:" << pos_kf.timestep << std::endl;
+
+	sejong::Vect3 desired_keyframe;
+	Position_KeyFrame sample_pos_kf("HandPos", 4, desired_keyframe);
+	std::cout << "Position Hand KF name:" << sample_pos_kf.keyframe_name << std::endl;
+	std::cout << "Position Hand KF link id:" << sample_pos_kf.get_link_id() << std::endl;	
+
+}
+
 int main(int argc, char **argv)
 {
 	std::cout << "[WBT] Testing object and argument calls" << std::endl;
 
 	test_wbt_opt_variable();
 	test_wholebody_task_objects();
+	test_wbt_keyframe();
+
 
 	return 0;
 }
