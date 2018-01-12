@@ -11,6 +11,7 @@
 #include <wbt/tasks/wbt_task_rightfoot_righthand.hpp>
 #include <wbt/soft_constraints/wbt_keyframe.hpp>
 #include <wbt/soft_constraints/wbt_keyframe_position.hpp>
+#include <wbt/soft_constraints/wbt_keyframe_orientation.hpp>
 
 
 void test_wbt_opt_variable(){
@@ -65,6 +66,12 @@ void test_wbt_keyframe(){
 	Position_KeyFrame sample_pos_kf("HandPos", 4, desired_keyframe);
 	std::cout << "Position Hand KF name:" << sample_pos_kf.keyframe_name << std::endl;
 	std::cout << "Position Hand KF link id:" << sample_pos_kf.get_link_id() << std::endl;	
+
+	sejong::Quaternion desired_ori_keyframe;
+	Orientation_KeyFrame sample_ori_kf("HandOri", 3, desired_ori_keyframe);
+	std::cout << "Orientation Hand KF name:" << sample_ori_kf.keyframe_name << std::endl;
+	std::cout << "Orientation Hand KF link id:" << sample_ori_kf.get_link_id() << std::endl;	
+
 
 }
 

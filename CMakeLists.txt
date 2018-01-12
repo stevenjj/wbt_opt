@@ -89,7 +89,8 @@ set(wbt_task_sources src/wbt_src/tasks/wbt_task_com.cpp
 					 src/wbt_src/tasks/wbt_task_leftfoot.cpp
 					 src/wbt_src/tasks/wbt_task_rightfoot_righthand.cpp)
 
-set(wbt_soft_constraint_sources src/wbt_src/soft_constraints/wbt_keyframe_position.cpp)
+set(wbt_soft_constraint_sources src/wbt_src/soft_constraints/wbt_keyframe_position.cpp
+								src/wbt_src/soft_constraints/wbt_keyframe_orientation.cpp)
 
 add_executable(wbt_main src/wbt_src/main.cpp 
 						${wbt_containers_sources}
