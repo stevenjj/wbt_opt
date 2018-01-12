@@ -12,7 +12,7 @@ public:
 
 	int  get_link_id();
 	void get_diff_error(const sejong::Vector& q_state, sejong::Vector& keyframe_error);
-	double get_slerp_error(const sejong::Vector& q_state);	
+	void get_slerp_error(const sejong::Vector& q_state, double& error);	
 
 private:
 	int link_id = -1;

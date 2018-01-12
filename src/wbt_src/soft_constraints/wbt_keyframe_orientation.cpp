@@ -16,3 +16,12 @@ Orientation_KeyFrame::~Orientation_KeyFrame(){}
 int Orientation_KeyFrame::get_link_id(){
 	return link_id;
 }
+
+
+void Orientation_KeyFrame::get_diff_error(const sejong::Vector& q_state, sejong::Vector& keyframe_error){
+
+}
+
+void Orientation_KeyFrame::get_slerp_error(const sejong::Vector& q_state, double& error){
+	error = 0.5; // Test
+}

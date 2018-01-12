@@ -6,13 +6,13 @@
 
 #include <wbt/containers/wbt_opt_variable.hpp>
 #include <wbt/containers/wbt_wholebody_task_list.hpp>
+#include <wbt/containers/wbt_keyframe_list.hpp>
 #include <wbt/tasks/wbt_task_com.hpp>
 #include <wbt/tasks/wbt_task_leftfoot.hpp>
 #include <wbt/tasks/wbt_task_rightfoot_righthand.hpp>
 #include <wbt/soft_constraints/wbt_keyframe.hpp>
 #include <wbt/soft_constraints/wbt_keyframe_position.hpp>
 #include <wbt/soft_constraints/wbt_keyframe_orientation.hpp>
-
 
 void test_wbt_opt_variable(){
 	WBT_Opt_Variable xddot;	
@@ -71,7 +71,29 @@ void test_wbt_keyframe(){
 	Orientation_KeyFrame sample_ori_kf("HandOri", 3, desired_ori_keyframe);
 	std::cout << "Orientation Hand KF name:" << sample_ori_kf.keyframe_name << std::endl;
 	std::cout << "Orientation Hand KF link id:" << sample_ori_kf.get_link_id() << std::endl;	
+}
 
+void test_keyframe_list(){
+	sejong::Vect3 desired_keyframe;	
+	sejong::Quaternion desired_ori_keyframe;
+
+	Position_KeyFrame pos_kf("HandPos", 4, desired_keyframe);
+	Orientation_KeyFrame ori_kf("HandOri", 3, desired_ori_keyframe);
+
+	KeyFrame_List kf_list;
+	kf_list.append_keyframe(new Position_KeyFrame("HandPos", 4, desired_keyframe));
+	kf_list.append_keyframe(new Orientation_KeyFrame("HandOri", 3, desired_ori_keyframe));
+
+
+	sejong::Vector q_state_empty;
+	double serror = 0.0;
+	std::cout << "[WBT] Testing Keyframe container retrieval" << std::endl;
+	for (size_t i = 0; i < kf_list.get_size(); i++){
+		std::cout << "  KeyFrame: " << i << " name: " << kf_list.get_keyframe(i)->keyframe_name << std::endl;	 
+		std::cout << "              link id: " << kf_list.get_keyframe(i)->get_link_id() << std::endl;	 		
+		kf_list.get_keyframe(i)->get_slerp_error(q_state_empty, serror);
+		std::cout << "          test serror: " << serror << std::endl;	 				
+	}
 
 }
 
@@ -82,6 +104,7 @@ int main(int argc, char **argv)
 	test_wbt_opt_variable();
 	test_wholebody_task_objects();
 	test_wbt_keyframe();
+	test_keyframe_list();
 
 
 	return 0;

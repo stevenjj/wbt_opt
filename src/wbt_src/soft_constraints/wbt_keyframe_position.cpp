@@ -13,6 +13,9 @@ Position_KeyFrame::	Position_KeyFrame(std::string _keyframe_name, int _link_id, 
 
 Position_KeyFrame::~Position_KeyFrame(){}
 
+void Position_KeyFrame::get_error(const sejong::Vector& q_state, sejong::Vect3& keyframe_error){
+}
+
 int Position_KeyFrame::get_link_id(){
 	return link_id;
 }
