@@ -1,0 +1,61 @@
+Optimization variables
+q, qdot, xddot, Fr, soft_kf_frames
+
+Initialize Values()
+	
+	Robot Initial Joint Positions
+	Task List
+	Contact List
+	Soft KeyFrames
+
+	Hard Constraints:
+	Time Integration Constraints(time_steps)
+	Whole Body Controller Constraints(Task List)
+	Hard KeyFrames
+
+Initialize_Containers
+	Opt_Variable
+
+
+
+// Set state initial values and upper and lower bounds
+int timesteps = 1
+std::vector<double> robot_x;
+std::vector<double> task_accelerations;
+std::vector<double> Fr_x;
+std::vector<double> soft_kf_frames;
+
+Robot Initial Joint Positions -> getStates_Upper_Lower_Bounds(robot_x, robot_xupp, robot_xlow)
+Task List -> getStates(task_accelerations)
+Contact List -> getStates(Fr_x)
+
+Prepare OptVariable Container
+
+
+
+// Define F -----------------
+Get the current states for the timesteps.
+
+Populate F:
+
+	// True for all timesteps
+	Unlitateral Contacts:
+		LCP Constraints Phi*Fr 
+	Whole Body Controller
+	Time Integration
+
+	// For some timestamps
+	Key Frame
+
+
+
+// -----------------------------------------
+
+SNOPT user function:
+set x initially
+set x u,l bounds
+set F u,l bounds
+
+define F
+define G if possible
+
