@@ -84,6 +84,7 @@ target_link_libraries(traj_gen_main ${catkin_LIBRARIES} ${SJUtils}
 
 set(wbt_containers_sources  src/wbt_src/containers/wbt_opt_variable.cpp
 							src/wbt_src/containers/wbt_wholebody_task_list.cpp
+							src/wbt_src/containers/wbt_contact_list.cpp
 							src/wbt_src/containers/wbt_keyframe_list.cpp)	 
 
 set(wbt_task_sources src/wbt_src/tasks/wbt_task_com.cpp
@@ -93,9 +94,13 @@ set(wbt_task_sources src/wbt_src/tasks/wbt_task_com.cpp
 set(wbt_soft_constraint_sources src/wbt_src/soft_constraints/wbt_keyframe_position.cpp
 								src/wbt_src/soft_constraints/wbt_keyframe_orientation.cpp)
 
+set(wbt_contact_sources src/wbt_src/contacts/wbt_contact_leftfoot.cpp
+						src/wbt_src/contacts/wbt_contact_rightfoot.cpp)
+
 add_executable(wbt_main src/wbt_src/main.cpp 
 						${wbt_containers_sources}
 						${wbt_task_sources}
+						${wbt_contact_sources}
 						${wbt_soft_constraint_sources}
 						${val_sim_model_sources})
 target_link_libraries(wbt_main ${catkin_LIBRARIES} ${SJUtils}
