@@ -3,14 +3,13 @@ Optimization Object
 
 Objective_Functions
 
-Fr^T QFr			Reaction Force
-xddot^T Q xddot		Task Acceleration
-r^T Q r 			KeyFrames
+Fr^T Q Fr			Reaction Force
+xddot^T V xddot		Task Acceleration
+r^T M r 			KeyFrames
 
-qnom^T Q qnom
-qdot^T Q qdot
+qdot^T N qdot
 
-Fdot^T Q Fdot
+Fdot^T Q_1 Fdot
 
 Constraints
 	- Unilateral Contacts
@@ -30,8 +29,8 @@ Initialize Flow, Fupp     ----------------------
 
 Contact constraints:
 	num_contacts -> Number of Phi >=0
-	num_contacts -> Phi*Fr = 0
-	Friction Constraint Ufr >= 0
+	num_contacts -> Phi*||Fr|| = 0
+	Friction Constraint UFr >= 0
 
 Task constraints:
 	xddot number_of_contacts -> Phi*||xddot|| = 0
@@ -49,6 +48,8 @@ GetF ---------------------------------------------
 UpdateObjVars(x)
 
 Populate F
+	- Objective Function
+	- 
 
 Getq_qdot_state(timestep)
 Get_xddot(timestep)

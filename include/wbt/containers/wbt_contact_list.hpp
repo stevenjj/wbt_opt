@@ -9,8 +9,8 @@ public:
 	Contact_List();
 	~Contact_List();	
 
-	void append_task(Contact* whole_body_contact);
-	void get_task_list_copy(std::vector<Contact*>& contact_list_out);
+	void append_contact(Contact* whole_body_contact);
+	void get_contact_list_copy(std::vector<Contact*>& contact_list_out);
 
 	int get_size();
 	Contact* get_contact(int index);

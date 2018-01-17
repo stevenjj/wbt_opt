@@ -1,4 +1,71 @@
 #include <wbt/optimization_problems/wbt_opt_problem_wbdc.hpp>
+#include <Utils/utilities.hpp>
 
-WBDC_Opt::WBDC_Opt(){}
+#include <wbt/tasks/wbt_task_leftfoot.hpp>
+#include <wbt/contacts/wbt_contact_leftfoot.hpp>
+
+WBDC_Opt::WBDC_Opt(){
+	robot_model = RobotModel::GetRobotModel();
+
+	robot_q_init.resize(NUM_Q); 
+	robot_qdot_init.resize(NUM_QDOT);	
+
+	robot_q_init.setZero(); 
+	robot_qdot_init.setZero();
+
+	Initialization();
+}
+
 WBDC_Opt::~WBDC_Opt(){}
+
+void WBDC_Opt::Initialization(){
+	std::cout << "[WBDC_OPT] Initialization Called" << std::endl;
+	initialize_starting_configuration();
+	initialize_task_list();
+	initialize_contact_list();
+}
+
+void WBDC_Opt::initialize_starting_configuration(){
+ // Set Virtual Joints
+  // x_pos
+  robot_q_init[0] = 0.0;
+  // y_pos
+  robot_q_init[1] = 0.0;
+  // z_pos
+  robot_q_init[2] = 1.14; //1.135; //1.131; 
+  robot_q_init[NUM_QDOT] = 1.0; // Pelvis Quaternion w = 1.0
+
+
+  // Initialize Joints
+  robot_q_init[NUM_VIRTUAL + SJJointID::leftHipPitch] = -0.3; //r_joint_[r_joint_idx_map_.find("leftHipPitch"  )->second]->m_State.m_rValue[0] = -0.3;
+  robot_q_init[NUM_VIRTUAL + SJJointID::rightHipPitch] = -0.3;  //r_joint_[r_joint_idx_map_.find("rightHipPitch" )->second]->m_State.m_rValue[0] = -0.3;
+  robot_q_init[NUM_VIRTUAL + SJJointID::leftKneePitch] = 0.6;  //r_joint_[r_joint_idx_map_.find("leftKneePitch" )->second]->m_State.m_rValue[0] = 0.6;
+  robot_q_init[NUM_VIRTUAL + SJJointID::rightKneePitch] = 0.6;//r_joint_[r_joint_idx_map_.find("rightKneePitch")->second]->m_State.m_rValue[0] = 0.6;
+  robot_q_init[NUM_VIRTUAL + SJJointID::leftAnklePitch] = -0.3; //r_joint_[r_joint_idx_map_.find("leftAnklePitch")->second]->m_State.m_rValue[0] = -0.3;
+  robot_q_init[NUM_VIRTUAL + SJJointID::rightAnklePitch] = -0.3; //r_joint_[r_joint_idx_map_.find("rightAnklePitch")->second]->m_State.m_rValue[0] = -0.3;
+
+  robot_q_init[NUM_VIRTUAL + SJJointID::rightShoulderPitch] = 0.2; //r_joint_[r_joint_idx_map_.find("rightShoulderPitch")->second]->m_State.m_rValue[0] = 0.2;
+  robot_q_init[NUM_VIRTUAL + SJJointID::rightShoulderRoll] = 1.1;  //r_joint_[r_joint_idx_map_.find("rightShoulderRoll" )->second]->m_State.m_rValue[0] = 1.1;
+  robot_q_init[NUM_VIRTUAL + SJJointID::rightElbowPitch] = 0.4;  //r_joint_[r_joint_idx_map_.find("rightElbowPitch"   )->second]->m_State.m_rValue[0] = 0.4;
+  robot_q_init[NUM_VIRTUAL + SJJointID::rightForearmYaw] = 1.5;  //r_joint_[r_joint_idx_map_.find("rightForearmYaw" )->second]->m_State.m_rValue[0] = 1.5;
+
+  robot_q_init[NUM_VIRTUAL + SJJointID::leftShoulderPitch] = -0.2; //r_joint_[r_joint_idx_map_.find("rightShoulderPitch")->second]->m_State.m_rValue[0] = 0.2;
+  robot_q_init[NUM_VIRTUAL + SJJointID::leftShoulderRoll] = -1.1;  //r_joint_[r_joint_idx_map_.find("rightShoulderRoll" )->second]->m_State.m_rValue[0] = 1.1;
+  robot_q_init[NUM_VIRTUAL + SJJointID::leftElbowPitch] = -0.4;//0.4;  //r_joint_[r_joint_idx_map_.find("rightElbowPitch"   )->second]->m_State.m_rValue[0] = 0.4;
+  robot_q_init[NUM_VIRTUAL + SJJointID::leftForearmYaw] = 1.5;  //r_joint_[r_joint_idx_map_.find("rightForearmYaw" )->second]->m_State.m_rValue[0] = 1.5;	
+
+  std::cout << "[WBT] Robot Starting State Initialized" << std::endl;
+  sejong::pretty_print(robot_q_init, std::cout, "Q init");
+}
+
+void WBDC_Opt::initialize_task_list(){
+	wb_task_list.append_task(new LeftFoot_Task());
+
+  std::cout << "[WBT] Task List Initialized" << std::endl;  
+}
+
+void WBDC_Opt::initialize_contact_list(){
+  contact_list.append_contact(new LeftFoot_Contact());
+
+  std::cout << "[WBT] Contact List Initialized" << std::endl;  
+}

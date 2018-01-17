@@ -1,5 +1,5 @@
-#ifndef WBT_TASK_LEFTFOOT_H
-#define WBT_TASK_LEFTFOOT_H
+#ifndef WBT_CONTACT_LEFTFOOT_H
+#define WBT_CONTACT_LEFTFOOT_H
 
 #include <wbt/contacts/wbt_contact_main.hpp>
 #include "RobotModel.hpp"

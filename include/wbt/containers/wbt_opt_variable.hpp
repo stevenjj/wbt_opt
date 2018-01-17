@@ -12,8 +12,8 @@ public:
 	int			time_step = -1;
 	int 		index = -1;
 
-	double l_bound = -INFINITY;
-	double u_bound = INFINITY;	
+	double l_bound = -OPT_INFINITY;
+	double u_bound = OPT_INFINITY;	
 
 	// Constructors
 	WBT_Opt_Variable();

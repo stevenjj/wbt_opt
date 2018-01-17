@@ -9,11 +9,11 @@ Contact_List::~Contact_List(){
 	contact_list.clear();
 }
 
-void Contact_List::append_task(Contact* whole_body_contact){
+void Contact_List::append_contact(Contact* whole_body_contact){
 	contact_list.push_back(whole_body_contact);
 }
 
-void Contact_List::get_task_list_copy(std::vector<Contact*>& contact_list_out){
+void Contact_List::get_contact_list_copy(std::vector<Contact*>& contact_list_out){
 	contact_list_out = contact_list;
 }
 

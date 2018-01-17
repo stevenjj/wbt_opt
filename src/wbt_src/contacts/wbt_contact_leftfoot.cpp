@@ -1,7 +1,7 @@
 #include <wbt/contacts/wbt_contact_leftfoot.hpp>
 #include "valkyrie_definition.h"
 
-// Define LeftFoot Task ---------------------------------------------------------------
+// Define LeftFoot Contact ---------------------------------------------------------------
 LeftFoot_Contact::LeftFoot_Contact(){
 	robot_model_ = RobotModel::GetRobotModel();
 	contact_dim = 6;

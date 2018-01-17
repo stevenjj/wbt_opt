@@ -15,6 +15,9 @@
 #include <wbt/soft_constraints/wbt_keyframe_orientation.hpp>
 
 
+#include <wbt/contacts/wbt_contact_leftfoot.hpp>
+#include <wbt/contacts/wbt_contact_rightfoot.hpp>
+
 #include <wbt/optimization_problems/wbt_opt_problem_wbdc.hpp>
 
 void test_wbt_opt_variable(){
@@ -100,10 +103,20 @@ void test_keyframe_list(){
 
 }
 
+void test_wbt_contacts(){
+	std::cout << "Testing Contacts" << std::endl;
+	LeftFoot_Contact lfc;
+	std::cout << "Contact name: " << lfc.contact_name << std::endl;	
+
+	RightFoot_Contact rfc;
+	std::cout << "Contact name: " << rfc.contact_name << std::endl;	
+
+
+}
+
 void test_wbdc_opt_prob(){
 	std::cout << "Testing WBDC Opt Problem Instantiation" << std::endl;
 	WBDC_Opt wbdc_test_prob;
-
 }
 
 int main(int argc, char **argv)
@@ -114,6 +127,8 @@ int main(int argc, char **argv)
 	test_wholebody_task_objects();
 	test_wbt_keyframe();
 	test_keyframe_list();
+
+	test_wbt_contacts();
 
 	test_wbdc_opt_prob();
 
