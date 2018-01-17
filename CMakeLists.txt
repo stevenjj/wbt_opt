@@ -98,11 +98,15 @@ set(wbt_soft_constraint_sources src/wbt_src/soft_constraints/wbt_keyframe_positi
 set(wbt_contact_sources src/wbt_src/contacts/wbt_contact_leftfoot.cpp
 						src/wbt_src/contacts/wbt_contact_rightfoot.cpp)
 
+
+set(wbt_optimization_problems_sources src/wbt_src/optimization_problems/wbt_opt_problem_wbdc.cpp)
+
 add_executable(wbt_main src/wbt_src/main.cpp 
 						${wbt_containers_sources}
 						${wbt_task_sources}
 						${wbt_contact_sources}
 						${wbt_soft_constraint_sources}
+						${wbt_optimization_problems_sources}
 						${val_sim_model_sources})
 target_link_libraries(wbt_main ${catkin_LIBRARIES} ${SJUtils}
   								  				   ${SJurdf}

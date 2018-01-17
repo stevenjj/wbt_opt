@@ -8,6 +8,7 @@ class Wholebody_Controller_Constraint{
 public:
 	Wholebody_Controller_Constraint();
 	~Wholebody_Controller_Constraint();
+	RobotModel* robot_model_;	
 
 	WholeBody_Task_List wb_task_list;
 	sejong::Matrix B;

@@ -8,6 +8,7 @@ class Time_Integration_Constraint{
 public:
 	Time_Integration_Constraint();
 	~Time_Integration_Constraint();
+	RobotModel* robot_model_;	
 
 	double dt; 
 	int total_timesteps; 
