@@ -85,7 +85,8 @@ target_link_libraries(traj_gen_main ${catkin_LIBRARIES} ${SJUtils}
 set(wbt_containers_sources  src/wbt_src/containers/wbt_opt_variable.cpp
 							src/wbt_src/containers/wbt_wholebody_task_list.cpp
 							src/wbt_src/containers/wbt_contact_list.cpp
-							src/wbt_src/containers/wbt_keyframe_list.cpp)	 
+							src/wbt_src/containers/wbt_keyframe_list.cpp
+							src/wbt_src/containers/wbt_opt_variable_list.cpp)	 
 
 set(wbt_task_sources src/wbt_src/tasks/wbt_task_com.cpp
 					 src/wbt_src/tasks/wbt_task_leftfoot.cpp
@@ -108,6 +109,12 @@ target_link_libraries(wbt_main ${catkin_LIBRARIES} ${SJUtils}
 												   ${SJrbdl}
 												   ${SJsnopt})
 
+
+add_executable(snopt_example src/snopt_example.cpp)
+target_link_libraries(snopt_example ${catkin_LIBRARIES} ${SJUtils}
+  								  				   ${SJurdf}
+												   ${SJrbdl}
+												   ${SJsnopt})
 
 
 SET (THIS_PACKAGE_PATH "${PROJECT_SOURCE_DIR}/" )
