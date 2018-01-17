@@ -1,0 +1,20 @@
+Optimization Object
+
+
+Objective_Functions
+
+Fr^T QFr			Reaction Force
+xddot^T Q xddot		Task Acceleration
+r^T Q r 			KeyFrames
+
+qnom^T Q qnom
+qdot^T Q qdot
+
+Fdot^T Q Fdot
+
+Constraints
+	- Unilateral Contacts
+	- Whole Body Controller
+	- Time Integration 			
+
+	- Hard Key Frames
