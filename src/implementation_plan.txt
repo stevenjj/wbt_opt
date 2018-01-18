@@ -54,8 +54,13 @@ Populate F:
 SNOPT user function:
 set x initially
 set x u,l bounds
+
+
+
 set F u,l bounds
 
 define F
 define G if possible
 
+
+visualization of states

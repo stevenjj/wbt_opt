@@ -90,7 +90,10 @@ set(wbt_containers_sources  src/wbt_src/containers/wbt_opt_variable.cpp
 
 set(wbt_task_sources src/wbt_src/tasks/wbt_task_com.cpp
 					 src/wbt_src/tasks/wbt_task_leftfoot.cpp
+					 src/wbt_src/tasks/wbt_task_rightfoot.cpp					 
 					 src/wbt_src/tasks/wbt_task_rightfoot_righthand.cpp)
+
+set(wbt_hard_constraint_sources src/wbt_src/hard_constraints/wbt_wholebody_controller_constraint.cpp)
 
 set(wbt_soft_constraint_sources src/wbt_src/soft_constraints/wbt_keyframe_position.cpp
 								src/wbt_src/soft_constraints/wbt_keyframe_orientation.cpp)
@@ -106,6 +109,7 @@ add_executable(wbt_main src/wbt_src/main.cpp
 						${wbt_task_sources}
 						${wbt_contact_sources}
 						${wbt_soft_constraint_sources}
+						${wbt_hard_constraint_sources}
 						${wbt_optimization_problems_sources}
 						${val_sim_model_sources})
 target_link_libraries(wbt_main ${catkin_LIBRARIES} ${SJUtils}

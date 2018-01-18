@@ -3,6 +3,7 @@
 
 #include <wbt/tasks/wbt_task_leftfoot.hpp>
 #include <wbt/contacts/wbt_contact_leftfoot.hpp>
+#include <wbt/contacts/wbt_contact_rightfoot.hpp>
 
 WBDC_Opt::WBDC_Opt(){
 	robot_model = RobotModel::GetRobotModel();
@@ -19,7 +20,7 @@ WBDC_Opt::WBDC_Opt(){
 WBDC_Opt::~WBDC_Opt(){}
 
 void WBDC_Opt::Initialization(){
-	std::cout << "[WBDC_OPT] Initialization Called" << std::endl;
+	std::cout << "[WBDC_Opt] Initialization Called" << std::endl;
 	initialize_starting_configuration();
 	initialize_task_list();
 	initialize_contact_list();
@@ -54,18 +55,18 @@ void WBDC_Opt::initialize_starting_configuration(){
   robot_q_init[NUM_VIRTUAL + SJJointID::leftElbowPitch] = -0.4;//0.4;  //r_joint_[r_joint_idx_map_.find("rightElbowPitch"   )->second]->m_State.m_rValue[0] = 0.4;
   robot_q_init[NUM_VIRTUAL + SJJointID::leftForearmYaw] = 1.5;  //r_joint_[r_joint_idx_map_.find("rightForearmYaw" )->second]->m_State.m_rValue[0] = 1.5;	
 
-  std::cout << "[WBT] Robot Starting State Initialized" << std::endl;
-  sejong::pretty_print(robot_q_init, std::cout, "Q init");
+  std::cout << "[WBDC_Opt] Robot Starting State Initialized" << std::endl;
+  //sejong::pretty_print(robot_q_init, std::cout, "Q init");
 }
 
 void WBDC_Opt::initialize_task_list(){
 	wb_task_list.append_task(new LeftFoot_Task());
-
-  std::cout << "[WBT] Task List Initialized" << std::endl;  
+  std::cout << "[WBDC_Opt] Task List Initialized" << std::endl;  
+  wbc_constraint.set_task_list(&wb_task_list);
 }
 
 void WBDC_Opt::initialize_contact_list(){
   contact_list.append_contact(new LeftFoot_Contact());
-
-  std::cout << "[WBT] Contact List Initialized" << std::endl;  
+  contact_list.append_contact(new RightFoot_Contact());
+  std::cout << "[WBDC_Opt] Contact List Initialized" << std::endl;  
 }

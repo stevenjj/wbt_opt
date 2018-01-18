@@ -6,6 +6,8 @@
 #include <wbt/containers/wbt_wholebody_task_list.hpp>
 #include <wbt/containers/wbt_contact_list.hpp>
 
+#include <wbt/hard_constraints/wbt_wholebody_controller_constraint.hpp>
+
 #include "valkyrie_definition.h"
 #include "RobotModel.hpp"
 
@@ -26,6 +28,8 @@ public:
 
 	sejong::Vector robot_q_init;
   	sejong::Vector robot_qdot_init; 
+
+  	Wholebody_Controller_Constraint wbc_constraint;
 	
 };
 

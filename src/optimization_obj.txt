@@ -49,7 +49,6 @@ UpdateObjVars(x)
 
 Populate F
 	- Objective Function
-	- 
 
 Getq_qdot_state(timestep)
 Get_xddot(timestep)

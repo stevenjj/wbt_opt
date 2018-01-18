@@ -115,13 +115,15 @@ void test_wbt_contacts(){
 }
 
 void test_wbdc_opt_prob(){
-	std::cout << "Testing WBDC Opt Problem Instantiation" << std::endl;
+	std::cout << "[Main] Testing WBDC Opt Problem Instantiation" << std::endl;
 	WBDC_Opt wbdc_test_prob;
+
+	std::cout << "[Main] WBDC_OPT object constructed" << std::endl;
 }
 
 int main(int argc, char **argv)
 {
-	std::cout << "[WBT] Testing object and argument calls" << std::endl;
+	std::cout << "[Main] Testing object and argument calls" << std::endl;
 
 	test_wbt_opt_variable();
 	test_wholebody_task_objects();
@@ -131,6 +133,7 @@ int main(int argc, char **argv)
 	test_wbt_contacts();
 
 	test_wbdc_opt_prob();
+	std::cout << "[Main] WBDC_OPT object destroyed" << std::endl;
 
 	return 0;
 }
