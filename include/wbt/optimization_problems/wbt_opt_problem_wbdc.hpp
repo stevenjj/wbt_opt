@@ -3,6 +3,7 @@
 
 #include <wbt/optimization_problems/wbt_opt_problem_main.hpp>
 
+#include <wbt/containers/wbt_opt_variable_list.hpp>
 #include <wbt/containers/wbt_wholebody_task_list.hpp>
 #include <wbt/containers/wbt_contact_list.hpp>
 
@@ -21,7 +22,11 @@ public:
 	void initialize_task_list();	
 	void initialize_contact_list();
 
+	void initialize_opt_vars();
+
 	RobotModel* robot_model;
+
+	WBT_Opt_Variable_List opt_var_list;
 
 	Contact_List contact_list;
 	WholeBody_Task_List wb_task_list;
@@ -30,7 +35,18 @@ public:
   	sejong::Vector robot_qdot_init; 
 
   	Wholebody_Controller_Constraint wbc_constraint;
-	
+
+
+  	void initialize_F_bounds();
+
+  	void compute_F_objective_function();
+
+  	int constraint_size;
+  	void compute_F_constraints();
+
+  	void compute_G();
+
+
 };
 
 #endif

@@ -18,7 +18,7 @@ int WBT_Opt_Variable_List::get_size(){
 	return opt_var_list.size();
 }
 
-WBT_Opt_Variable* WBT_Opt_Variable_List::get_opt_variable(int index){
+WBT_Opt_Variable* WBT_Opt_Variable_List::get_opt_variable(const int index){
 	if ((index >= 0) && (index < opt_var_list.size())){
 		return opt_var_list[index];
 	}else{

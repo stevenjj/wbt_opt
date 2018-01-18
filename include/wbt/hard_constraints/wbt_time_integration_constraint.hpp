@@ -4,6 +4,8 @@
 #include <Utils/wrap_eigen.hpp>
 #include <string>
 #include <iostream>
+#include "RobotModel.hpp"
+
 class Time_Integration_Constraint{
 public:
 	Time_Integration_Constraint();

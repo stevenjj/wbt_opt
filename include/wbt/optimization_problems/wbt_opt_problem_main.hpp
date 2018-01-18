@@ -9,7 +9,7 @@ public:
   Optimization_Problem_Main(){}
   virtual ~Optimization_Problem_Main(){}
 
-  std::string task_name = "Undefined Optimization Problem";
+  std::string problem_name = "Undefined Optimization Problem";
 };
 
 #endif

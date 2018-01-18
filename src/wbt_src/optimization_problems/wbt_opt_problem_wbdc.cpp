@@ -70,3 +70,46 @@ void WBDC_Opt::initialize_contact_list(){
   contact_list.append_contact(new RightFoot_Contact());
   std::cout << "[WBDC_Opt] Contact List Initialized" << std::endl;  
 }
+
+// Main class implementation
+void WBDC_Opt::initialize_opt_vars(){
+  // For each timestep:
+    // timestep = 0 is a special case
+    // Populate wbt_opt_variable_list to initialize x_value, xlow, xupp
+
+}
+
+void WBDC_Opt::initialize_F_bounds(){
+  // Add Optimization Bounds
+
+  // For each timestep:
+    // Populate constraint function list
+
+    // Given Task List
+    // WBC constraint bounds
+
+    // Given Contact List, create:
+      // Contact and Task LCP Constraints
+      // Friction Constraints bounds
+
+    // Construct Time Integration Constraint bounds
+}
+
+void WBDC_Opt::compute_F_objective_function(){
+  // compute_objective_function(&wbt_opt_var_list)
+}
+
+void WBDC_Opt::compute_F_constraints(){
+  // We know the size of F.
+  // Compute F(timestep, wbt_opt_var_list)
+
+}
+
+
+
+
+
+
+
+
+
