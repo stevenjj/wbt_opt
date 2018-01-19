@@ -3,17 +3,24 @@
 
 #include <Utils/wrap_eigen.hpp>
 #include <vector>
+#include <string>
 #include <wbt/containers/wbt_opt_variable.hpp>
+#include <wbt/containers/wbt_opt_variable_list.hpp>
 
 class Constraint_Function{
-	Constraint_Function();
-	~Constraint_Function();
-	void evaluate_constraint(const WBT_Opt_Variable_List& var_list, sejong::Vector& F_vec);
-	void evaluate_sparse_gradient(const WBT_Opt_Variable_List& var_list, std::vector<double>& G, std::vector<int>& iG, std::vector<int>& jG);
+public:
+	Constraint_Function(){}
+	virtual ~Constraint_Function(){}
+	virtual void evaluate_constraint(const WBT_Opt_Variable_List& var_list, sejong::Vector& F_vec) {}
+	virtual void evaluate_sparse_gradient(const WBT_Opt_Variable_List& var_list, std::vector<double>& G, std::vector<int>& iG, std::vector<int>& jG) {}
 
 	// Each constraint containts its bounds
 	std::vector<double> F_low;
-	std::vector<double> F_upp;	
+	std::vector<double> F_upp;
+
+	std::string constraint_name = "undefined constraint";	
+
+	virtual void derived_test_function(){}
 };
 
 /*

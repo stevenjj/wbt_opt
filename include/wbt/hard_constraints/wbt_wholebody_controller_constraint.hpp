@@ -5,10 +5,11 @@
 #include <string>
 #include <iostream>
 
+#include <wbt/hard_constraints/wbt_constraint_main.hpp>
 #include <wbt/containers/wbt_wholebody_task_list.hpp>
 #include "RobotModel.hpp"
 
-class Wholebody_Controller_Constraint{
+class Wholebody_Controller_Constraint: public Constraint_Function{
 public:
 	Wholebody_Controller_Constraint();
 	Wholebody_Controller_Constraint(WholeBody_Task_List* wb_task_list_input);	
@@ -22,6 +23,7 @@ public:
 	int task_dim;
 
 	void set_task_list(WholeBody_Task_List* wb_task_list_input);
+	void derived_test_function();
 
 };
 #endif

@@ -2,10 +2,13 @@
 
 Wholebody_Controller_Constraint::Wholebody_Controller_Constraint(){
 	robot_model = RobotModel::GetRobotModel();
+	constraint_name = "WBC constraint";
 }
 Wholebody_Controller_Constraint::Wholebody_Controller_Constraint(WholeBody_Task_List* wb_task_list_input){
 	robot_model = RobotModel::GetRobotModel();
 	wb_task_list = wb_task_list_input;
+	constraint_name = "WBC constraint";
+	
 }
 
 Wholebody_Controller_Constraint::~Wholebody_Controller_Constraint(){}
@@ -19,4 +22,8 @@ void Wholebody_Controller_Constraint::set_task_list(WholeBody_Task_List* wb_task
 
 	std::cout << "[WBC Constraint] Task List Processed" << std::endl;
 	std::cout << "[WBC Constraint] Task list size: " << task_dim << std::endl;
+}
+
+void Wholebody_Controller_Constraint::derived_test_function(){
+	std::cout << " HELLO WORLD" << std::endl; 
 }

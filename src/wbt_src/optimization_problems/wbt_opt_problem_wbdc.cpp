@@ -24,6 +24,7 @@ void WBDC_Opt::Initialization(){
 	initialize_starting_configuration();
 	initialize_task_list();
 	initialize_contact_list();
+  initialize_constraint_list();  
 }
 
 void WBDC_Opt::initialize_starting_configuration(){
@@ -63,12 +64,24 @@ void WBDC_Opt::initialize_task_list(){
 	wb_task_list.append_task(new LeftFoot_Task());
   std::cout << "[WBDC_Opt] Task List Initialized" << std::endl;  
   wbc_constraint.set_task_list(&wb_task_list);
+
 }
 
 void WBDC_Opt::initialize_contact_list(){
   contact_list.append_contact(new LeftFoot_Contact());
   contact_list.append_contact(new RightFoot_Contact());
   std::cout << "[WBDC_Opt] Contact List Initialized" << std::endl;  
+}
+
+void WBDC_Opt::initialize_constraint_list(){
+  std::cout << "[WBDC_Opt] test wbc constraint append" << std::endl;
+  constraint_list.append_constraint(wbc_constraint);
+
+  std::cout << "    Constraint Name:" << constraint_list.get_constraint(0)->constraint_name << std::endl; 
+
+  std::cout << "       WBDC Task Size:" << std::endl; 
+  constraint_list.get_constraint(0)->derived_test_function();
+
 }
 
 // Main class implementation
