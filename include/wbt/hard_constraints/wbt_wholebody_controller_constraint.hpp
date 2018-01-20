@@ -23,7 +23,6 @@ public:
 	int task_dim;
 
 	void set_task_list(WholeBody_Task_List* wb_task_list_input);
-	void derived_test_function();
 
 };
 #endif

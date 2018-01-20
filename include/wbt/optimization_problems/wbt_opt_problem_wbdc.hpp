@@ -29,10 +29,6 @@ public:
 	sejong::Vector 								robot_q_init;
   	sejong::Vector 								robot_qdot_init; 
 
-  	Wholebody_Controller_Constraint 			wbc_constraint;
-
-	Constraint_Function							constraint_test;
-
   	void initialize_F_bounds();
 
   	void compute_F_objective_function();

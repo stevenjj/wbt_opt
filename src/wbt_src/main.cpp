@@ -121,6 +121,9 @@ void test_wbdc_opt_prob(){
 	std::cout << "[Main] WBDC_OPT object constructed" << std::endl;
 }
 
+void test_ptr_delete(){
+}
+
 int main(int argc, char **argv)
 {
 	std::cout << "[Main] Testing object and argument calls" << std::endl;
@@ -134,6 +137,9 @@ int main(int argc, char **argv)
 
 	test_wbdc_opt_prob();
 	std::cout << "[Main] WBDC_OPT object destroyed" << std::endl;
+
+	test_ptr_delete();
+
 
 	return 0;
 }

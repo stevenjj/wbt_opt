@@ -10,17 +10,15 @@ public:
 	Constraint_List();
 	~Constraint_List();	
 
-	void append_constraint(const Constraint_Function& constraint);	
+	void append_constraint(Constraint_Function* constraint);	
 
-	void get_constraint_list_copy(std::vector<Constraint_Function>& constraint_list_out);
+	void get_constraint_list_copy(std::vector<Constraint_Function*>& constraint_list_out);
 
 	int get_size();
 	Constraint_Function* get_constraint(int index);
 
 private:
-	std::vector<Constraint_Function> constraint_list;
-
-	std::vector<Constraint_Function*> constraint_list_ptr;	
+	std::vector<Constraint_Function*> constraint_list;
 
 };
 
