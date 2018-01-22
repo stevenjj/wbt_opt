@@ -154,6 +154,15 @@ void WBDC_Opt::initialize_opt_vars(){
   }
 
   std::cout << "[WBDC_OPT] Total number of optimization variables: " << opt_var_list.get_size() << std::endl;
+
+  sejong::Vector q_state_test;
+  sejong::Vector qdot_state_test;  
+  sejong::Vector xddot_test;
+  sejong::Vector Fr_test;
+  opt_var_list.get_var_states(0, q_state_test, qdot_state_test);
+  opt_var_list.get_task_accelerations(0, xddot_test);  
+  opt_var_list.get_var_reaction_forces(0, Fr_test);
+
 }
 
 
