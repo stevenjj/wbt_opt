@@ -14,6 +14,7 @@ public:
 	void append_variable(WBT_Opt_Variable* opt_variable);
 
 	void get_var_states(const int timestep, sejong::Vector q_state, sejong::Vector qdot_state);	
+	void get_task_accelerations(const int timestep, sejong::Vector xddot);		
 	void get_var_reaction_forces(const int timestep, sejong::Vector Fr_state);		
 	void get_var_keyframes(const int timestep, sejong::Vector keyframe_state);		
 

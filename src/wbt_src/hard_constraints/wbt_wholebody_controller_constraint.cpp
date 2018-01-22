@@ -31,7 +31,23 @@ void Wholebody_Controller_Constraint::Initialization(){
 
   Sv.block(0,0, NUM_VIRTUAL, NUM_VIRTUAL) = sejong::Matrix::Identity(NUM_VIRTUAL, NUM_VIRTUAL);
   Sa.block(0, NUM_VIRTUAL, NUM_ACT_JOINT, NUM_ACT_JOINT) = sejong::Matrix::Identity(NUM_ACT_JOINT, NUM_ACT_JOINT);
+  torque_limit = 1800;
 
+  initialize_Flow_Fupp();
+}
+
+void Wholebody_Controller_Constraint::initialize_Flow_Fupp(){
+  // WBC Virtual Torque Constraints
+  for(size_t i = 0; i < NUM_VIRTUAL; i++){
+    F_low.push_back(0.0);
+    F_upp.push_back(0.0);        
+  }
+  // WBC Torque Limit Constraints
+  for (size_t i = 0; i < NUM_QDOT; i++){
+    F_low.push_back(-torque_limit);
+    F_upp.push_back(torque_limit);    
+  }
+  std::cout << "Size of (Flow, Fupp): (" << F_low.size() << ", " << F_upp.size() << ")" << std::endl;
 }
 
 void Wholebody_Controller_Constraint::set_task_list(WholeBody_Task_List* wb_task_list_input){

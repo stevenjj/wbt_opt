@@ -35,6 +35,8 @@ public:
 	int task_dim;
 	int contact_dim;	
 
+	float torque_limit;
+
 	void set_task_list(WholeBody_Task_List* wb_task_list_input);
 	void set_contact_list(Contact_List* contact_list_input);
 	std::string constraint_name = "WBC constraint";
@@ -48,6 +50,7 @@ public:
 
 private:
 	void Initialization();
+	void initialize_Flow_Fupp();
 	void _WeightedInverse(const sejong::Matrix & J, const sejong::Matrix & Winv, sejong::Matrix & Jinv){
 	    sejong::Matrix lambda(J* Winv * J.transpose());
 	    sejong::Matrix lambda_inv;

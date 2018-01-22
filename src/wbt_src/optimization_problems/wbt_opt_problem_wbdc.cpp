@@ -153,10 +153,7 @@ void WBDC_Opt::initialize_opt_vars(){
 
   }
 
-
   std::cout << "[WBDC_OPT] Total number of optimization variables: " << opt_var_list.get_size() << std::endl;
-
-
 }
 
 
