@@ -3,6 +3,7 @@
 
 #include <Utils/wrap_eigen.hpp>
 #include <vector>
+#include <map>
 #include <wbt/containers/wbt_opt_variable.hpp>
 
 class WBT_Opt_Variable_List{
@@ -19,10 +20,20 @@ public:
 	int get_size();
 	WBT_Opt_Variable* get_opt_variable(const int index);
 
+	void update_x(std::vector<double> x_in);
 	void populate_x(std::vector<double> x_out);
 
 private:
+	void add_variable_to_map(std::map<int, std::vector<WBT_Opt_Variable*> > &map_time_to_var_vec, WBT_Opt_Variable* opt_variable);
+
 	std::vector<WBT_Opt_Variable*> opt_var_list;
+
+	std::map<int, std::vector<WBT_Opt_Variable*> > timestep_to_q_state_vars;
+	std::map<int, std::vector<WBT_Opt_Variable*> > timestep_to_qdot_state_vars;
+	std::map<int, std::vector<WBT_Opt_Variable*> > timestep_to_xddot_vars;
+	std::map<int, std::vector<WBT_Opt_Variable*> > timestep_to_Fr_vars;
+	std::map<int, std::vector<WBT_Opt_Variable*> > timestep_to_keyframe_vars;
+		
 	//std::vector< int, std::vector<WBT_Opt_Variable*> > 
 };
 

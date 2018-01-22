@@ -111,21 +111,21 @@ void WBDC_Opt::initialize_opt_vars(){
     // If timestep is 0. The robot states(q qdot) are set to the initial configuration.
     if (i == 0){
       for(size_t j = 0; j < NUM_Q; j++){
-        WBT_Opt_Variable* q_var = new WBT_Opt_Variable("q_state", i, robot_q_init[j], robot_q_init[j] - OPT_ZERO_EPS, robot_q_init[j] + OPT_ZERO_EPS);
+        WBT_Opt_Variable* q_var = new WBT_Opt_Variable("q_state", VAR_TYPE_Q, i, robot_q_init[j], robot_q_init[j] - OPT_ZERO_EPS, robot_q_init[j] + OPT_ZERO_EPS);
         opt_var_list.append_variable(q_var);
       }
       for(size_t j = 0; j < NUM_QDOT; j++){
-        WBT_Opt_Variable* qdot_var = new WBT_Opt_Variable("qdot_state", i, robot_qdot_init[j], robot_qdot_init[j] - OPT_ZERO_EPS, robot_qdot_init[j] + OPT_ZERO_EPS);
+        WBT_Opt_Variable* qdot_var = new WBT_Opt_Variable("qdot_state", VAR_TYPE_QDOT, i, robot_qdot_init[j], robot_qdot_init[j] - OPT_ZERO_EPS, robot_qdot_init[j] + OPT_ZERO_EPS);
         opt_var_list.append_variable(qdot_var);
       }
     }else{
       // For all future configuration evolutions, apply joint limit constraints. For now, let's set joints to be unbounded.
       for(size_t j = 0; j < NUM_Q; j++){
-        WBT_Opt_Variable* q_var = new WBT_Opt_Variable("q_state", i, robot_q_init[j], -OPT_INFINITY, OPT_INFINITY);
+        WBT_Opt_Variable* q_var = new WBT_Opt_Variable("q_state", VAR_TYPE_Q, i, robot_q_init[j], -OPT_INFINITY, OPT_INFINITY);
         opt_var_list.append_variable(q_var);
       }
       for(size_t j = 0; j < NUM_QDOT; j++){
-        WBT_Opt_Variable* qdot_var = new WBT_Opt_Variable("qdot_state", i, robot_qdot_init[j], -OPT_INFINITY, OPT_INFINITY);
+        WBT_Opt_Variable* qdot_var = new WBT_Opt_Variable("qdot_state", VAR_TYPE_QDOT, i, robot_qdot_init[j], -OPT_INFINITY, OPT_INFINITY);
         opt_var_list.append_variable(qdot_var);      
       }
     }
@@ -134,7 +134,7 @@ void WBDC_Opt::initialize_opt_vars(){
     //---------------------------------------------------------------------------------------------------------------------  
     // Task Acceleration Initialization   
     for(size_t j = 0; j < ptr_wbc_constraint->task_dim; j++){
-        WBT_Opt_Variable* xddot_var = new WBT_Opt_Variable("xddot", i, 0.0, -OPT_INFINITY, OPT_INFINITY);
+        WBT_Opt_Variable* xddot_var = new WBT_Opt_Variable("xddot", VAR_TYPE_TA, i, 0.0, -OPT_INFINITY, OPT_INFINITY);
         opt_var_list.append_variable(xddot_var);      
     }
     //---------------------------------------------------------------------------------------------------------------------
@@ -142,7 +142,7 @@ void WBDC_Opt::initialize_opt_vars(){
     //---------------------------------------------------------------------------------------------------------------------  
     // Reaction Force Initialization   
     for(size_t j = 0; j < ptr_wbc_constraint->contact_dim; j++){
-        WBT_Opt_Variable* Fr_var = new WBT_Opt_Variable("Fr", i, 0.0, -OPT_INFINITY, OPT_INFINITY);
+        WBT_Opt_Variable* Fr_var = new WBT_Opt_Variable("Fr", VAR_TYPE_FR, i, 0.0, -OPT_INFINITY, OPT_INFINITY);
         opt_var_list.append_variable(Fr_var);      
     }
     //---------------------------------------------------------------------------------------------------------------------    
@@ -152,8 +152,6 @@ void WBDC_Opt::initialize_opt_vars(){
     //
 
   }
-
-
 
 
   std::cout << "[WBDC_OPT] Total number of optimization variables: " << opt_var_list.get_size() << std::endl;
