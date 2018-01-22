@@ -76,8 +76,8 @@ void WBDC_Opt::initialize_contact_list(){
 }
 
 void WBDC_Opt::initialize_constraint_list(){
-  std::cout << "[WBDC_Opt] Initializing Constraints" << std::endl;
-  constraint_list.append_constraint(new Wholebody_Controller_Constraint(&wb_task_list));
+  std::cout << "[WBDC_Opt] Initializing WBC Constraints" << std::endl;
+  constraint_list.append_constraint(new Wholebody_Controller_Constraint(&wb_task_list, &contact_list));
 
 }
 
