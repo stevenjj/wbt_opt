@@ -15,7 +15,7 @@ WBDC_Opt::WBDC_Opt(){
 	robot_q_init.setZero(); 
 	robot_qdot_init.setZero();
 
-	Initialization();
+  Initialization();
 }
 
 WBDC_Opt::~WBDC_Opt(){
@@ -23,10 +23,14 @@ WBDC_Opt::~WBDC_Opt(){
 
 void WBDC_Opt::Initialization(){
 	std::cout << "[WBDC_Opt] Initialization Called" << std::endl;
-	initialize_starting_configuration();
+	total_timesteps = 1;
+  initialize_starting_configuration();
 	initialize_task_list();
 	initialize_contact_list();
   initialize_constraint_list();  
+
+
+  initialize_opt_vars();
 }
 
 void WBDC_Opt::initialize_starting_configuration(){
@@ -81,6 +85,7 @@ void WBDC_Opt::initialize_constraint_list(){
   constraint_list.append_constraint(new Wholebody_Controller_Constraint(&wb_task_list, &contact_list));
 
 
+  // Test WBC B and c matrix construction
   sejong::Matrix B_test;
   sejong::Vector c_test;  
   constraint_list.get_constraint(0)->test_function2(robot_q_init, robot_qdot_init, B_test, c_test);
@@ -93,7 +98,44 @@ void WBDC_Opt::initialize_opt_vars(){
     // timestep = 0 is a special case
     // Populate wbt_opt_variable_list to initialize x_value, xlow, xupp
 
+  std::cout << "[WBDC_OPT] Initializing Optimization Variables" << std::endl;
+
+  for(size_t i = 0; i < total_timesteps; i++){
+
+    // -------------------------------------------------------------------------------------------------------------------
+    // Robot State Initialization
+    // If timestep is 0. The robot states(q qdot) are set to the initial configuration.
+    if (i == 0){
+      for(size_t j = 0; j < NUM_Q; j++){
+        WBT_Opt_Variable* q_var = new WBT_Opt_Variable("q_state", i, robot_q_init[j], robot_q_init[j] - OPT_ZERO_EPS, robot_q_init[j] + OPT_ZERO_EPS);
+        opt_var_list.append_variable(q_var);
+      }
+      for(size_t j = 0; j < NUM_QDOT; j++){
+        WBT_Opt_Variable* qdot_var = new WBT_Opt_Variable("qdot_state", i, robot_qdot_init[j], robot_qdot_init[j] - OPT_ZERO_EPS, robot_qdot_init[j] + OPT_ZERO_EPS);
+        opt_var_list.append_variable(qdot_var);
+      }
+    }else{
+      // For all future configuration evolutions, apply joint limit constraints. For now, let's set joints to be unbounded.
+      for(size_t j = 0; j < NUM_Q; j++){
+        WBT_Opt_Variable* q_var = new WBT_Opt_Variable("q_state", i, robot_q_init[j], -OPT_INFINITY, OPT_INFINITY);
+        opt_var_list.append_variable(q_var);
+      }
+      for(size_t j = 0; j < NUM_QDOT; j++){
+        WBT_Opt_Variable* qdot_var = new WBT_Opt_Variable("qdot_state", i, robot_qdot_init[j], -OPT_INFINITY, OPT_INFINITY);
+        opt_var_list.append_variable(qdot_var);      
+      }
+    }
+    //---------------------------------------------------------------------------------------------------------------------
+
+
+  }
+
+
+  std::cout << "[WBDC_OPT] Total number of optimization variables: " << opt_var_list.get_size() << std::endl;
+
+
 }
+
 
 void WBDC_Opt::initialize_F_bounds(){
   // Add Optimization Bounds

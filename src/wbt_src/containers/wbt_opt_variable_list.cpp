@@ -7,6 +7,7 @@ WBT_Opt_Variable_List::~WBT_Opt_Variable_List(){
 		delete opt_var_list[i];
 	}
 	opt_var_list.clear();
+	std::cout << "Optimization Variable List Destructor Called" << std::endl;
 }
 
 void WBT_Opt_Variable_List::append_variable(WBT_Opt_Variable* opt_variable){

@@ -18,6 +18,8 @@ public:
 	// Constructors
 	WBT_Opt_Variable();
 	WBT_Opt_Variable(std::string _name, double _value);
+	WBT_Opt_Variable(std::string _name, double _value, double _l_bound, double _u_bound);	
+	WBT_Opt_Variable(std::string _name, int _time_step, double _value, double _l_bound, double _u_bound);	
 
 	// Destructors
 	~WBT_Opt_Variable();	

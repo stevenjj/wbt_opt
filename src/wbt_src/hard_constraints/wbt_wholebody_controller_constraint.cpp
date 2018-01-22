@@ -3,16 +3,16 @@
 #include "valkyrie_definition.h"
 
 Wholebody_Controller_Constraint::Wholebody_Controller_Constraint(){
-	robot_model = RobotModel::GetRobotModel();
+	Initialization();
 }
 
 Wholebody_Controller_Constraint::Wholebody_Controller_Constraint(WholeBody_Task_List* wb_task_list_input){
-	robot_model = RobotModel::GetRobotModel();
+	Initialization();
 	set_task_list(wb_task_list_input);
 }
 
 Wholebody_Controller_Constraint::Wholebody_Controller_Constraint(WholeBody_Task_List* wb_task_list_input, Contact_List* contact_list_input){
-	robot_model = RobotModel::GetRobotModel();
+	Initialization();
 	set_task_list(wb_task_list_input);
 	set_contact_list(contact_list_input);
 }
@@ -21,6 +21,18 @@ Wholebody_Controller_Constraint::~Wholebody_Controller_Constraint(){
 	std::cout << "WCC destructor called" << std::endl;
 }
 
+
+void Wholebody_Controller_Constraint::Initialization(){
+  robot_model = RobotModel::GetRobotModel();	
+  Sv.resize(NUM_VIRTUAL, NUM_QDOT);
+  Sa.resize(NUM_ACT_JOINT, NUM_QDOT);
+  Sv.setZero();
+  Sa.setZero();
+
+  Sv.block(0,0, NUM_VIRTUAL, NUM_VIRTUAL) = sejong::Matrix::Identity(NUM_VIRTUAL, NUM_VIRTUAL);
+  Sa.block(0, NUM_VIRTUAL, NUM_ACT_JOINT, NUM_ACT_JOINT) = sejong::Matrix::Identity(NUM_ACT_JOINT, NUM_ACT_JOINT);
+
+}
 
 void Wholebody_Controller_Constraint::set_task_list(WholeBody_Task_List* wb_task_list_input){
 	std::cout << "[WBC Constraint] Processing Task List" << std::endl;
@@ -69,7 +81,7 @@ void Wholebody_Controller_Constraint::getB_c(const sejong::Vector &q, const sejo
 
   int tot_task_size(0);
 
-  robot_model->UpdateModel(q, qdot);
+  robot_model->UpdateModel(q, qdot); // Update Model. This call should be moved so that it's only called once.
   robot_model->getInverseMassInertia(Ainv);
   task->getTaskJacobian(q, Jt);
   task->getTaskJacobianDotQdot(q, qdot, JtDotQdot);
@@ -132,6 +144,14 @@ void Wholebody_Controller_Constraint::get_Jc(const sejong::Vector &q, sejong::Ma
   }
 
   Jc_out = Jc;
-
 }
+
+/*
+
+get states q, qdot
+get xddot task accelerations
+get Fr reaction Force
+
+qddot = Bxddot + c
+Aqddot + b + g - Jc^T *Fr */
 

@@ -29,6 +29,8 @@ public:
 	sejong::Vector 								robot_q_init;
   	sejong::Vector 								robot_qdot_init; 
 
+  	int 										total_timesteps;
+
   	void initialize_F_bounds();
 
   	void compute_F_objective_function();

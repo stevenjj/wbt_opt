@@ -28,6 +28,10 @@ public:
 
 	sejong::Matrix Jc_int; // Contact Jacobian
 
+	sejong::Matrix Sv; // Virtual Joints selection matrix
+	sejong::Matrix Sa; // Actuated Joints selection matrix	
+
+
 	int task_dim;
 	int contact_dim;	
 
@@ -43,6 +47,7 @@ public:
 	void test_function2(const sejong::Vector &q, const sejong::Vector &qdot, sejong::Matrix &B_out, sejong::Vector &c_out);
 
 private:
+	void Initialization();
 	void _WeightedInverse(const sejong::Matrix & J, const sejong::Matrix & Winv, sejong::Matrix & Jinv){
 	    sejong::Matrix lambda(J* Winv * J.transpose());
 	    sejong::Matrix lambda_inv;
