@@ -2,6 +2,7 @@
 #include <Utils/utilities.hpp>
 
 #include <wbt/tasks/wbt_task_leftfoot.hpp>
+#include <wbt/tasks/wbt_task_rightfoot.hpp>
 #include <wbt/contacts/wbt_contact_leftfoot.hpp>
 #include <wbt/contacts/wbt_contact_rightfoot.hpp>
 
@@ -66,7 +67,7 @@ void WBDC_Opt::initialize_task_list(){
   std::cout << "[WBDC_Opt] Task List Initialized" << std::endl;  
   wbc_constraint.set_task_list(&wb_task_list);*/
   wb_task_list.append_task(new LeftFoot_Task());
-
+  wb_task_list.append_task(new RightFoot_Task());  
 }
 
 void WBDC_Opt::initialize_contact_list(){
@@ -78,6 +79,11 @@ void WBDC_Opt::initialize_contact_list(){
 void WBDC_Opt::initialize_constraint_list(){
   std::cout << "[WBDC_Opt] Initializing WBC Constraints" << std::endl;
   constraint_list.append_constraint(new Wholebody_Controller_Constraint(&wb_task_list, &contact_list));
+
+
+  sejong::Matrix B_test;
+  sejong::Vector c_test;  
+  constraint_list.get_constraint(0)->test_function2(robot_q_init, robot_qdot_init, B_test, c_test);
 
 }
 

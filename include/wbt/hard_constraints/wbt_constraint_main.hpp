@@ -23,6 +23,9 @@ public:
 
 	std::string constraint_name = "undefined constraint";	
 
+
+	virtual void test_function(){}
+	virtual	void test_function2(const sejong::Vector &q, const sejong::Vector &qdot, sejong::Matrix &B_out, sejong::Vector &c_out){}
 };
 
 /*

@@ -44,6 +44,15 @@ void Wholebody_Controller_Constraint::set_contact_list(Contact_List* contact_lis
 	std::cout << "[WBC Constraint] Contact size: " << contact_dim << std::endl;
 }
 
+void Wholebody_Controller_Constraint::test_function(){
+	std::cout << "[WBC Constraint] Test function called" << std::endl;
+}
+
+void Wholebody_Controller_Constraint::test_function2(const sejong::Vector &q, const sejong::Vector &qdot, sejong::Matrix &B_out, sejong::Vector &c_out){
+	getB_c(q, qdot, B_out, c_out);	
+	get_Jc(q, Jc_int);
+	sejong::pretty_print(Jc_int, std::cout, "WBDC: Jc_int");
+}
 
 void Wholebody_Controller_Constraint::getB_c(const sejong::Vector &q, const sejong::Vector &qdot, sejong::Matrix &B_out, sejong::Vector &c_out){
   sejong::Matrix B;
@@ -60,6 +69,7 @@ void Wholebody_Controller_Constraint::getB_c(const sejong::Vector &q, const sejo
 
   int tot_task_size(0);
 
+  robot_model->UpdateModel(q, qdot);
   robot_model->getInverseMassInertia(Ainv);
   task->getTaskJacobian(q, Jt);
   task->getTaskJacobianDotQdot(q, qdot, JtDotQdot);
@@ -68,8 +78,10 @@ void Wholebody_Controller_Constraint::getB_c(const sejong::Vector &q, const sejo
   B = Jt_inv;
   c = Jt_inv * JtDotQdot;
 
+
   Npre = sejong::Matrix::Identity(NUM_QDOT, NUM_QDOT) - Jt_inv * Jt;
   tot_task_size += task->task_dim;
+
 
 
   for(int i(1); i<wb_task_list->get_size(); ++i){
@@ -102,3 +114,24 @@ void Wholebody_Controller_Constraint::getB_c(const sejong::Vector &q, const sejo
   B_out = B;
   c_out = c;
 }
+
+// Gets the contact Jacobian Jc
+void Wholebody_Controller_Constraint::get_Jc(const sejong::Vector &q, sejong::Matrix &Jc_out){
+  Contact* contact;
+  sejong::Matrix Jc;
+  sejong::Matrix Jtmp;
+  int total_contact_dim = 0;
+  for(int i = 0; i < contact_list->get_size(); i++){ 	
+  	contact = contact_list->get_contact(i);
+  	contact->getContactJacobian(q, Jtmp); 
+
+  	Jc.conservativeResize(total_contact_dim + contact->contact_dim, NUM_QDOT);
+  	Jc.block(total_contact_dim, 0, contact->contact_dim, NUM_QDOT) = Jtmp;
+
+  	total_contact_dim += contact->contact_dim;
+  }
+
+  Jc_out = Jc;
+
+}
+

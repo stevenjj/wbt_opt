@@ -37,6 +37,10 @@ public:
 
 
 	void getB_c(const sejong::Vector &q, const sejong::Vector &qdot, sejong::Matrix &B_out, sejong::Vector &c_out);
+	void get_Jc(const sejong::Vector &q, sejong::Matrix &Jc_out);
+
+	void test_function();
+	void test_function2(const sejong::Vector &q, const sejong::Vector &qdot, sejong::Matrix &B_out, sejong::Vector &c_out);
 
 private:
 	void _WeightedInverse(const sejong::Matrix & J, const sejong::Matrix & Winv, sejong::Matrix & Jinv){
