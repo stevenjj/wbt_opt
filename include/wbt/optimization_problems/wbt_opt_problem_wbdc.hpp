@@ -31,6 +31,11 @@ public:
 
   	int 										total_timesteps;
 
+
+ 	Wholebody_Controller_Constraint*  			ptr_wbc_constraint;
+
+
+
   	void initialize_F_bounds();
 
   	void compute_F_objective_function();

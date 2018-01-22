@@ -38,10 +38,14 @@ void Wholebody_Controller_Constraint::set_task_list(WholeBody_Task_List* wb_task
 	std::cout << "[WBC Constraint] Processing Task List" << std::endl;
 
 	wb_task_list = wb_task_list_input;	
-	task_dim = wb_task_list->get_size();
+	task_dim = 0;
+	for(size_t i = 0; i < wb_task_list->get_size(); i++){
+		task_dim += wb_task_list->get_task(i)->task_dim;
+	}
 
 	std::cout << "[WBC Constraint] Task List Processed" << std::endl;
-	std::cout << "[WBC Constraint] Task list size: " << task_dim << std::endl;
+	std::cout << "[WBC Constraint] Task List size: " << wb_task_list->get_size() << std::endl;
+	std::cout << "[WBC Constraint] Task Dimension size: " << task_dim << std::endl;
 }
 
 
@@ -50,10 +54,15 @@ void Wholebody_Controller_Constraint::set_contact_list(Contact_List* contact_lis
 	std::cout << "[WBC Constraint] Processing Contact List" << std::endl;
 
 	contact_list = contact_list_input;
-	contact_dim = contact_list->get_size();
+
+  contact_dim = 0;
+  for(size_t i = 0; i < contact_list->get_size(); i++){
+    contact_dim += contact_list->get_contact(i)->contact_dim;
+  }  
 
 	std::cout << "[WBC Constraint] Contact List Processed" << std::endl;
-	std::cout << "[WBC Constraint] Contact size: " << contact_dim << std::endl;
+  std::cout << "[WBC Constraint] Contact List size: " << contact_list->get_size() << std::endl;
+	std::cout << "[WBC Constraint] Contact Dimension: " << contact_dim << std::endl;
 }
 
 void Wholebody_Controller_Constraint::test_function(){

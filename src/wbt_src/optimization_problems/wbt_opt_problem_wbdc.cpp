@@ -15,6 +15,7 @@ WBDC_Opt::WBDC_Opt(){
 	robot_q_init.setZero(); 
 	robot_qdot_init.setZero();
 
+  ptr_wbc_constraint = new Wholebody_Controller_Constraint();
   Initialization();
 }
 
@@ -82,13 +83,17 @@ void WBDC_Opt::initialize_contact_list(){
 
 void WBDC_Opt::initialize_constraint_list(){
   std::cout << "[WBDC_Opt] Initializing WBC Constraints" << std::endl;
-  constraint_list.append_constraint(new Wholebody_Controller_Constraint(&wb_task_list, &contact_list));
+
+  ptr_wbc_constraint->set_task_list(&wb_task_list);
+  ptr_wbc_constraint->set_contact_list(&contact_list);  
+//  constraint_list.append_constraint(new Wholebody_Controller_Constraint(&wb_task_list, &contact_list));
+  constraint_list.append_constraint(ptr_wbc_constraint);  
 
 
   // Test WBC B and c matrix construction
-  sejong::Matrix B_test;
+/*  sejong::Matrix B_test;
   sejong::Vector c_test;  
-  constraint_list.get_constraint(0)->test_function2(robot_q_init, robot_qdot_init, B_test, c_test);
+  constraint_list.get_constraint(0)->test_function2(robot_q_init, robot_qdot_init, B_test, c_test);*/
 
 }
 
@@ -101,7 +106,6 @@ void WBDC_Opt::initialize_opt_vars(){
   std::cout << "[WBDC_OPT] Initializing Optimization Variables" << std::endl;
 
   for(size_t i = 0; i < total_timesteps; i++){
-
     // -------------------------------------------------------------------------------------------------------------------
     // Robot State Initialization
     // If timestep is 0. The robot states(q qdot) are set to the initial configuration.
@@ -127,8 +131,29 @@ void WBDC_Opt::initialize_opt_vars(){
     }
     //---------------------------------------------------------------------------------------------------------------------
 
+    //---------------------------------------------------------------------------------------------------------------------  
+    // Task Acceleration Initialization   
+    for(size_t j = 0; j < ptr_wbc_constraint->task_dim; j++){
+        WBT_Opt_Variable* xddot_var = new WBT_Opt_Variable("xddot", i, 0.0, -OPT_INFINITY, OPT_INFINITY);
+        opt_var_list.append_variable(xddot_var);      
+    }
+    //---------------------------------------------------------------------------------------------------------------------
+
+    //---------------------------------------------------------------------------------------------------------------------  
+    // Reaction Force Initialization   
+    for(size_t j = 0; j < ptr_wbc_constraint->contact_dim; j++){
+        WBT_Opt_Variable* Fr_var = new WBT_Opt_Variable("Fr", i, 0.0, -OPT_INFINITY, OPT_INFINITY);
+        opt_var_list.append_variable(Fr_var);      
+    }
+    //---------------------------------------------------------------------------------------------------------------------    
+
+    // Key Frame List Initialization
+    // Insert initialization here
+    //
 
   }
+
+
 
 
   std::cout << "[WBDC_OPT] Total number of optimization variables: " << opt_var_list.get_size() << std::endl;
