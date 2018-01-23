@@ -32,6 +32,7 @@ void WBDC_Opt::Initialization(){
 
 
   initialize_opt_vars();
+  initialize_F_bounds();
 }
 
 void WBDC_Opt::initialize_starting_configuration(){
@@ -167,6 +168,28 @@ void WBDC_Opt::initialize_opt_vars(){
 
 
 void WBDC_Opt::initialize_F_bounds(){
+  std::vector<double> F_low;
+  std::vector<double> F_upp;
+
+  for(size_t i = 0; i < constraint_list.get_size(); i++){
+    for(size_t j = 0; j < constraint_list.get_constraint(i)->F_low.size(); j++ ){
+      F_low.push_back(constraint_list.get_constraint(i)->F_low[j]);
+    }
+    for(size_t j = 0; j < constraint_list.get_constraint(i)->F_upp.size(); j++ ){
+      F_upp.push_back(constraint_list.get_constraint(i)->F_upp[j]);
+    }
+  }
+
+
+  // Debug Statements
+/*  for (size_t i = 0; i < F_low.size(); i++){
+    std::cout << "F_low[i] = " << F_low[i] << std::endl;
+  }
+
+  for (size_t i = 0; i < F_upp.size(); i++){
+    std::cout << "F_upp[i] = " << F_upp[i] << std::endl;
+  }*/
+
   // Add Optimization Bounds
 
   // For each timestep:
@@ -189,6 +212,9 @@ void WBDC_Opt::compute_F_objective_function(){
 void WBDC_Opt::compute_F_constraints(){
   // We know the size of F.
   // Compute F(timestep, wbt_opt_var_list)
+
+  for(size_t i = 0; i < total_timesteps; i++){
+  }
 
 }
 

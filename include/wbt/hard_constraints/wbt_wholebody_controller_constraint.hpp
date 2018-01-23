@@ -48,6 +48,8 @@ public:
 	void test_function();
 	void test_function2(const sejong::Vector &q, const sejong::Vector &qdot, sejong::Matrix &B_out, sejong::Vector &c_out);
 
+	void evaluate_constraint(const int &timestep, WBT_Opt_Variable_List& var_list, sejong::Vector& F_vec);
+
 private:
 	void Initialization();
 	void initialize_Flow_Fupp();

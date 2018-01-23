@@ -14,8 +14,8 @@ public:
 	virtual ~Constraint_Function(){
 		std::cout << "Constraint Function Destructor called" << std::endl;
 	}
-	virtual void evaluate_constraint(const WBT_Opt_Variable_List& var_list, sejong::Vector& F_vec) {}
-	virtual void evaluate_sparse_gradient(const WBT_Opt_Variable_List& var_list, std::vector<double>& G, std::vector<int>& iG, std::vector<int>& jG) {}
+	virtual void evaluate_constraint(const int &timestep, WBT_Opt_Variable_List& var_list, sejong::Vector& F_vec) {}
+	virtual void evaluate_sparse_gradient(WBT_Opt_Variable_List& var_list, std::vector<double>& G, std::vector<int>& iG, std::vector<int>& jG) {}
 
 	// Each constraint containts its bounds
 	std::vector<double> F_low;

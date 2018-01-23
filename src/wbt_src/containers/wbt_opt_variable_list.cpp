@@ -63,9 +63,9 @@ void WBT_Opt_Variable_List::get_var_states(const int &timestep, sejong::Vector &
 		convert_to_vector(timestep, timestep_to_q_state_vars, q_state);
 		convert_to_vector(timestep, timestep_to_qdot_state_vars, qdot_state);		
 
-		for(size_t i = 0; i < q_state.size(); i++){
+/*		for(size_t i = 0; i < q_state.size(); i++){
 			std::cout << " q_vec[i] val = " << q_state[i] << std::endl;
-		}
+		}*/
 /*		for(size_t i = 0; i < qdot_state.size(); i++){
 			std::cout << " qdot_vec[i] val = " << qdot_state[i] << std::endl;
 		}		*/

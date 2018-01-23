@@ -47,7 +47,7 @@ void Wholebody_Controller_Constraint::initialize_Flow_Fupp(){
     F_low.push_back(-torque_limit);
     F_upp.push_back(torque_limit);    
   }
-  std::cout << "Size of (Flow, Fupp): (" << F_low.size() << ", " << F_upp.size() << ")" << std::endl;
+  //std::cout << "Size of (Flow, Fupp): (" << F_low.size() << ", " << F_upp.size() << ")" << std::endl;
 }
 
 void Wholebody_Controller_Constraint::set_task_list(WholeBody_Task_List* wb_task_list_input){
@@ -169,6 +169,19 @@ void Wholebody_Controller_Constraint::get_Jc(const sejong::Vector &q, sejong::Ma
   }
 
   Jc_out = Jc;
+}
+
+void Wholebody_Controller_Constraint::evaluate_constraint(const int &timestep, WBT_Opt_Variable_List& var_list, sejong::Vector& F_vec){
+  sejong::Vector q_state;
+  sejong::Vector qdot_state;
+  sejong::Vector xddot;
+  sejong::Vector Fr;
+
+  var_list.get_var_states(timestep, q_state, qdot_state);
+  var_list.get_task_accelerations(timestep, xddot);
+  var_list.get_var_reaction_forces(timestep, Fr);
+
+
 }
 
 /*
