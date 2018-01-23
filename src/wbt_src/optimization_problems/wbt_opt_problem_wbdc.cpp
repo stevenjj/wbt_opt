@@ -210,10 +210,30 @@ void WBDC_Opt::compute_F_objective_function(){
 }
 
 void WBDC_Opt::compute_F_constraints(){
+  // Update var_list
+
   // We know the size of F.
   // Compute F(timestep, wbt_opt_var_list)
+  std::vector<double> F_eval;
+  std::vector<double> F_vec_const;
+  std::cout << "[WBDC OPT] Computing F Constraints" << std::endl;
 
-  for(size_t i = 0; i < total_timesteps; i++){
+  // Compute Timestep Dependent Constraints
+  for(int timestep = 0; timestep < total_timesteps; timestep++){
+    for(int i = 0; i < constraint_list.get_size(); i++){
+      F_vec_const.clear();
+      constraint_list.get_constraint(i)->evaluate_constraint(timestep, opt_var_list, F_vec_const);
+      for(int j = 0; j < F_vec_const.size(); j++){
+        //std::cout << "F_vec_const[j] = " << F_vec_const[j] << std::endl;
+        F_eval.push_back(F_vec_const[j]);
+      }
+    }
+  }
+
+
+  // Debug statement  
+  for(int j = 0; j < F_eval.size(); j++){
+    std::cout << "F_eval[j] = " << F_eval[j] << std::endl;
   }
 
 }

@@ -86,9 +86,24 @@ void Wholebody_Controller_Constraint::test_function(){
 }
 
 void Wholebody_Controller_Constraint::test_function2(const sejong::Vector &q, const sejong::Vector &qdot, sejong::Matrix &B_out, sejong::Vector &c_out){
-	getB_c(q, qdot, B_out, c_out);	
 	get_Jc(q, Jc_int);
 	sejong::pretty_print(Jc_int, std::cout, "WBDC: Jc_int");
+}
+
+
+void Wholebody_Controller_Constraint::UpdateModel(const sejong::Vector &q, const sejong::Vector &qdot,
+                                                  sejong::Matrix &A_out, sejong::Vector &grav_out, sejong::Vector &cori_out){
+  A_out.resize(NUM_QDOT, NUM_QDOT);
+  grav_out.resize(NUM_QDOT, 1);
+  cori_out.resize(NUM_QDOT, 1);
+  A_out.setZero();
+  grav_out.setZero();
+  cori_out.setZero();  
+
+  robot_model->UpdateModel(q, qdot);
+  robot_model->getMassInertia(A_out); 
+  robot_model->getGravity(grav_out);  
+  robot_model->getCoriolis(cori_out); 
 }
 
 void Wholebody_Controller_Constraint::getB_c(const sejong::Vector &q, const sejong::Vector &qdot, sejong::Matrix &B_out, sejong::Vector &c_out){
@@ -106,7 +121,7 @@ void Wholebody_Controller_Constraint::getB_c(const sejong::Vector &q, const sejo
 
   int tot_task_size(0);
 
-  robot_model->UpdateModel(q, qdot); // Update Model. This call should be moved so that it's only called once.
+  //robot_model->UpdateModel(q, qdot); // Update Model. This call should be moved so that it's only called once.
   robot_model->getInverseMassInertia(Ainv);
   task->getTaskJacobian(q, Jt);
   task->getTaskJacobianDotQdot(q, qdot, JtDotQdot);
@@ -171,25 +186,46 @@ void Wholebody_Controller_Constraint::get_Jc(const sejong::Vector &q, sejong::Ma
   Jc_out = Jc;
 }
 
-void Wholebody_Controller_Constraint::evaluate_constraint(const int &timestep, WBT_Opt_Variable_List& var_list, sejong::Vector& F_vec){
+void Wholebody_Controller_Constraint::evaluate_constraint(const int &timestep, WBT_Opt_Variable_List& var_list, std::vector<double>& F_vec){
   sejong::Vector q_state;
   sejong::Vector qdot_state;
-  sejong::Vector xddot;
+  sejong::Vector xddot_des;
   sejong::Vector Fr;
 
   var_list.get_var_states(timestep, q_state, qdot_state);
-  var_list.get_task_accelerations(timestep, xddot);
+  var_list.get_task_accelerations(timestep, xddot_des);
   var_list.get_var_reaction_forces(timestep, Fr);
 
+  std::cout << "    WBC evaluating constraint" << std::endl;
+
+  sejong::Matrix A(NUM_QDOT, NUM_QDOT);
+  sejong::Vector g(NUM_QDOT, 1);
+  sejong::Vector b(NUM_QDOT, 1);
+  UpdateModel(q_state, qdot_state, A, g, b);
+
+  getB_c(q_state, qdot_state, B_int, c_int);
+  get_Jc(q_state, Jc_int);    
+
+  sejong::Vector qddot_des = (B_int*xddot_des + c_int);
+  sejong::Vector WB_des = A*qddot_des + b + g - Jc_int.transpose()*Fr; // Aqddot_des + b + g - J^T_c Fr = [0, tau]^T;
+
+  sejong::Vector WBC_virtual_constraints(NUM_VIRTUAL);
+  sejong::Vector tau_constraints(NUM_ACT_JOINT);
+  
+  WBC_virtual_constraints = Sv*(WB_des);
+  tau_constraints = Sa*WB_des;
+
+/*  sejong::pretty_print(WB_des, std::cout, "WB_des");
+  sejong::pretty_print(WBC_virtual_constraints, std::cout, "WBC_virtual_constraints");  
+  sejong::pretty_print(tau_constraints, std::cout, "tau_constraints");    
+*/
+  F_vec.clear();
+  // Populate F_vec, order matters here:
+  for(size_t i = 0; i < WBC_virtual_constraints.size(); i++){
+    F_vec.push_back(WBC_virtual_constraints[i]);
+  }  
+  for(size_t i = 0; i < tau_constraints.size(); i++){
+    F_vec.push_back(tau_constraints[i]);
+  }    
 
 }
-
-/*
-
-get states q, qdot
-get xddot task accelerations
-get Fr reaction Force
-
-qddot = Bxddot + c
-Aqddot + b + g - Jc^T *Fr */
-

@@ -48,11 +48,15 @@ public:
 	void test_function();
 	void test_function2(const sejong::Vector &q, const sejong::Vector &qdot, sejong::Matrix &B_out, sejong::Vector &c_out);
 
-	void evaluate_constraint(const int &timestep, WBT_Opt_Variable_List& var_list, sejong::Vector& F_vec);
+	void evaluate_constraint(const int &timestep, WBT_Opt_Variable_List& var_list, std::vector<double>& F_vec);
 
 private:
 	void Initialization();
 	void initialize_Flow_Fupp();
+
+	void UpdateModel(const sejong::Vector &q, const sejong::Vector &qdot,
+                      sejong::Matrix &A_out, sejong::Vector &grav_out, sejong::Vector &cori_out);
+
 	void _WeightedInverse(const sejong::Matrix & J, const sejong::Matrix & Winv, sejong::Matrix & Jinv){
 	    sejong::Matrix lambda(J* Winv * J.transpose());
 	    sejong::Matrix lambda_inv;
