@@ -24,6 +24,8 @@ Wholebody_Controller_Constraint::~Wholebody_Controller_Constraint(){
 
 void Wholebody_Controller_Constraint::Initialization(){
   robot_model = RobotModel::GetRobotModel();	
+  A_int.resize(NUM_QDOT, NUM_QDOT);
+
   Sv.resize(NUM_VIRTUAL, NUM_QDOT);
   Sa.resize(NUM_ACT_JOINT, NUM_QDOT);
   Sv.setZero();
@@ -198,16 +200,15 @@ void Wholebody_Controller_Constraint::evaluate_constraint(const int &timestep, W
 
   std::cout << "    WBC evaluating constraint" << std::endl;
 
-  sejong::Matrix A(NUM_QDOT, NUM_QDOT);
   sejong::Vector g(NUM_QDOT, 1);
   sejong::Vector b(NUM_QDOT, 1);
-  UpdateModel(q_state, qdot_state, A, g, b);
+  UpdateModel(q_state, qdot_state, A_int, g, b);
 
   getB_c(q_state, qdot_state, B_int, c_int);
   get_Jc(q_state, Jc_int);    
 
   sejong::Vector qddot_des = (B_int*xddot_des + c_int);
-  sejong::Vector WB_des = A*qddot_des + b + g - Jc_int.transpose()*Fr; // Aqddot_des + b + g - J^T_c Fr = [0, tau]^T;
+  sejong::Vector WB_des = A_int*qddot_des + b + g - Jc_int.transpose()*Fr; // Aqddot_des + b + g - J^T_c Fr = [0, tau]^T;
 
   sejong::Vector WBC_virtual_constraints(NUM_VIRTUAL);
   sejong::Vector tau_constraints(NUM_ACT_JOINT);

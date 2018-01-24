@@ -1,7 +1,7 @@
 #include <wbt/containers/wbt_opt_variable_list.hpp>
 
 #include <iostream>
-WBT_Opt_Variable_List::WBT_Opt_Variable_List(){}
+WBT_Opt_Variable_List::WBT_Opt_Variable_List():total_timesteps(0){}
 WBT_Opt_Variable_List::~WBT_Opt_Variable_List(){
 	for(size_t i = 0; i < opt_var_list.size(); i++){
 		delete opt_var_list[i];

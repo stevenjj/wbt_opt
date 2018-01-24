@@ -23,6 +23,7 @@ public:
 	WholeBody_Task_List* wb_task_list;
 	Contact_List* contact_list;
 
+	sejong::Matrix A_int;
 	sejong::Matrix B_int;
 	sejong::Vector c_int;
 

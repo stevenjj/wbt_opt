@@ -153,6 +153,8 @@ void WBDC_Opt::initialize_opt_vars(){
     //
 
   }
+  // Specify total timesteps
+  opt_var_list.total_timesteps = total_timesteps;
 
   std::cout << "[WBDC_OPT] Total number of optimization variables: " << opt_var_list.get_size() << std::endl;
 
@@ -230,14 +232,18 @@ void WBDC_Opt::compute_F_constraints(){
     }
   }
 
-
   // Debug statement  
   for(int j = 0; j < F_eval.size(); j++){
     std::cout << "F_eval[j] = " << F_eval[j] << std::endl;
   }
 
+
 }
 
+
+void WBDC_Opt::compute_G(){
+
+}
 
 
 

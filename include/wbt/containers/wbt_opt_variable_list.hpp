@@ -24,6 +24,8 @@ public:
 	void update_x(std::vector<double> x_in);
 	void populate_x(std::vector<double> x_out);
 
+	int total_timesteps;
+
 private:
 	void add_variable_to_map(std::map<int, std::vector<WBT_Opt_Variable*> > &map_time_to_var_vec, WBT_Opt_Variable* opt_variable);
 
