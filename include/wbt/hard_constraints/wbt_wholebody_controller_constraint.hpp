@@ -50,6 +50,7 @@ public:
 	void test_function2(const sejong::Vector &q, const sejong::Vector &qdot, sejong::Matrix &B_out, sejong::Vector &c_out);
 
 	void evaluate_constraint(const int &timestep, WBT_Opt_Variable_List& var_list, std::vector<double>& F_vec);
+	void evaluate_sparse_gradient(const int &timestep, WBT_Opt_Variable_List& var_list, std::vector<double>& G, std::vector<int>& iG, std::vector<int>& jG);
 
 private:
 	void Initialization();
@@ -64,5 +65,7 @@ private:
 	    sejong::pseudoInverse(lambda, 0.0001, lambda_inv);
 	    Jinv = Winv * J.transpose() * lambda_inv;
 	  }
+
+	 int last_timestep_model_update = -1;
 };
 #endif

@@ -227,6 +227,7 @@ void WBDC_Opt::compute_F_constraints(){
       constraint_list.get_constraint(i)->evaluate_constraint(timestep, opt_var_list, F_vec_const);
       for(int j = 0; j < F_vec_const.size(); j++){
         //std::cout << "F_vec_const[j] = " << F_vec_const[j] << std::endl;
+        // Add to F_eval
         F_eval.push_back(F_vec_const[j]);
       }
     }
@@ -242,6 +243,31 @@ void WBDC_Opt::compute_F_constraints(){
 
 
 void WBDC_Opt::compute_G(){
+  std::vector<double> G_eval;
+  std::vector<int> iGfun;
+  std::vector<int> jGvar;
+
+  std::vector<double> G_local;
+  std::vector<int> iGfun_local;
+  std::vector<int> jGvar_local;  
+
+
+  for(int timestep = 0; timestep < total_timesteps; timestep++){
+    // Evaluate Known Constraint Gradient Elements
+    for(int i = 0; i < constraint_list.get_size(); i++){
+      G_local.clear();
+      constraint_list.get_constraint(i)->evaluate_sparse_gradient(timestep, opt_var_list, G_local, iGfun_local, jGvar_local);      
+    }
+    // Add to G_eval
+    for(int j = 0; j < G_local.size(); j++){
+      //std::cout << "G_local[j] = " << G_local[j] << std::endl;
+      G_eval.push_back(G_local[j]);
+      iGfun.push_back(iGfun_local[j]);
+      jGvar.push_back(jGvar_local[j]);       
+    }
+
+  }
+
 
 }
 

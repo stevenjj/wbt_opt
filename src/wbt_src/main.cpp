@@ -121,6 +121,7 @@ void test_wbdc_opt_prob(){
 	std::cout << "[Main] WBDC_OPT object constructed" << std::endl;
 
 	wbdc_test_prob.compute_F_constraints();
+	wbdc_test_prob.compute_G();
 
 }
 

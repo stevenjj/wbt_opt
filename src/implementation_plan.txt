@@ -206,3 +206,23 @@ define G if possible
 
 
 visualization of states
+
+
+-----------------------
+Schedule:
+1. WBC Constraint Gradient
+2. Optimization Object
+
+3. LCP Constraint
+4. LCP Constraint Gradient
+
+5. Time Integration Constraint
+6. Time Integration Gradient
+
+7. Soft Key Frames
+8. Hard Key Frames
+
+9. Visualization
+
+
+
