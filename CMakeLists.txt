@@ -113,17 +113,22 @@ add_executable(wbt_main src/wbt_src/main.cpp
 						${wbt_hard_constraint_sources}
 						${wbt_optimization_problems_sources}
 						${val_sim_model_sources})
-target_link_libraries(wbt_main ${catkin_LIBRARIES} ${SJUtils}
-  								  				   ${SJurdf}
-												   ${SJrbdl}
-												   ${SJsnopt})
+target_link_libraries(wbt_main ${SJUtils}
+  								${SJurdf}
+								${SJrbdl}
+								${SJsnopt})
+
+#target_link_libraries(wbt_main ${catkin_LIBRARIES} ${SJUtils}
+#  								  				   ${SJurdf}
+#												   ${SJrbdl}
+#												   ${SJsnopt})												   
 
 
 add_executable(snopt_example src/snopt_example.cpp)
-target_link_libraries(snopt_example ${catkin_LIBRARIES} ${SJUtils}
-  								  				   ${SJurdf}
-												   ${SJrbdl}
-												   ${SJsnopt})
+target_link_libraries(snopt_example ${SJUtils}
+  								  	${SJurdf}
+									${SJrbdl}
+									${SJsnopt})
 
 
 SET (THIS_PACKAGE_PATH "${PROJECT_SOURCE_DIR}/" )
