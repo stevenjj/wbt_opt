@@ -24,7 +24,7 @@ WBDC_Opt::~WBDC_Opt(){
 
 void WBDC_Opt::Initialization(){
 	std::cout << "[WBDC_Opt] Initialization Called" << std::endl;
-	total_timesteps = 1;
+	total_timesteps = 3;
   initialize_starting_configuration();
 	initialize_task_list();
 	initialize_contact_list();
@@ -251,23 +251,45 @@ void WBDC_Opt::compute_G(){
   std::vector<int> iGfun_local;
   std::vector<int> jGvar_local;  
 
-
+  int constraint_index = -1;
+  int iGfun_absolute_start = -1;
+  int iGfun_absolute_index = 0;
+  // ---------------------------------------
+  // Compute G of Time Dependent Constraints
+  // ---------------------------------------
+  int num_time_dependent_constraints_funcs = constraint_list.get_num_constraint_funcs(); // needs to be computed. For a single timestep, find the length of constraint functions, F
+  std::cout << "Total Number of Constraints: " << num_time_dependent_constraints_funcs << std::endl;   
+  
   for(int timestep = 0; timestep < total_timesteps; timestep++){
     // Evaluate Known Constraint Gradient Elements
     for(int i = 0; i < constraint_list.get_size(); i++){
       G_local.clear();
       constraint_list.get_constraint(i)->evaluate_sparse_gradient(timestep, opt_var_list, G_local, iGfun_local, jGvar_local);      
-    }
-    // Add to G_eval
-    for(int j = 0; j < G_local.size(); j++){
-      //std::cout << "G_local[j] = " << G_local[j] << std::endl;
-      G_eval.push_back(G_local[j]);
-      iGfun.push_back(iGfun_local[j]);
-      jGvar.push_back(jGvar_local[j]);       
-    }
+      
+      // Get G matrix, then identify the constraint's index number.
+      // constraint_index is assigned by constraint_list during constraint_list.append. 
+      constraint_index = constraint_list.get_constraint(i)->get_constraint_index();
+      iGfun_absolute_start = timestep*num_time_dependent_constraints_funcs + constraint_index;
 
+      std::cout << "   Constraint i: " << i << " has constraint index: " << constraint_index  << std::endl; 
+      std::cout << "   absolute starting index: " << iGfun_absolute_start  << std::endl; 
+      
+      // Add to G_eval
+      for(int j = 0; j < G_local.size(); j++){
+        //std::cout << "G_local[j] = " << G_local[j] << std::endl;
+        iGfun_absolute_index = iGfun_absolute_start + iGfun_local[j];
+        G_eval.push_back(G_local[j]);
+        iGfun.push_back(iGfun_local[j]);
+        jGvar.push_back(jGvar_local[j]);       
+      }
+    }
   }
 
+  int iGfun_time_independent_funcs = total_timesteps*num_time_dependent_constraints_funcs;
+  std::cout << "Starting Index of Time Independent Constraint Functions:" << iGfun_time_independent_funcs << std::endl;
+  // -------------------------------------------
+  // Compute G of Non-Time Dependent Constraints
+  // -------------------------------------------
 
 }
 

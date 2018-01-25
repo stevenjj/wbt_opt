@@ -15,10 +15,13 @@ public:
 	void get_constraint_list_copy(std::vector<Constraint_Function*>& constraint_list_out);
 
 	int get_size();
+
+	int get_num_constraint_funcs();
 	Constraint_Function* get_constraint(int index);
 
 private:
 	std::vector<Constraint_Function*> constraint_list;
+	int num_constraint_funcs = 0;
 
 };
 

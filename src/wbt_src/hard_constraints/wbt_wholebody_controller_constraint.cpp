@@ -238,6 +238,7 @@ void Wholebody_Controller_Constraint::evaluate_sparse_gradient(const int &timest
     std::cout << "    Timestep does not match. Will update model" << std::endl;    
     sejong::Vector q_state;
     sejong::Vector qdot_state; 
+    var_list.get_var_states(timestep, q_state, qdot_state);    
     sejong::Vector g(NUM_QDOT, 1);
     sejong::Vector b(NUM_QDOT, 1);
     UpdateModel(q_state, qdot_state, A_int, g, b);       
@@ -248,8 +249,8 @@ void Wholebody_Controller_Constraint::evaluate_sparse_gradient(const int &timest
   sejong::Matrix F_dxddot = A_int*B_int;
   sejong::Matrix F_dFr = -Jc_int;  
 
-  sejong::pretty_print(F_dxddot, std::cout, "F_dxddot");  
-  sejong::pretty_print(F_dFr, std::cout, "F_dFr");    
+/*  sejong::pretty_print(F_dxddot, std::cout, "F_dxddot");  
+  sejong::pretty_print(F_dFr, std::cout, "F_dFr");    */
 
 
 }

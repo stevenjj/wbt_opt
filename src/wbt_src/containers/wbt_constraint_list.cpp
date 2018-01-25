@@ -12,10 +12,16 @@ Constraint_List::~Constraint_List(){
 
 void Constraint_List::append_constraint(Constraint_Function* constraint){
 	constraint_list.push_back(constraint);	
+	constraint->constraint_index = num_constraint_funcs;
+	num_constraint_funcs += constraint->get_constraint_size();
 }
 
 int Constraint_List::get_size(){
 	return constraint_list.size();
+}
+
+int Constraint_List::get_num_constraint_funcs(){
+	return num_constraint_funcs;
 }
 
 Constraint_Function* Constraint_List::get_constraint(const int index){
