@@ -279,7 +279,7 @@ void WBDC_Opt::compute_G(){
         //std::cout << "G_local[j] = " << G_local[j] << std::endl;
         iGfun_absolute_index = iGfun_absolute_start + iGfun_local[j];
         G_eval.push_back(G_local[j]);
-        iGfun.push_back(iGfun_local[j]);
+        iGfun.push_back(iGfun_absolute_index);
         jGvar.push_back(jGvar_local[j]);       
       }
     }
