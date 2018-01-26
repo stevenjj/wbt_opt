@@ -246,8 +246,23 @@ void Wholebody_Controller_Constraint::evaluate_sparse_gradient(const int &timest
     get_Jc(q_state, Jc_int);    
   }
 
+  // Assign Known Elements
   sejong::Matrix F_dxddot = A_int*B_int;
+  // i = 0               // specify i starting index
+  // j = (total_j_size*timestep) var_states_size // specify j starting index
+  // Go through F_dxddot and push back values to G, iGfun, jGfun
+
+
   sejong::Matrix F_dFr = -Jc_int;  
+  // i = 0               // specify i starting index
+  // j = (total_j_size*timestep) + var_states_size + task_accelerations size // specify j starting index
+  // Go through F_dFr and push back values to G, iGfun, jGfun 
+
+
+  // Assign 0's on elements that have no impact (key frames)
+  // i = 0
+  // j = (total_j_size*timestep) + var_states_size + task_acceleration_size + reaction_force_size
+  // sejong::Matrix zeroMat(this->get_constraint_size(), var_keyframes_size)
 
 /*  sejong::pretty_print(F_dxddot, std::cout, "F_dxddot");  
   sejong::pretty_print(F_dFr, std::cout, "F_dFr");    */

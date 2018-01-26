@@ -148,11 +148,11 @@ void WBDC_Opt::initialize_opt_vars(){
     }
     //---------------------------------------------------------------------------------------------------------------------    
 
-    // Key Frame List Initialization
-    // Insert initialization here
-    //
-
   }
+  // Key Frame List Initialization
+  // Insert initialization here
+  //
+
   // Specify total timesteps
   opt_var_list.total_timesteps = total_timesteps;
 
@@ -273,6 +273,11 @@ void WBDC_Opt::compute_G(){
 
       std::cout << "   Constraint i: " << i << " has constraint index: " << constraint_index  << std::endl; 
       std::cout << "   absolute starting index: " << iGfun_absolute_start  << std::endl; 
+
+
+      // Assign 0's on other timesteps
+      // The block before this timestep
+      // The block after this timestep
       
       // Add to G_eval
       for(int j = 0; j < G_local.size(); j++){
