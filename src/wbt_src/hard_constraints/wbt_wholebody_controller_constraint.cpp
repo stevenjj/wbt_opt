@@ -245,6 +245,8 @@ void Wholebody_Controller_Constraint::evaluate_sparse_gradient(const int &timest
     getB_c(q_state, qdot_state, B_int, c_int);
     get_Jc(q_state, Jc_int);    
   }
+  int m = 0; // var_list.get_num_tva
+
 
   // Assign Known Elements
   sejong::Matrix F_dxddot = A_int*B_int;

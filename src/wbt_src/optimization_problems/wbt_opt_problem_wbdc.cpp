@@ -241,6 +241,23 @@ void WBDC_Opt::compute_F_constraints(){
 
 }
 
+/* void compute_A_mats(std::vector<double> A, std::vector<int> iAfun, std::vector<int> jAvar){
+ // Populate the sparse matrices
+}
+
+int get_len_A(){
+// Total non-zero elements of G.
+}
+
+int get_len_G(){
+// Total length of G  
+}
+
+int get_len_neG(){
+// Total non-zero elements of G.
+}
+
+*/
 
 void WBDC_Opt::compute_G(){
   std::vector<double> G_eval;
