@@ -45,7 +45,7 @@ void Wholebody_Controller_Constraint::initialize_Flow_Fupp(){
     F_upp.push_back(0.0);        
   }
   // WBC Torque Limit Constraints
-  for (size_t i = 0; i < NUM_QDOT; i++){
+  for (size_t i = 0; i < NUM_QDOT-NUM_VIRTUAL; i++){
     F_low.push_back(-torque_limit);
     F_upp.push_back(torque_limit);    
   }
@@ -260,20 +260,34 @@ void Wholebody_Controller_Constraint::evaluate_sparse_gradient(const int &timest
   // Go through F_dxddot and push back values to G, iGfun, jGfun
 
 
-  int local_offset = NUM_Q + NUM_QDOT + xddot_des.size();
-  sejong::Matrix F_dFr = -Jc_int;  
-  // i = 0               // specify i starting index
-  // j = (total_j_size*timestep) + var_states_size + task_accelerations size // specify j starting index
+  // Gradient of WBC wrt to Fr is -J_c^T
+  int local_j_offset = NUM_Q + NUM_QDOT + xddot_des.size();
+  std::cout << "[WBC Constraint]: dF/dFr index j starts at: " << local_j_offset << std::endl; 
+  sejong::Matrix F_dFr = -Jc_int.transpose();  
+  int i_local = 0;               // specify i starting index
+  int j_local = local_j_offset;// j = (total_j_size*timestep) + var_states_size + task_accelerations size // specify j starting index
   // Go through F_dFr and push back values to G, iGfun, jGfun 
 
+
+
+  for(size_t i = 0; i < F_dFr.rows(); i++){
+    for(size_t j = 0; j < F_dFr.cols(); j++){
+      //std::cout << "(i,j): " << "(" << i << "," << j << ") = " << F_dFr(i, j) << std::endl;  
+      G.push_back(F_dFr(i,j));
+      iG.push_back(i_local);
+      jG.push_back(j_local);
+      j_local++;       
+    }
+    i_local++;
+  }
 
   // Assign 0's on elements that have no impact (key frames)
   // i = 0
   // j = (total_j_size*timestep) + var_states_size + task_acceleration_size + reaction_force_size
   // sejong::Matrix zeroMat(this->get_constraint_size(), var_keyframes_size)
 
-/*  sejong::pretty_print(F_dxddot, std::cout, "F_dxddot");  
-  sejong::pretty_print(F_dFr, std::cout, "F_dFr");    */
+/*  sejong::pretty_print(F_dxddot, std::cout, "F_dxddot");*/  
+  sejong::pretty_print(F_dFr, std::cout, "F_dFr");    
 
 
 }

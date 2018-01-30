@@ -24,7 +24,7 @@ WBDC_Opt::~WBDC_Opt(){
 
 void WBDC_Opt::Initialization(){
 	std::cout << "[WBDC_Opt] Initialization Called" << std::endl;
-	total_timesteps = 3;
+	total_timesteps = 2;
   initialize_starting_configuration();
 	initialize_task_list();
 	initialize_contact_list();
@@ -331,11 +331,19 @@ void WBDC_Opt::compute_G(){
     }
   }
 
+/*  for(size_t i = 0; i < G_eval.size(); i++){
+    std::cout << "G(" << iGfun[i] << "," << jGvar[i] << ") = " << G_eval[i] << std::endl;
+  }*/
+
+
   int iGfun_time_independent_funcs = total_timesteps*num_time_dependent_constraints_funcs;
   std::cout << "Starting Index of Time Independent Constraint Functions:" << iGfun_time_independent_funcs << std::endl;
   // -------------------------------------------
   // Compute G of Non-Time Dependent Constraints
   // -------------------------------------------
+
+
+  // Count number of non-zero elements in G.
 
 }
 
