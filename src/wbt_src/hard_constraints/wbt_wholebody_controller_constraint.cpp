@@ -234,6 +234,7 @@ void Wholebody_Controller_Constraint::evaluate_constraint(const int &timestep, W
 
 void Wholebody_Controller_Constraint::evaluate_sparse_gradient(const int &timestep, WBT_Opt_Variable_List& var_list, std::vector<double>& G, std::vector<int>& iG, std::vector<int>& jG){
   std::cout << "[WBC Constraint] Sparse Gradient Called" << std::endl;
+  std::cout << "[WBC Constraint]: Current Timestep " << timestep << " Last Timestep That Model was updated:" << last_timestep_model_update << std::endl;
   if (timestep != last_timestep_model_update){
     std::cout << "    Timestep does not match. Will update model" << std::endl;    
     sejong::Vector q_state;
@@ -242,6 +243,7 @@ void Wholebody_Controller_Constraint::evaluate_sparse_gradient(const int &timest
     sejong::Vector g(NUM_QDOT, 1);
     sejong::Vector b(NUM_QDOT, 1);
     UpdateModel(q_state, qdot_state, A_int, g, b);       
+    last_timestep_model_update = timestep;
     getB_c(q_state, qdot_state, B_int, c_int);
     get_Jc(q_state, Jc_int);    
   }
@@ -254,6 +256,9 @@ void Wholebody_Controller_Constraint::evaluate_sparse_gradient(const int &timest
   var_list.get_var_reaction_forces(timestep, Fr);
 
   // Assign Known Elements
+
+
+  // Gradient of WBC wrt to xddot is A*B(q)
   sejong::Matrix F_dxddot = A_int*B_int;
   // i = 0               // specify i starting index
   // j = (total_j_size*timestep) var_states_size // specify j starting index
@@ -261,14 +266,12 @@ void Wholebody_Controller_Constraint::evaluate_sparse_gradient(const int &timest
 
 
   // Gradient of WBC wrt to Fr is -J_c^T
-  int local_j_offset = NUM_Q + NUM_QDOT + xddot_des.size();
+  int local_j_offset = m*timestep + NUM_Q + NUM_QDOT + xddot_des.size();
   std::cout << "[WBC Constraint]: dF/dFr index j starts at: " << local_j_offset << std::endl; 
   sejong::Matrix F_dFr = -Jc_int.transpose();  
   int i_local = 0;               // specify i starting index
   int j_local = local_j_offset;// j = (total_j_size*timestep) + var_states_size + task_accelerations size // specify j starting index
   // Go through F_dFr and push back values to G, iGfun, jGfun 
-
-
 
   for(size_t i = 0; i < F_dFr.rows(); i++){
     for(size_t j = 0; j < F_dFr.cols(); j++){
@@ -279,6 +282,7 @@ void Wholebody_Controller_Constraint::evaluate_sparse_gradient(const int &timest
       j_local++;       
     }
     i_local++;
+    j_local = local_j_offset; // Reset counter
   }
 
   // Assign 0's on elements that have no impact (key frames)

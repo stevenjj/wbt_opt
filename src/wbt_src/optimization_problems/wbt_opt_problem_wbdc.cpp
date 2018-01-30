@@ -305,6 +305,8 @@ void WBDC_Opt::compute_G(){
     // Evaluate Known Constraint Gradient Elements
     for(int i = 0; i < constraint_list.get_size(); i++){
       G_local.clear();
+      iGfun_local.clear();
+      jGvar_local.clear();
       constraint_list.get_constraint(i)->evaluate_sparse_gradient(timestep, opt_var_list, G_local, iGfun_local, jGvar_local);      
       
       // Get G matrix, then identify the constraint's index number.
@@ -331,9 +333,9 @@ void WBDC_Opt::compute_G(){
     }
   }
 
-/*  for(size_t i = 0; i < G_eval.size(); i++){
+/* for(size_t i = 0; i < G_eval.size(); i++){
     std::cout << "G(" << iGfun[i] << "," << jGvar[i] << ") = " << G_eval[i] << std::endl;
-  }*/
+ }*/
 
 
   int iGfun_time_independent_funcs = total_timesteps*num_time_dependent_constraints_funcs;
