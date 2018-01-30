@@ -16,6 +16,7 @@ public:
 	}
 	virtual void evaluate_constraint(const int &timestep, WBT_Opt_Variable_List& var_list, std::vector<double>& F_vec) {}
 	virtual void evaluate_sparse_gradient(const int &timestep, WBT_Opt_Variable_List& var_list, std::vector<double>& G, std::vector<int>& iG, std::vector<int>& jG) {}
+	virtual void evaluate_A_mat(const int &timestep, WBT_Opt_Variable_List& var_list, std::vector<double>& A, std::vector<int>& iA, std::vector<int>& jA) {}	
 
 	// Each constraint containts its bounds
 	std::vector<double> F_low;

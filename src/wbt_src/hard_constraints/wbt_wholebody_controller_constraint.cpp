@@ -245,8 +245,13 @@ void Wholebody_Controller_Constraint::evaluate_sparse_gradient(const int &timest
     getB_c(q_state, qdot_state, B_int, c_int);
     get_Jc(q_state, Jc_int);    
   }
-  int m = 0; // var_list.get_num_tva
+  int m = var_list.get_size_timedependent_vars(); // var_list.get_num_time_dependent_vars
+  int T = var_list.total_timesteps; // var_list.get_total_timesteps() Total timesteps
 
+  sejong::Vector xddot_des;
+  sejong::Vector Fr;
+  var_list.get_task_accelerations(timestep, xddot_des);
+  var_list.get_var_reaction_forces(timestep, Fr);
 
   // Assign Known Elements
   sejong::Matrix F_dxddot = A_int*B_int;
@@ -255,6 +260,7 @@ void Wholebody_Controller_Constraint::evaluate_sparse_gradient(const int &timest
   // Go through F_dxddot and push back values to G, iGfun, jGfun
 
 
+  int local_offset = NUM_Q + NUM_QDOT + xddot_des.size();
   sejong::Matrix F_dFr = -Jc_int;  
   // i = 0               // specify i starting index
   // j = (total_j_size*timestep) + var_states_size + task_accelerations size // specify j starting index

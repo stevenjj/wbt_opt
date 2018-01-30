@@ -109,3 +109,31 @@ void WBT_Opt_Variable_List::convert_to_vector(const int &timestep,
 
 
 }
+
+void WBT_Opt_Variable_List::compute_size_time_dep_vars(){
+	int timestep = 0;
+	int total_j_size = 0;
+	
+	total_j_size += count_num_vars_in_map(timestep, timestep_to_q_state_vars);
+	total_j_size += count_num_vars_in_map(timestep, timestep_to_qdot_state_vars);	
+	total_j_size += count_num_vars_in_map(timestep, timestep_to_xddot_vars);		
+	total_j_size += count_num_vars_in_map(timestep, timestep_to_Fr_vars);			
+
+	num_timedep_vars = total_j_size;
+}
+
+int WBT_Opt_Variable_List::get_size_timedependent_vars(){
+	return num_timedep_vars;
+}
+
+int WBT_Opt_Variable_List::count_num_vars_in_map(const int &timestep, std::map<int, std::vector<WBT_Opt_Variable*> > &map_time_to_var_vec){
+	std::map<int, std::vector<WBT_Opt_Variable*> >::iterator it;	
+	it = map_time_to_var_vec.find(timestep);
+
+	if (it != map_time_to_var_vec.end()){
+		return it->second.size(); //is the size of std::vector<WBT_Opt_Variable*>
+	}else{
+		return 0;
+	}
+
+}

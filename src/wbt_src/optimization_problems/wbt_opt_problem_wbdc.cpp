@@ -155,8 +155,14 @@ void WBDC_Opt::initialize_opt_vars(){
 
   // Specify total timesteps
   opt_var_list.total_timesteps = total_timesteps;
+  std::cout << "[WBDC_OPT] Computing Size of Time Dependent Variables " << std::endl;
+  opt_var_list.compute_size_time_dep_vars();
 
+  // ----------- End Initialization
+
+  std::cout << "[WBDC_OPT] Total Timesteps: " << total_timesteps << std::endl;
   std::cout << "[WBDC_OPT] Total number of optimization variables: " << opt_var_list.get_size() << std::endl;
+  std::cout << "[WBDC_OPT] Total number of time dependent optimization variables: " << opt_var_list.get_size_timedependent_vars() << std::endl;
 
   sejong::Vector q_state_test;
   sejong::Vector qdot_state_test;  
@@ -165,6 +171,8 @@ void WBDC_Opt::initialize_opt_vars(){
   opt_var_list.get_var_states(0, q_state_test, qdot_state_test);
   opt_var_list.get_task_accelerations(0, xddot_test);  
   opt_var_list.get_var_reaction_forces(0, Fr_test);
+
+
 
 }
 
@@ -242,6 +250,22 @@ void WBDC_Opt::compute_F_constraints(){
 }
 
 /* void compute_A_mats(std::vector<double> A, std::vector<int> iAfun, std::vector<int> jAvar){
+  std::vector<double> A_eval;
+  std::vector<int> iAfun;
+  std::vector<int> jAvar;
+
+  std::vector<double> A_local;
+  std::vector<int> iAfun_local;
+  std::vector<int> jAvar_local;  
+
+  for(int timestep = 0; timestep < total_timesteps; timestep++){
+    // Evaluate Known Constraint Gradient Elements
+    for(int i = 0; i < constraint_list.get_size(); i++){
+    }
+  }
+
+
+
  // Populate the sparse matrices
 }
 

@@ -19,6 +19,11 @@ public:
 	void get_var_keyframes(const int &timestep, sejong::Vector &keyframe_state);		
 
 	int get_size();
+
+	void compute_size_time_dep_vars();
+
+	int get_size_timedependent_vars();
+
 	WBT_Opt_Variable* get_opt_variable(const int index);
 
 	void update_x(std::vector<double> x_in);
@@ -40,8 +45,10 @@ private:
 	std::map<int, std::vector<WBT_Opt_Variable*> > timestep_to_xddot_vars;
 	std::map<int, std::vector<WBT_Opt_Variable*> > timestep_to_Fr_vars;
 	std::map<int, std::vector<WBT_Opt_Variable*> > timestep_to_keyframe_vars;
-		
+	
+	int count_num_vars_in_map(const int &timestep, std::map<int, std::vector<WBT_Opt_Variable*> > &map_time_to_var_vec);
 	//std::vector< int, std::vector<WBT_Opt_Variable*> > 
+	int num_timedep_vars = 0; 
 };
 
 #endif
