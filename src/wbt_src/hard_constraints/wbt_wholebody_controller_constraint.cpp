@@ -258,11 +258,6 @@ void Wholebody_Controller_Constraint::evaluate_sparse_gradient(const int &timest
   // Assign Known Elements
 
 
-  // Gradient of WBC wrt to xddot is A*B(q)
-  sejong::Matrix F_dxddot = A_int*B_int;
-  // i = 0               // specify i starting index
-  // j = (total_j_size*timestep) var_states_size // specify j starting index
-  // Go through F_dxddot and push back values to G, iGfun, jGfun
 
 
   // Gradient of WBC wrt to Fr is -J_c^T
@@ -285,13 +280,38 @@ void Wholebody_Controller_Constraint::evaluate_sparse_gradient(const int &timest
     j_local = local_j_offset; // Reset counter
   }
 
-  // Assign 0's on elements that have no impact (key frames)
-  // i = 0
-  // j = (total_j_size*timestep) + var_states_size + task_acceleration_size + reaction_force_size
-  // sejong::Matrix zeroMat(this->get_constraint_size(), var_keyframes_size)
 
-/*  sejong::pretty_print(F_dxddot, std::cout, "F_dxddot");*/  
+  // Gradient of WBC wrt to xddot is A*B(q)
+  // i = 0               // specify i starting index
+  // j = (total_j_size*timestep) var_states_size // specify j starting index
+  // Go through F_dxddot and push back values to G, iGfun, jGfun
+  sejong::Matrix F_dxddot = A_int*B_int;
+  local_j_offset = m*timestep + NUM_Q + NUM_QDOT;
+  i_local = 0;
+  j_local = local_j_offset;
+  for(size_t i = 0; i < F_dxddot.rows(); i++){
+    for(size_t j = 0; j < F_dxddot.cols(); j++){
+      //std::cout << "(i,j): " << "(" << i << "," << j << ") = " << F_dxddot(i, j) << std::endl;  
+      G.push_back(F_dxddot(i,j));
+      iG.push_back(i_local);
+      jG.push_back(j_local);
+      j_local++;       
+    }
+    i_local++;
+    j_local = local_j_offset; // Reset counter
+  }
+
+
+
+
+  sejong::pretty_print(F_dxddot, std::cout, "F_dxddot");  
   sejong::pretty_print(F_dFr, std::cout, "F_dFr");    
 
 
 }
+
+
+  // Assign 0's on elements that have no impact (key frames)
+  // i = 0
+  // j = (total_j_size*timestep) + var_states_size + task_acceleration_size + reaction_force_size
+  // sejong::Matrix zeroMat(this->get_constraint_size(), var_keyframes_size)
