@@ -282,33 +282,20 @@ void WBDC_Opt::compute_A(std::vector<double> &A, std::vector<int> &iAfun, std::v
     }
   }
 
-  // Evaluate Sparse Gradients of not time dependent constraints
+/* for(size_t i = 0; i < A.size(); i++){
+    std::cout << "A(" << iAfun[i] << "," << jAvar[i] << ") = " << A[i] << std::endl;
+ }*/
 
-  // count number of non-negative A's
+  // ---------------------------------------------------------------------------------------------
+  // Evaluate Sparse Gradients for non-time dependent constraints
 
 
+
+  // Number of non-negative A's
+  neA = 0; // Presumably all values in A are zero.
 }
 
-/* void compute_A(std::vector<double> A, std::vector<int> iAfun, std::vector<int> jAvar){
-  std::vector<double> A_eval;
-  std::vector<int> iAfun;
-  std::vector<int> jAvar;
-
-  std::vector<double> A_local;
-  std::vector<int> iAfun_local;
-  std::vector<int> jAvar_local;  
-
-  for(int timestep = 0; timestep < total_timesteps; timestep++){
-    // Evaluate Known Constraint Gradient Elements
-    for(int i = 0; i < constraint_list.get_size(); i++){
-    }
-  }
-
-
-
- // Populate the sparse matrices
-}
-
+/* 
 int get_len_A(){
 // Total non-zero elements of G.
 }
