@@ -243,13 +243,53 @@ void WBDC_Opt::compute_F_constraints(){
 
   // Debug statement  
   for(int j = 0; j < F_eval.size(); j++){
-    std::cout << "F_eval[j] = " << F_eval[j] << std::endl;
+    std::cout << "F_eval[" << j << "] = " << F_eval[j] << std::endl;
   }
 
 
 }
 
-/* void compute_A_mats(std::vector<double> A, std::vector<int> iAfun, std::vector<int> jAvar){
+void WBDC_Opt::compute_A(std::vector<double> &A, std::vector<int> &iAfun, std::vector<int> &jAvar, int &neA){
+  std::vector<double> A_local;
+  std::vector<int> iAfun_local;
+  std::vector<int> jAvar_local;
+
+  int constraint_index = -1;
+  int iAfun_absolute_start = -1;
+  int iAfun_absolute_index = 0;
+
+  int num_time_dependent_constraints_funcs = constraint_list.get_num_constraint_funcs(); // find the length of time-dependent constraint functions, F
+  for(int timestep = 0; timestep < total_timesteps; timestep++){
+    // Evaluate Known Constraint Gradient Elements
+    for(int i = 0; i < constraint_list.get_size(); i++){
+      A_local.clear();
+      iAfun_local.clear();
+      jAvar_local.clear();
+      constraint_list.get_constraint(i)->evaluate_sparse_A_matrix(timestep, opt_var_list, A_local, iAfun_local, jAvar_local);      
+
+      constraint_index = constraint_list.get_constraint(i)->get_constraint_index();
+      iAfun_absolute_start = timestep*num_time_dependent_constraints_funcs + constraint_index;     
+
+
+      // Add to A
+      for(int j = 0; j < A_local.size(); j++){       
+        iAfun_absolute_index = iAfun_absolute_start + iAfun_local[j];
+        A.push_back(A_local[j]);
+        iAfun.push_back(iAfun_absolute_index);
+        jAvar.push_back(jAvar_local[j]);       
+      }
+
+    }
+  }
+
+  // Evaluate Sparse Gradients of not time dependent constraints
+
+  // count number of non-negative A's
+
+
+}
+
+/* void compute_A(std::vector<double> A, std::vector<int> iAfun, std::vector<int> jAvar){
   std::vector<double> A_eval;
   std::vector<int> iAfun;
   std::vector<int> jAvar;
@@ -283,10 +323,10 @@ int get_len_neG(){
 
 */
 
-void WBDC_Opt::compute_G(){
-  std::vector<double> G_eval;
+void WBDC_Opt::compute_G(std::vector<double> &G_eval, std::vector<int> &iGfun, std::vector<int> &jGvar, int &neG){
+/*  std::vector<double> G_eval;
   std::vector<int> iGfun;
-  std::vector<int> jGvar;
+  std::vector<int> jGvar;*/
 
   std::vector<double> G_local;
   std::vector<int> iGfun_local;
@@ -316,12 +356,7 @@ void WBDC_Opt::compute_G(){
 
       std::cout << "   Constraint i: " << i << " has constraint index: " << constraint_index  << std::endl; 
       std::cout << "   absolute starting index: " << iGfun_absolute_start  << std::endl; 
-
-
-      // Assign 0's on other timesteps
-      // The block before this timestep
-      // The block after this timestep
-      
+    
       // Add to G_eval
       for(int j = 0; j < G_local.size(); j++){
         //std::cout << "G_local[j] = " << G_local[j] << std::endl;

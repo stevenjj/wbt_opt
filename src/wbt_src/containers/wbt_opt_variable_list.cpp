@@ -88,6 +88,12 @@ void WBT_Opt_Variable_List::get_var_reaction_forces(const int &timestep, sejong:
 		
 }
 
+void WBT_Opt_Variable_List::get_var_keyframes(const int &timestep, sejong::Vector &keyframe_state){
+		convert_to_vector(timestep, timestep_to_keyframe_vars, keyframe_state);
+}
+
+
+
 void WBT_Opt_Variable_List::convert_to_vector(const int &timestep, 
 						  	 	   			  std::map<int, std::vector<WBT_Opt_Variable*> > &map_time_to_var_vec,
 						   				 	  sejong::Vector &vec_out){
@@ -107,19 +113,36 @@ void WBT_Opt_Variable_List::convert_to_vector(const int &timestep,
 
 	}
 
-
 }
+
+int WBT_Opt_Variable_List::get_num_q_vars(){
+	return num_q_vars;
+}
+int WBT_Opt_Variable_List::get_num_qdot_vars(){
+	return num_qdot_vars;
+}
+int WBT_Opt_Variable_List::get_num_xddot_vars(){
+	return num_xddot_vars;
+}
+int WBT_Opt_Variable_List::get_num_Fr_vars(){
+	return num_Fr_vars;
+}
+int WBT_Opt_Variable_List::get_num_keyframe_vars(){
+	return num_keyframe_vars;
+}
+
 
 void WBT_Opt_Variable_List::compute_size_time_dep_vars(){
 	int timestep = 0;
 	int total_j_size = 0;
 	
-	total_j_size += count_num_vars_in_map(timestep, timestep_to_q_state_vars);
-	total_j_size += count_num_vars_in_map(timestep, timestep_to_qdot_state_vars);	
-	total_j_size += count_num_vars_in_map(timestep, timestep_to_xddot_vars);		
-	total_j_size += count_num_vars_in_map(timestep, timestep_to_Fr_vars);			
+	num_q_vars = count_num_vars_in_map(timestep, timestep_to_q_state_vars);
+	num_qdot_vars = count_num_vars_in_map(timestep, timestep_to_qdot_state_vars);
+	num_xddot_vars = count_num_vars_in_map(timestep, timestep_to_xddot_vars);
+	num_Fr_vars = count_num_vars_in_map(timestep, timestep_to_Fr_vars);
+	num_keyframe_vars = count_num_vars_in_map(timestep, timestep_to_keyframe_vars);
 
-	num_timedep_vars = total_j_size;
+	num_timedep_vars = num_q_vars + num_qdot_vars + num_xddot_vars + num_Fr_vars + num_keyframe_vars;
 }
 
 int WBT_Opt_Variable_List::get_size_timedependent_vars(){

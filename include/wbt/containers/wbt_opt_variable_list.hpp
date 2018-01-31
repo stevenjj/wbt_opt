@@ -12,25 +12,28 @@ public:
 	~WBT_Opt_Variable_List();	
 
 	void append_variable(WBT_Opt_Variable* opt_variable);
+	void compute_size_time_dep_vars();
+
+
+	WBT_Opt_Variable* get_opt_variable(const int index);
 
 	void get_var_states(const int &timestep, sejong::Vector &q_state, sejong::Vector &qdot_state);	
 	void get_task_accelerations(const int &timestep, sejong::Vector &xddot);		
 	void get_var_reaction_forces(const int &timestep, sejong::Vector &Fr_state);		
 	void get_var_keyframes(const int &timestep, sejong::Vector &keyframe_state);		
-
 	int get_size();
-
-	void compute_size_time_dep_vars();
-
 	int get_size_timedependent_vars();
-
-	WBT_Opt_Variable* get_opt_variable(const int index);
 
 	void update_x(std::vector<double> x_in);
 	void populate_x(std::vector<double> x_out);
 
 	int total_timesteps;
 
+	int get_num_q_vars();
+	int get_num_qdot_vars();
+	int get_num_xddot_vars();
+	int get_num_Fr_vars();
+	int get_num_keyframe_vars();		
 private:
 	void add_variable_to_map(std::map<int, std::vector<WBT_Opt_Variable*> > &map_time_to_var_vec, WBT_Opt_Variable* opt_variable);
 
@@ -49,6 +52,13 @@ private:
 	int count_num_vars_in_map(const int &timestep, std::map<int, std::vector<WBT_Opt_Variable*> > &map_time_to_var_vec);
 	//std::vector< int, std::vector<WBT_Opt_Variable*> > 
 	int num_timedep_vars = 0; 
+
+	int num_q_vars = 0;
+	int num_qdot_vars = 0;
+	int num_xddot_vars = 0;
+	int num_Fr_vars = 0;
+	int num_keyframe_vars = 0;
+
 };
 
 #endif

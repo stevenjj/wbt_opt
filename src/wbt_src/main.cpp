@@ -121,8 +121,23 @@ void test_wbdc_opt_prob(){
 	std::cout << "[Main] WBDC_OPT object constructed" << std::endl;
 
 	wbdc_test_prob.compute_F_constraints();
-	wbdc_test_prob.compute_G();
 
+	std::vector<double> G_eval;
+	std::vector<int> iGfun;
+	std::vector<int> jGvar;	
+	int neG = 0;
+	wbdc_test_prob.compute_G(G_eval, iGfun, jGvar, neG);
+
+	std::cout << "[Main] Size of (G, iG, jG)" << "(" << G_eval.size() 
+											  << "," << iGfun.size()
+											  << "," << jGvar.size() 
+											  << ")" << std::endl;
+
+	std::vector<double> A;
+	std::vector<int> iAfun;
+	std::vector<int> jAvar;	
+	int neA = 0;
+	wbdc_test_prob.compute_A(A, iAfun, jAvar, neA);
 }
 
 

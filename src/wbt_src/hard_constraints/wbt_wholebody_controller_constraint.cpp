@@ -49,6 +49,7 @@ void Wholebody_Controller_Constraint::initialize_Flow_Fupp(){
     F_low.push_back(-torque_limit);
     F_upp.push_back(torque_limit);    
   }
+  constraint_size = F_low.size();
   //std::cout << "Size of (Flow, Fupp): (" << F_low.size() << ", " << F_upp.size() << ")" << std::endl;
 }
 
@@ -229,8 +230,26 @@ void Wholebody_Controller_Constraint::evaluate_constraint(const int &timestep, W
   for(size_t i = 0; i < tau_constraints.size(); i++){
     F_vec.push_back(tau_constraints[i]);
   }    
-
 }
+
+
+void Wholebody_Controller_Constraint::evaluate_sparse_A_matrix(const int &timestep, WBT_Opt_Variable_List& var_list, std::vector<double>& A, std::vector<int>& iA, std::vector<int>& jA){
+  int n = this->get_constraint_size();
+  int m = var_list.get_size_timedependent_vars(); // var_list.get_num_time_dependent_vars
+  int T = var_list.total_timesteps; // var_list.get_total_timesteps() Total timestep
+  int k = var_list.get_num_keyframe_vars();
+
+  std::cout << "[WBC Constraint] Evaluating A Matrix" << std::endl;
+
+  sejong::Matrix pre_zeroBlock(n, m*timestep);
+  sejong::Matrix post_zeroBlock(n, m*(T-1-timestep));  
+
+
+  std::cout << "Size of 0 vector: " << test_vec.size() << std::endl;
+  std::cout << "   num of keyframe vars: " << k << std::endl;
+}
+
+
 
 void Wholebody_Controller_Constraint::evaluate_sparse_gradient(const int &timestep, WBT_Opt_Variable_List& var_list, std::vector<double>& G, std::vector<int>& iG, std::vector<int>& jG){
   std::cout << "[WBC Constraint] Sparse Gradient Called" << std::endl;
@@ -248,20 +267,13 @@ void Wholebody_Controller_Constraint::evaluate_sparse_gradient(const int &timest
     get_Jc(q_state, Jc_int);    
   }
   int m = var_list.get_size_timedependent_vars(); // var_list.get_num_time_dependent_vars
-  int T = var_list.total_timesteps; // var_list.get_total_timesteps() Total timesteps
-
-  sejong::Vector xddot_des;
-  sejong::Vector Fr;
-  var_list.get_task_accelerations(timestep, xddot_des);
-  var_list.get_var_reaction_forces(timestep, Fr);
-
-  // Assign Known Elements
 
 
-
+  // Assign Known Elements ----------------------------------------------------------------------------------------------------------
+  std::cout << "Size of Task Acceleration Vars: " << var_list.get_num_xddot_vars() <<  std::endl;
 
   // Gradient of WBC wrt to Fr is -J_c^T
-  int local_j_offset = m*timestep + NUM_Q + NUM_QDOT + xddot_des.size();
+  int local_j_offset = m*timestep + var_list.get_num_q_vars() + var_list.get_num_qdot_vars() + var_list.get_num_xddot_vars();
   std::cout << "[WBC Constraint]: dF/dFr index j starts at: " << local_j_offset << std::endl; 
   sejong::Matrix F_dFr = -Jc_int.transpose();  
   int i_local = 0;               // specify i starting index
@@ -286,7 +298,7 @@ void Wholebody_Controller_Constraint::evaluate_sparse_gradient(const int &timest
   // j = (total_j_size*timestep) var_states_size // specify j starting index
   // Go through F_dxddot and push back values to G, iGfun, jGfun
   sejong::Matrix F_dxddot = A_int*B_int;
-  local_j_offset = m*timestep + NUM_Q + NUM_QDOT;
+  local_j_offset = m*timestep + var_list.get_num_q_vars() + var_list.get_num_qdot_vars();
   i_local = 0;
   j_local = local_j_offset;
   for(size_t i = 0; i < F_dxddot.rows(); i++){
@@ -303,10 +315,8 @@ void Wholebody_Controller_Constraint::evaluate_sparse_gradient(const int &timest
 
 
 
-
   sejong::pretty_print(F_dxddot, std::cout, "F_dxddot");  
   sejong::pretty_print(F_dFr, std::cout, "F_dFr");    
-
 
 }
 

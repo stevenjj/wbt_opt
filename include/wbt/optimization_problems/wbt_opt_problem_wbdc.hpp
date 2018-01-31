@@ -43,7 +43,8 @@ public:
   	int constraint_size;
   	void compute_F_constraints();
 
-  	void compute_G();
+  	void compute_G(std::vector<double> &G_eval, std::vector<int> &iGfun, std::vector<int> &jGvar, int &neG);
+	void compute_A(std::vector<double> &A, std::vector<int> &iAfun, std::vector<int> &jAvar, int &neA);
 
 private:
 	void Initialization();
