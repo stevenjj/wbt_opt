@@ -108,6 +108,9 @@ set(wbt_objective_func_sources src/wbt_src/objective_functions/objective_functio
 
 set(wbt_snopt_wrapper_sources src/wbt_src/wbt_snopt_wrapper.cpp)
 
+
+
+
 add_executable(wbt_main src/wbt_src/main.cpp 
 						${wbt_containers_sources}
 						${wbt_task_sources}
@@ -135,8 +138,8 @@ target_link_libraries(snopt_example ${SJUtils}
 									${SJsnopt})
 
 
-add_executable(snopt_wrapper_test src/wbt_src/snopt_wrapper_test.cpp 
-								  src/wbt_src/snopt_wrapper_test_main.cpp)
+add_executable(snopt_wrapper_test src/wbt_src/tests/snopt_wrapper_test.cpp 
+								  src/wbt_src/tests/snopt_wrapper_test_main.cpp)
 target_link_libraries(snopt_wrapper_test ${SJUtils}
   								  		 ${SJurdf}
 										 ${SJrbdl}

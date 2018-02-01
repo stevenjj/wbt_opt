@@ -1,4 +1,4 @@
-#include "wbt/snopt_wrapper_test.hpp"
+#include "wbt/tests/snopt_wrapper_test.hpp"
 
 namespace snopt_wrapper_test{
 
