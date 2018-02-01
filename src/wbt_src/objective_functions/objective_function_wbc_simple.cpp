@@ -60,6 +60,7 @@ void WBC_Objective_Function::evaluate_objective_function(WBT_Opt_Variable_List& 
 		Fr_dot = (Fr_next_states - Fr_states)/dt ;
 		cost += Fr_dot.transpose()*Qdot_mat*Fr_dot;
 	}	
+	result = cost;
 
 
 }

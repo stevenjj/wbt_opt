@@ -120,7 +120,9 @@ void test_wbdc_opt_prob(){
 
 	std::cout << "[Main] WBDC_OPT object constructed" << std::endl;
 
-	wbdc_test_prob.compute_F_constraints();
+	std::vector<double> F_eval;
+	wbdc_test_prob.compute_F(F_eval);
+	std::cout << "[Main] Size of F_eval:" << F_eval.size() << std::endl;
 
 	std::vector<double> G_eval;
 	std::vector<int> iGfun;
@@ -140,7 +142,8 @@ void test_wbdc_opt_prob(){
 	wbdc_test_prob.compute_A(A, iAfun, jAvar, neA);
 
 
-	wbdc_test_prob.compute_F_objective_function();	
+	double result_test = 0.0;
+	wbdc_test_prob.compute_F_objective_function(result_test);	
 }
 
 
