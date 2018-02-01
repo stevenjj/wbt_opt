@@ -147,7 +147,16 @@ void test_wbdc_opt_prob(){
 }
 
 
-void test_ptr_delete(){
+void test_opt_prob_ptr(){
+	std::cout << "[Main] Testing WBDC Opt Ptr "<< std::endl;
+	Optimization_Problem_Main* ptr_opt_problem = new WBDC_Opt();
+
+	int ObjRow = -1;
+	ptr_opt_problem->get_F_obj_Row(ObjRow);
+	std::cout << "[Main] Optimization name:" << ptr_opt_problem->problem_name << std::endl;
+	std::cout << "[Main] Obj Function has index:" << ObjRow << std::endl;
+
+	delete ptr_opt_problem;
 }
 
 int main(int argc, char **argv)
@@ -164,8 +173,7 @@ int main(int argc, char **argv)
 	test_wbdc_opt_prob();
 	std::cout << "[Main] WBDC_OPT object destroyed" << std::endl;
 
-	test_ptr_delete();
-
+	test_opt_prob_ptr();
 
 	return 0;
 }

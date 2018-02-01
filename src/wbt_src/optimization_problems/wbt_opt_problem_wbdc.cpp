@@ -7,6 +7,7 @@
 #include <wbt/contacts/wbt_contact_rightfoot.hpp>
 
 WBDC_Opt::WBDC_Opt(){
+  this->problem_name = "WBDC Optimization Problem";  
 	robot_model = RobotModel::GetRobotModel();
 
 	robot_q_init.resize(NUM_Q); 
@@ -20,6 +21,7 @@ WBDC_Opt::WBDC_Opt(){
 }
 
 WBDC_Opt::~WBDC_Opt(){
+  std::cout << "[WBDC OPT] Destructor Called" << std::endl;
 }
 
 void WBDC_Opt::Initialization(){

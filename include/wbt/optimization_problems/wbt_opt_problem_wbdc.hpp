@@ -42,6 +42,8 @@ public:
   	
   	int constraint_size; // Unused
 
+  	// Interface to SNOPT -------------------------------------------------------------------
+
   	void get_init_opt_vars(std::vector<double> &x_vars);   	
   	void get_opt_vars_bounds(std::vector<double> &x_low, std::vector<double> &x_upp);   	  	
   	void update_opt_vars(std::vector<double> &x_vars); 	  		
@@ -52,7 +54,6 @@ public:
   	void compute_F(std::vector<double> &F_eval);
   	void compute_F_constraints(std::vector<double> &F_eval);
   	void compute_F_objective_function(double &result_out);
-
 
   	void compute_G(std::vector<double> &G_eval, std::vector<int> &iGfun, std::vector<int> &jGvar, int &neG);
 	void compute_A(std::vector<double> &A_eval, std::vector<int> &iAfun, std::vector<int> &jAvar, int &neA);
