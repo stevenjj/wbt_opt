@@ -12,7 +12,7 @@ public:
 	~WBT_Opt_Variable_List();	
 
 	void append_variable(WBT_Opt_Variable* opt_variable);
-	void compute_size_time_dep_vars();
+	void compute_size_time_dep_vars(); // This function needs to have been called at least once if a getter function is used.
 
 
 	WBT_Opt_Variable* get_opt_variable(const int index);

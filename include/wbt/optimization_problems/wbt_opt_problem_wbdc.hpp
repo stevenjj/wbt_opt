@@ -9,6 +9,8 @@
 #include <wbt/containers/wbt_constraint_list.hpp>
 
 #include <wbt/hard_constraints/wbt_wholebody_controller_constraint.hpp>
+//#include <wbt/objective_functions/objective_function_main.hpp>
+#include <wbt/objective_functions/objective_function_wbc_simple.hpp>
 
 #include "valkyrie_definition.h"
 #include "RobotModel.hpp"
@@ -34,7 +36,7 @@ public:
 
  	Wholebody_Controller_Constraint*  			ptr_wbc_constraint;
 
-
+ 	WBC_Objective_Function						objective_function;
 
   	void initialize_F_bounds();
 
@@ -54,6 +56,8 @@ private:
 	void initialize_constraint_list();
 
 	void initialize_opt_vars();
+
+	void initialize_objective_func();
 
 
 };

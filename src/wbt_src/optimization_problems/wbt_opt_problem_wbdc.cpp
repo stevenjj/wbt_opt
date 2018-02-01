@@ -29,10 +29,11 @@ void WBDC_Opt::Initialization(){
 	initialize_task_list();
 	initialize_contact_list();
   initialize_constraint_list();  
-
-
   initialize_opt_vars();
   initialize_F_bounds();
+
+  initialize_objective_func();
+
 }
 
 void WBDC_Opt::initialize_starting_configuration(){
@@ -156,6 +157,8 @@ void WBDC_Opt::initialize_opt_vars(){
   // Specify total timesteps
   opt_var_list.total_timesteps = total_timesteps;
   std::cout << "[WBDC_OPT] Computing Size of Time Dependent Variables " << std::endl;
+
+  // This must be computed...
   opt_var_list.compute_size_time_dep_vars();
 
   // ----------- End Initialization
@@ -215,8 +218,25 @@ void WBDC_Opt::initialize_F_bounds(){
     // Construct Time Integration Constraint bounds
 }
 
+void WBDC_Opt::initialize_objective_func(){
+  std::cout << "[WBDC Opt] Initializing Objective Function" << std::endl;
+  objective_function.set_var_list(opt_var_list);
+
+  // Obj Func Row = m*T + num hard keyframes
+
+  // |F_td| = num of time dependent constraint functions
+  // T = total timesteps
+  objective_function.objective_function_index = constraint_list.get_num_constraint_funcs()*total_timesteps;
+
+
+  std::cout << "[WBDC Opt] Objective Function has index: " << objective_function.objective_function_index << std::endl;
+}
+
+
 void WBDC_Opt::compute_F_objective_function(){
-  // compute_objective_function(&wbt_opt_var_list)
+  std::cout << "[WBDC Opt] Evaluating Objective Function" << std::endl; 
+  double result = 0.0;
+  objective_function.evaluate_objective_function(opt_var_list, result);
 }
 
 void WBDC_Opt::compute_F_constraints(){

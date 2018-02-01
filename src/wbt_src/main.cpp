@@ -138,6 +138,9 @@ void test_wbdc_opt_prob(){
 	std::vector<int> jAvar;	
 	int neA = 0;
 	wbdc_test_prob.compute_A(A, iAfun, jAvar, neA);
+
+
+	wbdc_test_prob.compute_F_objective_function();	
 }
 
 

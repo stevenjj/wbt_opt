@@ -104,6 +104,7 @@ set(wbt_contact_sources src/wbt_src/contacts/wbt_contact_leftfoot.cpp
 
 
 set(wbt_optimization_problems_sources src/wbt_src/optimization_problems/wbt_opt_problem_wbdc.cpp)
+set(wbt_objective_func_sources src/wbt_src/objective_functions/objective_function_wbc_simple.cpp)
 
 add_executable(wbt_main src/wbt_src/main.cpp 
 						${wbt_containers_sources}
@@ -112,6 +113,7 @@ add_executable(wbt_main src/wbt_src/main.cpp
 						${wbt_soft_constraint_sources}
 						${wbt_hard_constraint_sources}
 						${wbt_optimization_problems_sources}
+						${wbt_objective_func_sources}
 						${val_sim_model_sources})
 target_link_libraries(wbt_main ${SJUtils}
   								${SJurdf}
