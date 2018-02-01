@@ -133,5 +133,13 @@ target_link_libraries(snopt_example ${SJUtils}
 									${SJsnopt})
 
 
+add_executable(snopt_wrapper_test src/wbt_src/snopt_wrapper_test.cpp 
+								  src/wbt_src/snopt_wrapper_test_main.cpp)
+target_link_libraries(snopt_wrapper_test ${SJUtils}
+  								  		 ${SJurdf}
+										 ${SJrbdl}
+										 ${SJsnopt})									
+
+
 SET (THIS_PACKAGE_PATH "${PROJECT_SOURCE_DIR}/" )
 CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/model_config.h.cmake ${PROJECT_SOURCE_DIR}/include/model_config.h)
