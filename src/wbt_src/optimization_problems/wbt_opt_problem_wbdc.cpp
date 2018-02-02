@@ -182,9 +182,20 @@ void WBDC_Opt::initialize_opt_vars(){
 }
 
 void WBDC_Opt::get_init_opt_vars(std::vector<double> &x_vars){ 
+
+  for(size_t i = 0; i < opt_var_list.get_size(); i++){
+    x_vars.push_back(opt_var_list.get_opt_variable(i)->value);
+  }
+
+
 }
 
 void WBDC_Opt::get_opt_vars_bounds(std::vector<double> &x_low, std::vector<double> &x_upp){
+  for(size_t i = 0; i < opt_var_list.get_size(); i++){
+    x_low.push_back(opt_var_list.get_opt_variable(i)->l_bound);
+    x_upp.push_back(opt_var_list.get_opt_variable(i)->u_bound);    
+  }
+
 }
 
 void WBDC_Opt::update_opt_vars(std::vector<double> &x_vars){ 
@@ -192,15 +203,19 @@ void WBDC_Opt::update_opt_vars(std::vector<double> &x_vars){
 
 
 
-void WBDC_Opt::get_F_bounds(std::vector<double> F_low, std::vector<double> F_upp){
+void WBDC_Opt::get_F_bounds(std::vector<double> &F_low, std::vector<double> &F_upp){
   // Initialize Bounds for Time Dependent Constraints
-  for(size_t i = 0; i < td_constraint_list.get_size(); i++){
-    for(size_t j = 0; j < td_constraint_list.get_constraint(i)->F_low.size(); j++ ){
-      F_low.push_back(td_constraint_list.get_constraint(i)->F_low[j]);
+  for(int timestep = 0; timestep < total_timesteps; timestep++){
+
+    for(size_t i = 0; i < td_constraint_list.get_size(); i++){
+      for(size_t j = 0; j < td_constraint_list.get_constraint(i)->F_low.size(); j++ ){
+        F_low.push_back(td_constraint_list.get_constraint(i)->F_low[j]);
+      }
+      for(size_t j = 0; j < td_constraint_list.get_constraint(i)->F_upp.size(); j++ ){
+        F_upp.push_back(td_constraint_list.get_constraint(i)->F_upp[j]);
+      }
     }
-    for(size_t j = 0; j < td_constraint_list.get_constraint(i)->F_upp.size(); j++ ){
-      F_upp.push_back(td_constraint_list.get_constraint(i)->F_upp[j]);
-    }
+
   }
 
   // Initialize Bounds for Time Independent Constraints
