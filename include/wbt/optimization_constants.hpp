@@ -3,6 +3,9 @@
   #define OPT_INFINITY 1.0e20
   #define OPT_ZERO_EPS 1.0e-4
 
+
+  #define OPT_ZERO_GRADIENT_EPS 1.0e-8
+
   #define OPT_TIMESTEP 0.01
 
   #define VAR_TYPE_NONE -1 // No variable type

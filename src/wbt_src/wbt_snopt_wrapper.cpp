@@ -18,7 +18,7 @@ namespace snopt_wrapper{
   	std::cout << "[SNOPT Wrapper] Problem Name: " << ptr_optimization_problem->problem_name << std::endl;
 
 
-	snoptProblemA catmixa;
+/*	snoptProblemA catmixa;
 
 	int Cold  = 0;
 
@@ -55,7 +55,7 @@ namespace snopt_wrapper{
 	int jx1, jx2, ju, ode1, ode2, Obj;
 	double sInf;
 
-	double inf = 1.0e20;
+	double inf = 1.0e20;*/
 
 	// Prepare Variable Containers
 	std::vector<double> x_vars;
@@ -69,10 +69,12 @@ namespace snopt_wrapper{
 	std::vector<double> G_eval;
 	std::vector<int> iGfun_eval;
 	std::vector<int> jGvar_eval;
+	int neG_eval = 0;
 
 	std::vector<double> A_eval;
 	std::vector<int> iAfun_eval;
 	std::vector<int> jAvar_eval;
+	int neA_eval = 0;
 
 	ptr_optimization_problem->get_init_opt_vars(x_vars);
 	std::cout << "[SNOPT Wrapper] Initialized Initial Value of Optimization Variables" << std::endl;
@@ -88,7 +90,23 @@ namespace snopt_wrapper{
 	std::cout << "[SNOPT Wrapper]  			  Num of Lower Bounds: " << F_low.size() << std::endl;	
 	std::cout << "[SNOPT Wrapper]  			  Num of Upper Bounds: " << F_upp.size() << std::endl;		
 
+	if (F_low.size() == F_upp.size()){
+		std::cout << "[SNOPT_Wrapper] There are " << F_low.size() << " problem functions" << std::endl; 
+	}
+
+	// Compute G and A to initialize gradient variables
+	std::cout << "[SNOPT Wrapper] Computing Known Gradients" << std::endl;
+	ptr_optimization_problem->compute_G(G_eval, iGfun_eval, jGvar_eval, neG_eval);
+	std::cout << "[SNOPT Wrapper] Finished. Number of Known Grad G Elements: " << G_eval.size() <<  std::endl;
+	std::cout << "[SNOPT Wrapper] Number of non-zero elements: " << neG_eval <<  std::endl;
+
+	std::cout << "[SNOPT Wrapper] Computing Linear Gradients" << std::endl;
+	ptr_optimization_problem->compute_A(A_eval, iAfun_eval, jAvar_eval, neA_eval);
+	std::cout << "[SNOPT Wrapper] Finished. Number of Known Grad A Elements: " << A_eval.size() <<  std::endl;
+	std::cout << "[SNOPT Wrapper] Number of non-zero elements: " << neA_eval <<  std::endl;
+
 	// Populate x_vars
+
 
 
 

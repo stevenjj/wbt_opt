@@ -199,6 +199,7 @@ void WBDC_Opt::get_opt_vars_bounds(std::vector<double> &x_low, std::vector<doubl
 }
 
 void WBDC_Opt::update_opt_vars(std::vector<double> &x_vars){ 
+  opt_var_list.update_x(x_vars);
 }
 
 
@@ -434,7 +435,18 @@ void WBDC_Opt::compute_G(std::vector<double> &G_eval, std::vector<int> &iGfun, s
   // -------------------------------------------
 
 
+  // -------------------------------------------
   // Count number of non-zero elements in G.
+  // -------------------------------------------  
+  int neG_counter = 0;
+  for (size_t i = 0; i < G_eval.size(); i++){
+    if (G_eval[i] <= OPT_ZERO_GRADIENT_EPS){
+      G_eval[i] = OPT_ZERO_GRADIENT_EPS;
+    }else{
+      neG_counter++;
+    }
+  }
+  neG = neG_counter;
 
 }
 

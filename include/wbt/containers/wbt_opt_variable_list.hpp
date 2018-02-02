@@ -24,8 +24,8 @@ public:
 	int get_size();
 	int get_size_timedependent_vars();
 
-	void update_x(std::vector<double> x_in);
-	void populate_x(std::vector<double> x_out);
+	void update_x(std::vector<double> x_in){}	 // To do
+	void populate_x(std::vector<double> x_out){} // To do
 
 	int total_timesteps;
 
