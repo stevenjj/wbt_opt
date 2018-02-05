@@ -160,3 +160,25 @@ int WBT_Opt_Variable_List::count_num_vars_in_map(const int &timestep, std::map<i
 	}
 
 }
+
+void WBT_Opt_Variable_List::update_x(std::vector<double> &x_in){
+	if (x_in.size() == opt_var_list.size()){
+		std::cout << "[VAR LIST] input and stored sizes are equal" << std::endl;
+		// Update the values
+		for (size_t i = 0; i < x_in.size(); i++){
+			opt_var_list[i]->value = x_in[i];
+		}
+	}else{
+		std::cout << "[VAR LIST] Error. Input and stored sizes are not equal" << std::endl;
+	}
+}
+
+void WBT_Opt_Variable_List::populate_x(std::vector<double> &x_out){
+	x_out.clear();
+	for (size_t i = 0; i < opt_var_list.size(); i++){
+		x_out.push_back(opt_var_list[i]->value);
+	}
+
+}
+
+

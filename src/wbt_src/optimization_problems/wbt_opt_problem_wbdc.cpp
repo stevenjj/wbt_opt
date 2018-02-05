@@ -202,7 +202,9 @@ void WBDC_Opt::update_opt_vars(std::vector<double> &x_vars){
   opt_var_list.update_x(x_vars);
 }
 
-
+void WBDC_Opt::get_current_opt_vars(std::vector<double> &x_vars_out){
+  opt_var_list.populate_x(x_vars_out);
+}
 
 void WBDC_Opt::get_F_bounds(std::vector<double> &F_low, std::vector<double> &F_upp){
   // Initialize Bounds for Time Dependent Constraints

@@ -105,11 +105,16 @@ namespace snopt_wrapper{
 	std::cout << "[SNOPT Wrapper] Finished. Number of Known Grad A Elements: " << A_eval.size() <<  std::endl;
 	std::cout << "[SNOPT Wrapper] Number of non-zero elements: " << neA_eval <<  std::endl;
 
+	// Test populate
+	// Update x_vars
+	std::vector<double> x_updated_vars;
+	x_updated_vars = x_vars;
+	ptr_optimization_problem->update_opt_vars(x_updated_vars);
+
 	// Populate x_vars
-
-
-
-
+	std::vector<double> x_populated_vars;
+	ptr_optimization_problem->get_current_opt_vars(x_populated_vars);
+	std::cout << "[SNOPT Wrapper] Size of populated x_vars: " << x_populated_vars.size() << std::endl; 
 
   }
 

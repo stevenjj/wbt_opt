@@ -46,7 +46,9 @@ public:
 
   	void get_init_opt_vars(std::vector<double> &x_vars);   	
   	void get_opt_vars_bounds(std::vector<double> &x_low, std::vector<double> &x_upp);   	  	
+
   	void update_opt_vars(std::vector<double> &x_vars); 	  		
+  	void get_current_opt_vars(std::vector<double> &x_vars_out);   	  	  	
 
 	void get_F_bounds(std::vector<double> &F_low, std::vector<double> &F_upp);
 	void get_F_obj_Row(int &obj_row);	
