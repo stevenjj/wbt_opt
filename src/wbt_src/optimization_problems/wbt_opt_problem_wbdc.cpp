@@ -284,7 +284,7 @@ void WBDC_Opt::compute_F_constraints(std::vector<double> &F_eval){
   // We know the size of F.
   // Compute F(timestep, wbt_opt_var_list)
   std::vector<double> F_vec_const;
-  std::cout << "[WBDC OPT] Computing F Constraints" << std::endl;
+  //std::cout << "[WBDC OPT] Computing F Constraints" << std::endl;
 
   // Compute Timestep Dependent Constraints
   for(int timestep = 0; timestep < total_timesteps; timestep++){
@@ -310,7 +310,7 @@ void WBDC_Opt::compute_F_constraints(std::vector<double> &F_eval){
 }
 
 void WBDC_Opt::compute_F_objective_function(double &result_out){
-  std::cout << "[WBDC Opt] Evaluating Objective Function" << std::endl; 
+  //std::cout << "[WBDC Opt] Evaluating Objective Function" << std::endl; 
   objective_function.evaluate_objective_function(opt_var_list, result_out);
 }
 
@@ -399,7 +399,7 @@ void WBDC_Opt::compute_G(std::vector<double> &G_eval, std::vector<int> &iGfun, s
   // Compute G of Time Dependent Constraints
   // ---------------------------------------
   int num_time_dependent_constraints_funcs = td_constraint_list.get_num_constraint_funcs(); // needs to be computed. For a single timestep, find the length of constraint functions, F
-  std::cout << "Total Number of Constraints: " << num_time_dependent_constraints_funcs << std::endl;   
+  //std::cout << "Total Number of Constraints: " << num_time_dependent_constraints_funcs << std::endl;   
   
   for(int timestep = 0; timestep < total_timesteps; timestep++){
     // Evaluate Known Constraint Gradient Elements
@@ -414,8 +414,8 @@ void WBDC_Opt::compute_G(std::vector<double> &G_eval, std::vector<int> &iGfun, s
       constraint_index = td_constraint_list.get_constraint(i)->get_constraint_index();
       iGfun_absolute_start = timestep*num_time_dependent_constraints_funcs + constraint_index;
 
-      std::cout << "   Constraint i: " << i << " has constraint index: " << constraint_index  << std::endl; 
-      std::cout << "   absolute starting index: " << iGfun_absolute_start  << std::endl; 
+      // std::cout << "   Constraint i: " << i << " has constraint index: " << constraint_index  << std::endl; 
+      // std::cout << "   absolute starting index: " << iGfun_absolute_start  << std::endl; 
     
       // Add to G_eval
       for(int j = 0; j < G_local.size(); j++){
@@ -434,7 +434,7 @@ void WBDC_Opt::compute_G(std::vector<double> &G_eval, std::vector<int> &iGfun, s
 
 
   int iGfun_time_independent_funcs = total_timesteps*num_time_dependent_constraints_funcs;
-  std::cout << "Starting Index of Time Independent Constraint Functions:" << iGfun_time_independent_funcs << std::endl;
+  //std::cout << "Starting Index of Time Independent Constraint Functions:" << iGfun_time_independent_funcs << std::endl;
   // -------------------------------------------
   // Compute G of Non-Time Dependent Constraints
   // -------------------------------------------
@@ -443,15 +443,16 @@ void WBDC_Opt::compute_G(std::vector<double> &G_eval, std::vector<int> &iGfun, s
   // -------------------------------------------
   // Count number of non-zero elements in G.
   // -------------------------------------------  
-  int neG_counter = 0;
-  for (size_t i = 0; i < G_eval.size(); i++){
-    if (G_eval[i] <= OPT_ZERO_GRADIENT_EPS){
-      G_eval[i] = OPT_ZERO_GRADIENT_EPS;
-    }else{
-      neG_counter++;
-    }
-  }
-  neG = neG_counter;
+  // int neG_counter = 0;
+  // for (size_t i = 0; i < G_eval.size(); i++){
+  //   if (G_eval[i] <= OPT_ZERO_GRADIENT_EPS){
+  //     G_eval[i] = OPT_ZERO_GRADIENT_EPS;
+  //   }else{
+  //     neG_counter++;
+  //   }
+  // }
+  // neG = neG_counter;
+  neG = G_eval.size();
 
 }
 

@@ -14,25 +14,21 @@ namespace snopt_wrapper{
 		std::vector<double> x_vars;
 		std::vector<double> F_eval;
 		std::vector<double> G_eval;				
+		std::vector<int> iGfun_eval;
+		std::vector<int> jGvar_eval;	
+		int neG_eval = 0;							
 
-		std::cout << "Name of problem: " << ptr_optimization_problem->problem_name << std::endl;
-
-	  	int n_size  = *n;
-	  	std::cout << "Number of optimization vars is:" << *n << std::endl;
 	  	// Update optimization x_vars
-
 		for (size_t i = 0; i < *n; i++){
 			x_vars.push_back(x[i]);
 		}
 		ptr_optimization_problem->update_opt_vars(x_vars);
-
-
 		// Get F and G evaluations
 		if ((*needF) > 0){
 			ptr_optimization_problem->compute_F(F_eval);
 		}
 		if ((*needG) > 0){
-
+			ptr_optimization_problem->compute_G(G_eval, iGfun_eval, jGvar_eval, neG_eval);
 		}
 
 
@@ -40,7 +36,7 @@ namespace snopt_wrapper{
 	for (size_t i = 0; i < F_eval.size(); i++){
 		F[i] = F_eval[i];
 	}
-	// Populate G
+	//Populate G
 	for (size_t i = 0; i < G_eval.size(); i++){
 		G[i] = G_eval[i];
 	}	
@@ -74,6 +70,7 @@ namespace snopt_wrapper{
 	std::vector<int> jAvar_eval;
 	int neA_eval = 0;
 
+
 	ptr_optimization_problem->get_init_opt_vars(x_vars);
 	std::cout << "[SNOPT Wrapper] Initialized Initial Value of Optimization Variables" << std::endl;
 	std::cout << "[SNOPT Wrapper]                    Number of Optimization Variables: " << x_vars.size() << std::endl;	
@@ -95,18 +92,23 @@ namespace snopt_wrapper{
 		throw;
 	}
 
-	// Compute G and A to initialize gradient variables
-	// std::cout << "[SNOPT Wrapper] Computing Known Gradients" << std::endl;
-	// ptr_optimization_problem->compute_G(G_eval, iGfun_eval, jGvar_eval, neG_eval);
-	// std::cout << "[SNOPT Wrapper] Finished. Number of Known Grad G Elements: " << G_eval.size() <<  std::endl;
-	// std::cout << "[SNOPT Wrapper] Size of G indices (iGfun, jGvar) " << "(" << iGfun_eval.size() << ", " << jGvar_eval.size() << ")" <<  std::endl;	
-	// std::cout << "[SNOPT Wrapper] Number of non-zero elements: " << neG_eval <<  std::endl;
 
-	// std::cout << "[SNOPT Wrapper] Computing Linear Gradients" << std::endl;
-	// ptr_optimization_problem->compute_A(A_eval, iAfun_eval, jAvar_eval, neA_eval);
-	// std::cout << "[SNOPT Wrapper] Finished. Number of Known Grad A Elements: " << A_eval.size() <<  std::endl;
-	// std::cout << "[SNOPT Wrapper] Size of A indices (iAfun, jAvar) " << "(" << iAfun_eval.size() << ", " << jAvar_eval.size() << ")" <<  std::endl;	
-	// std::cout << "[SNOPT Wrapper] Number of non-zero elements: " << neA_eval <<  std::endl;
+	// Compute F initially
+	ptr_optimization_problem->compute_F(F_eval);
+
+
+	//Compute G and A to initialize gradient variables
+	std::cout << "[SNOPT Wrapper] Computing Known Gradients" << std::endl;
+	ptr_optimization_problem->compute_G(G_eval, iGfun_eval, jGvar_eval, neG_eval);
+	std::cout << "[SNOPT Wrapper] Finished. Number of Known Grad G Elements: " << G_eval.size() <<  std::endl;
+	std::cout << "[SNOPT Wrapper] Size of G indices (iGfun, jGvar) " << "(" << iGfun_eval.size() << ", " << jGvar_eval.size() << ")" <<  std::endl;	
+	std::cout << "[SNOPT Wrapper] Number of non-zero elements: " << neG_eval <<  std::endl;
+
+	std::cout << "[SNOPT Wrapper] Computing Linear Gradients" << std::endl;
+	ptr_optimization_problem->compute_A(A_eval, iAfun_eval, jAvar_eval, neA_eval);
+	std::cout << "[SNOPT Wrapper] Finished. Number of Known Grad A Elements: " << A_eval.size() <<  std::endl;
+	std::cout << "[SNOPT Wrapper] Size of A indices (iAfun, jAvar) " << "(" << iAfun_eval.size() << ", " << jAvar_eval.size() << ")" <<  std::endl;	
+	std::cout << "[SNOPT Wrapper] Number of non-zero elements: " << neA_eval <<  std::endl;
 
 /*
 	// Test update and populate x_vars
@@ -172,6 +174,15 @@ namespace snopt_wrapper{
 	// Populate x_vars
 	for(size_t i = 0; i < x_vars.size(); i++){
 		x[i] = x_vars[i];		
+		xstate[i] = x[i];
+		xmul[i] = 0.0;
+		std::cout << "x[" << i << "] = " << x[i] << std::endl;
+	}
+	// Populate F bounds
+	for (size_t i = 0; i < F_eval.size(); i++){
+		F[i] = F_eval[i];
+		Fstate[i] =  F_eval[i];
+		Fmul[i] = 0.0;
 	}
 	// Populate x bounds
 	for(size_t i = 0; i < x_vars_low.size(); i++){
@@ -214,6 +225,16 @@ namespace snopt_wrapper{
 	  // Fupp[0] =  inf; Fupp[1] = 100;
 
 
+	int *iAfun_test;
+	int *jAvar_test;
+	double *A_test;
+	int    neA_test;
+
+	int *iGfun_test;
+	int *jGvar_test;
+	double *G_test;
+	int    neG_test;
+
 
 
 	snoptProblemA whole_body_trajectory_problem;
@@ -223,24 +244,38 @@ namespace snopt_wrapper{
 	whole_body_trajectory_problem.setIntParameter("Derivative option", 0);
 	whole_body_trajectory_problem.setIntParameter("Verify level ", 3);	
 
-/*	whole_body_trajectory_problem.solve(Cold, nF, n, ObjAdd, ObjRow, wbt_FG,
+	whole_body_trajectory_problem.solve(Cold, nF, n, ObjAdd, ObjRow, snopt_wrapper::wbt_FG,
 			  iAfun, jAvar, A, neA,
 			  iGfun, jGvar, neG,
 			  xlow, xupp, Flow, Fupp,
 			  x, xstate, xmul,
 			  F, Fstate, Fmul,
 			  nS, nInf, sInf);
-*/
 
-  	whole_body_trajectory_problem.solve(Cold, nF, n, ObjAdd, ObjRow, snopt_wrapper::wbt_FG,
-			      xlow, xupp, Flow, Fupp,
-    			  x, xstate, xmul, F, Fstate, Fmul,
-    			  nS, nInf, sInf);
+
+	// whole_body_trajectory_problem.computeJac(nF, n, snopt_wrapper::wbt_FG, x, xlow, xupp,
+	// 	  iAfun_test, jAvar_test, A_test, neA_test,
+	// 	  iGfun_test, jGvar_test, neG_test);
+
+	// std::cout << "Size of non zero A's: " << neA_test << std::endl;
+	// std::cout << "Size of non zero G's: " << neG_test << std::endl;	
+
+
+
+  	// whole_body_trajectory_problem.solve(Cold, nF, n, ObjAdd, ObjRow, snopt_wrapper::wbt_FG,
+			//       xlow, xupp, Flow, Fupp,
+   //  			  x, xstate, xmul, F, Fstate, Fmul,
+   //  			  nS, nInf, sInf);
 
 
 	for (size_t i = 0; i < n; i++){
 		std::cout << "x[" << i << "] = " << x[i] << std::endl;
 	}
+
+
+	for (size_t i = 0; i < nF; i++){
+		std::cout << "F[" << i << "] = " << F[i] << std::endl;
+	}	
 
 
 

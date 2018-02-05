@@ -199,9 +199,9 @@ void Wholebody_Controller_Constraint::evaluate_constraint(const int &timestep, W
   var_list.get_task_accelerations(timestep, xddot_des);
   var_list.get_var_reaction_forces(timestep, Fr);
 
-  sejong::pretty_print(Fr, std::cout, "Fr");
+  //sejong::pretty_print(Fr, std::cout, "Fr");
 
-  std::cout << "    WBC evaluating constraint" << std::endl;
+  //std::cout << "    WBC evaluating constraint" << std::endl;
 
   sejong::Vector g(NUM_QDOT, 1);
   sejong::Vector b(NUM_QDOT, 1);
@@ -310,10 +310,10 @@ void Wholebody_Controller_Constraint::evaluate_sparse_A_matrix(const int &timest
 
 
 void Wholebody_Controller_Constraint::evaluate_sparse_gradient(const int &timestep, WBT_Opt_Variable_List& var_list, std::vector<double>& G, std::vector<int>& iG, std::vector<int>& jG){
-  std::cout << "[WBC Constraint] Sparse Gradient Called" << std::endl;
-  std::cout << "[WBC Constraint]: Current Timestep " << timestep << " Last Timestep That Model was updated:" << last_timestep_model_update << std::endl;
+  // std::cout << "[WBC Constraint] Sparse Gradient Called" << std::endl;
+  // std::cout << "[WBC Constraint]: Current Timestep " << timestep << " Last Timestep That Model was updated:" << last_timestep_model_update << std::endl;
   if (timestep != last_timestep_model_update){
-    std::cout << "    Timestep does not match. Will update model" << std::endl;    
+  //  std::cout << "    Timestep does not match. Will update model" << std::endl;    
     sejong::Vector q_state;
     sejong::Vector qdot_state; 
     var_list.get_var_states(timestep, q_state, qdot_state);    
@@ -328,11 +328,11 @@ void Wholebody_Controller_Constraint::evaluate_sparse_gradient(const int &timest
 
 
   // Assign Known Elements ----------------------------------------------------------------------------------------------------------
-  std::cout << "Size of Task Acceleration Vars: " << var_list.get_num_xddot_vars() <<  std::endl;
+  //std::cout << "Size of Task Acceleration Vars: " << var_list.get_num_xddot_vars() <<  std::endl;
 
   // Gradient of WBC wrt to Fr is -J_c^T
   int local_j_offset = m*timestep + var_list.get_num_q_vars() + var_list.get_num_qdot_vars() + var_list.get_num_xddot_vars();
-  std::cout << "[WBC Constraint]: dF/dFr index j starts at: " << local_j_offset << std::endl; 
+  //std::cout << "[WBC Constraint]: dF/dFr index j starts at: " << local_j_offset << std::endl; 
   sejong::Matrix F_dFr = -Jc_int.transpose();  
   int i_local = 0;               // specify i starting index
   int j_local = local_j_offset;// j = (total_j_size*timestep) + var_states_size + task_accelerations size // specify j starting index
@@ -355,26 +355,27 @@ void Wholebody_Controller_Constraint::evaluate_sparse_gradient(const int &timest
   // i = 0               // specify i starting index
   // j = (total_j_size*timestep) var_states_size // specify j starting index
   // Go through F_dxddot and push back values to G, iGfun, jGfun
-  sejong::Matrix F_dxddot = A_int*B_int;
-  local_j_offset = m*timestep + var_list.get_num_q_vars() + var_list.get_num_qdot_vars();
-  i_local = 0;
-  j_local = local_j_offset;
-  for(size_t i = 0; i < F_dxddot.rows(); i++){
-    for(size_t j = 0; j < F_dxddot.cols(); j++){
-      //std::cout << "(i,j): " << "(" << i << "," << j << ") = " << F_dxddot(i, j) << std::endl;  
-      G.push_back(F_dxddot(i,j));
-      iG.push_back(i_local);
-      jG.push_back(j_local);
-      j_local++;       
-    }
-    i_local++;
-    j_local = local_j_offset; // Reset counter
-  }
+
+  // sejong::Matrix F_dxddot = A_int*B_int;
+  // local_j_offset = m*timestep + var_list.get_num_q_vars() + var_list.get_num_qdot_vars();
+  // i_local = 0;
+  // j_local = local_j_offset;
+  // for(size_t i = 0; i < F_dxddot.rows(); i++){
+  //   for(size_t j = 0; j < F_dxddot.cols(); j++){
+  //     //std::cout << "(i,j): " << "(" << i << "," << j << ") = " << F_dxddot(i, j) << std::endl;  
+  //     G.push_back(F_dxddot(i,j));
+  //     iG.push_back(i_local);
+  //     jG.push_back(j_local);
+  //     j_local++;       
+  //   }
+  //   i_local++;
+  //   j_local = local_j_offset; // Reset counter
+  // }
 
 
 
-  sejong::pretty_print(F_dxddot, std::cout, "F_dxddot");  
-  sejong::pretty_print(F_dFr, std::cout, "F_dFr");    
+  // sejong::pretty_print(F_dxddot, std::cout, "F_dxddot");  
+  //sejong::pretty_print(F_dFr, std::cout, "F_dFr");    
 
 }
 

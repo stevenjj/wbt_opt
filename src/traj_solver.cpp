@@ -193,6 +193,26 @@ void test_snopt_solve_wbdc(){
   wbdc_prob.setIntParameter("Derivative option", 0);
   wbdc_prob.setIntParameter("Verify level ", 3);
 
+
+
+  int *iAfun_test;
+  int *jAvar_test;
+  double *A_test;
+  int    neA_test;
+
+  int *iGfun_test;
+  int *jGvar_test;
+  double *G_test;
+  int    neG_test;
+
+  wbdc_prob.computeJac(neF, n, test_snopt_wbdc_fun, x, xlow, xupp,
+      iAfun_test, jAvar_test, A_test, neA_test,
+      iGfun_test, jGvar_test, neG_test);
+  std::cout << "Size of non zero A's: " << neA_test << std::endl;
+  std::cout << "Size of non zero G's: " << neG_test << std::endl; 
+
+
+
   wbdc_prob.solve(Cold, neF, n, ObjAdd, ObjRow, test_snopt_wbdc_fun,
             xlow, xupp, Flow, Fupp,
             x, xstate, xmul, F, Fstate, Fmul,
@@ -254,6 +274,9 @@ void snopt_solve_opt_problem(){
   // coordinate arrays (iAfun,jAvar,A) and (iGfun, jGvar).
   traj_prob.setIntParameter("Derivative option", 0);
   traj_prob.setIntParameter("Verify level ", 3);
+
+
+
 
 
   traj_prob.solve(Cold, neF, n, ObjAdd, ObjRow, snopt_user_fun,
