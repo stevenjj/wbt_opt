@@ -356,21 +356,21 @@ void Wholebody_Controller_Constraint::evaluate_sparse_gradient(const int &timest
   // j = (total_j_size*timestep) var_states_size // specify j starting index
   // Go through F_dxddot and push back values to G, iGfun, jGfun
 
-  // sejong::Matrix F_dxddot = A_int*B_int;
-  // local_j_offset = m*timestep + var_list.get_num_q_vars() + var_list.get_num_qdot_vars();
-  // i_local = 0;
-  // j_local = local_j_offset;
-  // for(size_t i = 0; i < F_dxddot.rows(); i++){
-  //   for(size_t j = 0; j < F_dxddot.cols(); j++){
-  //     //std::cout << "(i,j): " << "(" << i << "," << j << ") = " << F_dxddot(i, j) << std::endl;  
-  //     G.push_back(F_dxddot(i,j));
-  //     iG.push_back(i_local);
-  //     jG.push_back(j_local);
-  //     j_local++;       
-  //   }
-  //   i_local++;
-  //   j_local = local_j_offset; // Reset counter
-  // }
+  sejong::Matrix F_dxddot = A_int*B_int;
+  local_j_offset = m*timestep + var_list.get_num_q_vars() + var_list.get_num_qdot_vars();
+  i_local = 0;
+  j_local = local_j_offset;
+  for(size_t i = 0; i < F_dxddot.rows(); i++){
+    for(size_t j = 0; j < F_dxddot.cols(); j++){
+      //std::cout << "(i,j): " << "(" << i << "," << j << ") = " << F_dxddot(i, j) << std::endl;  
+      G.push_back(F_dxddot(i,j));
+      iG.push_back(i_local);
+      jG.push_back(j_local);
+      j_local++;       
+    }
+    i_local++;
+    j_local = local_j_offset; // Reset counter
+  }
 
 
 

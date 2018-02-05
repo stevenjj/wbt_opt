@@ -268,14 +268,14 @@ namespace snopt_wrapper{
    //  			  nS, nInf, sInf);
 
 
-	for (size_t i = 0; i < n; i++){
-		std::cout << "x[" << i << "] = " << x[i] << std::endl;
-	}
+	// for (size_t i = 0; i < n; i++){
+	// 	std::cout << "x[" << i << "] = " << x[i] << std::endl;
+	// }
 
 
-	for (size_t i = 0; i < nF; i++){
-		std::cout << "F[" << i << "] = " << F[i] << std::endl;
-	}	
+	// for (size_t i = 0; i < nF; i++){
+	// 	std::cout << "F[" << i << "] = " << F[i] << std::endl;
+	// }	
 
 
 

@@ -26,7 +26,7 @@ WBDC_Opt::~WBDC_Opt(){
 
 void WBDC_Opt::Initialization(){
 	std::cout << "[WBDC_Opt] Initialization Called" << std::endl;
- 	total_timesteps = 1;
+ 	total_timesteps = 5;
   initialize_starting_configuration();
 	initialize_task_list();
 	initialize_contact_list();
