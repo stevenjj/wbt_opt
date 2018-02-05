@@ -17,7 +17,7 @@ public:
 
 	void set_keyframes(); // soft keyframe list here.
 
-	void setQ_vals(const int& i, const int& j, double& value);
+	void setQ_vals(const int &i, const int &j, const double &value);
 
 	std::string objective_function_name = "wbc_simple_objective function";	
 	sejong::Matrix Q_mat; // Cost Matrix for reaction forces

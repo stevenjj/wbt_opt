@@ -44,10 +44,10 @@ void WBC_Objective_Function::evaluate_objective_function(WBT_Opt_Variable_List& 
 		if (xddot_states.size() > 0){
 			cost += xddot_states.transpose()*N_mat*xddot_states;
 		}
-		if (qdot_states.size() > 0){
-			//std::cout << "qdot_states.size() = " << qdot_states.size() << std::endl;
-			cost += qdot_states.transpose()*S_mat*qdot_states;			
-		}
+		// if (qdot_states.size() > 0){
+		// 	//std::cout << "qdot_states.size() = " << qdot_states.size() << std::endl;
+		// 	cost += qdot_states.transpose()*S_mat*qdot_states;			
+		// }
 		if (kf_states.size() > 0){
 			// get desired keyframes.
 		}
@@ -72,7 +72,7 @@ void WBC_Objective_Function::evaluate_sparse_A_matrix(WBT_Opt_Variable_List& var
 }	
 
 
-void WBC_Objective_Function::setQ_vals(const int& i, const int& j, double& value){
+void WBC_Objective_Function::setQ_vals(const int &i, const int &j, const double &value){
 	if ( (i < Q_mat.rows()) && j < Q_mat.cols() ) {
 		Q_mat(i,j) = value;		
 	}

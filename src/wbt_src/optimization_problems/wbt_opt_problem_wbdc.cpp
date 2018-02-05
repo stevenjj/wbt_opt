@@ -26,7 +26,7 @@ WBDC_Opt::~WBDC_Opt(){
 
 void WBDC_Opt::Initialization(){
 	std::cout << "[WBDC_Opt] Initialization Called" << std::endl;
- 	total_timesteps = 2;
+ 	total_timesteps = 1;
   initialize_starting_configuration();
 	initialize_task_list();
 	initialize_contact_list();
@@ -270,6 +270,9 @@ void WBDC_Opt::initialize_objective_func(){
   // If there are none time-dependent constraints, we have to add them here
 
   std::cout << "[WBDC Opt] Objective Function has index: " << objective_function.objective_function_index << std::endl;
+
+  objective_function.setQ_vals(5,5, 0.001);
+  objective_function.setQ_vals(11,11, 0.001);  
 }
 
 
@@ -300,9 +303,9 @@ void WBDC_Opt::compute_F_constraints(std::vector<double> &F_eval){
   // Code here
 
   // Debug statement  
-  for(int j = 0; j < F_eval.size(); j++){
-    std::cout << "F_eval[" << j << "] = " << F_eval[j] << std::endl;
-  }
+  /*  for(int j = 0; j < F_eval.size(); j++){
+      std::cout << "F_eval[" << j << "] = " << F_eval[j] << std::endl;
+    }*/
 
 }
 

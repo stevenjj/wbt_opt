@@ -199,6 +199,8 @@ void Wholebody_Controller_Constraint::evaluate_constraint(const int &timestep, W
   var_list.get_task_accelerations(timestep, xddot_des);
   var_list.get_var_reaction_forces(timestep, Fr);
 
+  sejong::pretty_print(Fr, std::cout, "Fr");
+
   std::cout << "    WBC evaluating constraint" << std::endl;
 
   sejong::Vector g(NUM_QDOT, 1);
@@ -210,7 +212,7 @@ void Wholebody_Controller_Constraint::evaluate_constraint(const int &timestep, W
   get_Jc(q_state, Jc_int);    
 
   sejong::Vector qddot_des = (B_int*xddot_des + c_int);
-  sejong::Vector WB_des = A_int*qddot_des + b + g - Jc_int.transpose()*Fr; // Aqddot_des + b + g - J^T_c Fr = [0, tau]^T;
+  sejong::Vector WB_des = A_int*qddot_des + b + g - Jc_int.transpose()*Fr; // Aqddot_des + b + g - J^T_c Fr = [0, tau]^T; 
 
   sejong::Vector WBC_virtual_constraints(NUM_VIRTUAL);
   sejong::Vector tau_constraints(NUM_ACT_JOINT);
@@ -218,10 +220,13 @@ void Wholebody_Controller_Constraint::evaluate_constraint(const int &timestep, W
   WBC_virtual_constraints = Sv*(WB_des);
   tau_constraints = Sa*WB_des;
 
-/*  sejong::pretty_print(WB_des, std::cout, "WB_des");
-  sejong::pretty_print(WBC_virtual_constraints, std::cout, "WBC_virtual_constraints");  
-  sejong::pretty_print(tau_constraints, std::cout, "tau_constraints");    
-*/
+  // sejong::pretty_print(q_state, std::cout, "q_state");
+  // sejong::pretty_print(qdot_state, std::cout, "qdot_state");
+
+  // sejong::pretty_print(WB_des, std::cout, "WB_des");
+  // sejong::pretty_print(WBC_virtual_constraints, std::cout, "WBC_virtual_constraints");  
+  // sejong::pretty_print(tau_constraints, std::cout, "tau_constraints");    
+
   F_vec.clear();
   // Populate F_vec, order matters here:
   for(size_t i = 0; i < WBC_virtual_constraints.size(); i++){

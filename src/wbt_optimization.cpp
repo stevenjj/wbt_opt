@@ -51,7 +51,7 @@ WBT_Optimization::WBT_Optimization():n_states_to_optimize(0), neF_problems(0), m
 
   zero_eps = 1e-4;
 
-  total_timesteps = 2;
+  total_timesteps = 1;
 
   Initialization();
 

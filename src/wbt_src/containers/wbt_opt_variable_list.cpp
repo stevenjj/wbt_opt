@@ -166,7 +166,9 @@ void WBT_Opt_Variable_List::update_x(std::vector<double> &x_in){
 		std::cout << "[VAR LIST] input and stored sizes are equal" << std::endl;
 		// Update the values
 		for (size_t i = 0; i < x_in.size(); i++){
+//			std::cout << "old var_list[" << i << "] = " << opt_var_list[i]->value << std::endl;
 			opt_var_list[i]->value = x_in[i];
+//			std::cout << "new var_list[" << i << "] = " << opt_var_list[i]->value << std::endl;			
 		}
 	}else{
 		std::cout << "[VAR LIST] Error. Input and stored sizes are not equal" << std::endl;
