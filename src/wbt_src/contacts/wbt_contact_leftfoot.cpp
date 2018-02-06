@@ -6,6 +6,7 @@ LeftFoot_Contact::LeftFoot_Contact(){
 	robot_model_ = RobotModel::GetRobotModel();
 	contact_dim = 6;
     contact_name = "Left Foot Contact";
+    contact_link_id = SJLinkID::LK_leftCOP_Frame;
 }
 LeftFoot_Contact::~LeftFoot_Contact(){}
 

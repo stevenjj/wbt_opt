@@ -12,6 +12,7 @@ public:
   							  		  const sejong::Vector &qdot_state, sejong::Vector & JtDotQdot) = 0;
   std::string contact_name = "Undefined Contact";
   int contact_dim;
+  int contact_link_id;
 };
 
 #endif

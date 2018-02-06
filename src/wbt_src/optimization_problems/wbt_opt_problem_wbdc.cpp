@@ -6,7 +6,7 @@
 #include <wbt/contacts/wbt_contact_leftfoot.hpp>
 #include <wbt/contacts/wbt_contact_rightfoot.hpp>
 
-#define USE_OBJECTIVE_GRADIENT
+//#define USE_OBJECTIVE_GRADIENT
 
 WBDC_Opt::WBDC_Opt(){
   this->problem_name = "WBDC Optimization Problem";  
