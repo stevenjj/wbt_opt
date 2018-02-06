@@ -6,6 +6,8 @@
 #include <wbt/contacts/wbt_contact_leftfoot.hpp>
 #include <wbt/contacts/wbt_contact_rightfoot.hpp>
 
+#define USE_OBJECTIVE_GRADIENT
+
 WBDC_Opt::WBDC_Opt(){
   this->problem_name = "WBDC Optimization Problem";  
 	robot_model = RobotModel::GetRobotModel();
@@ -443,18 +445,21 @@ void WBDC_Opt::compute_G(std::vector<double> &G_eval, std::vector<int> &iGfun, s
 
 
   // -------------------------------------------
-  // Compute G of Objective Constraint: Having trouble converging with this gradient information
+  // Compute G of Objective Constraint: Gradient calculation seems to be correct. 
   // -------------------------------------------
-  // constraint_index = objective_function.objective_function_index;
-  // G_local.clear();
-  // iGfun_local.clear();
-  // jGvar_local.clear();  
-  // objective_function.evaluate_objective_gradient(opt_var_list, G_local, iGfun_local, jGvar_local);
-  // for(int j = 0; j < G_local.size(); j++){
-  //   G_eval.push_back(G_local[j]);
-  //   iGfun.push_back(iGfun_absolute_index);
-  //   jGvar.push_back(jGvar_local[j]);       
-  // }
+
+  #ifdef USE_OBJECTIVE_GRADIENT
+    constraint_index = objective_function.objective_function_index;
+    G_local.clear();
+    iGfun_local.clear();
+    jGvar_local.clear();  
+    objective_function.evaluate_objective_gradient(opt_var_list, G_local, iGfun_local, jGvar_local);
+    for(int j = 0; j < G_local.size(); j++){
+      G_eval.push_back(G_local[j]);
+      iGfun.push_back(constraint_index);
+      jGvar.push_back(jGvar_local[j]);       
+    }
+  #endif
 
 
 

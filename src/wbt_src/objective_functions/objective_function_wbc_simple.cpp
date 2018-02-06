@@ -74,7 +74,6 @@ void WBC_Objective_Function::evaluate_objective_gradient(WBT_Opt_Variable_List& 
   int local_j_offset = 0;
   int j_local = 0;
 
-  // Gradient of WBC wrt to Fr is -J_c^T
 
   sejong::Vector xddot_states;
   sejong::Vector Fr_states;  
@@ -96,6 +95,7 @@ void WBC_Objective_Function::evaluate_objective_gradient(WBT_Opt_Variable_List& 
 	  	iG.push_back(i_local);
 	  	G.push_back(F_dxddot(0, j));  	
 	  	jG.push_back(j + j_local);
+	  	//std::cout << "J + j_local = " << j + j_local << std::endl;
 	  }
 
 
