@@ -176,7 +176,7 @@ namespace snopt_wrapper{
 		x[i] = x_vars[i];		
 		xstate[i] = x[i];
 		xmul[i] = 0.0;
-		std::cout << "x[" << i << "] = " << x[i] << std::endl;
+		//std::cout << "x[" << i << "] = " << x[i] << std::endl;
 	}
 	// Populate F bounds
 	for (size_t i = 0; i < F_eval.size(); i++){

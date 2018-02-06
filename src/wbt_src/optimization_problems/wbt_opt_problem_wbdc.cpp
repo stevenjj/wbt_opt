@@ -433,11 +433,29 @@ void WBDC_Opt::compute_G(std::vector<double> &G_eval, std::vector<int> &iGfun, s
  }*/
 
 
+
+
   int iGfun_time_independent_funcs = total_timesteps*num_time_dependent_constraints_funcs;
   //std::cout << "Starting Index of Time Independent Constraint Functions:" << iGfun_time_independent_funcs << std::endl;
   // -------------------------------------------
   // Compute G of Non-Time Dependent Constraints
   // -------------------------------------------
+
+
+  // -------------------------------------------
+  // Compute G of Objective Constraint: Having trouble converging with this gradient information
+  // -------------------------------------------
+  // constraint_index = objective_function.objective_function_index;
+  // G_local.clear();
+  // iGfun_local.clear();
+  // jGvar_local.clear();  
+  // objective_function.evaluate_objective_gradient(opt_var_list, G_local, iGfun_local, jGvar_local);
+  // for(int j = 0; j < G_local.size(); j++){
+  //   G_eval.push_back(G_local[j]);
+  //   iGfun.push_back(iGfun_absolute_index);
+  //   jGvar.push_back(jGvar_local[j]);       
+  // }
+
 
 
   // -------------------------------------------

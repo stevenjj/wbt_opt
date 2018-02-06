@@ -66,9 +66,57 @@ void WBC_Objective_Function::evaluate_objective_function(WBT_Opt_Variable_List& 
 }
 
 void WBC_Objective_Function::evaluate_objective_gradient(WBT_Opt_Variable_List& var_list, std::vector<double>& G, std::vector<int>& iG, std::vector<int>& jG){
+  int m = var_list.get_size_timedependent_vars(); // var_list.get_num_time_dependent_vars
+  int T = var_list.total_timesteps; // var_list.get_total_timesteps() Total timestep
+  int k = var_list.get_num_keyframe_vars();
+  
+  int i_local = 0;               // specify i starting index
+  int local_j_offset = 0;
+  int j_local = 0;
+
+  // Gradient of WBC wrt to Fr is -J_c^T
+
+  sejong::Vector xddot_states;
+  sejong::Vector Fr_states;  
+  sejong::Matrix F_dxddot = (N_mat + N_mat.transpose());
+  sejong::Matrix F_dFr = (Q_mat + Q_mat.transpose());
+
+  for (size_t timestep = 0; timestep < T; timestep++){
+  	  // Get Gradient w.r.t task accelerations
+  	  local_j_offset = m*timestep + var_list.get_num_q_vars() + var_list.get_num_qdot_vars();
+	  j_local = local_j_offset;// j = (total_j_size*timestep) + var_states_size + task_accelerations size // specify j starting index
+	  var_list.get_task_accelerations(timestep, xddot_states);
+
+	  F_dxddot = xddot_states.transpose()*(N_mat + N_mat.transpose());
+
+	  // sejong::pretty_print(xddot_states, std::cout, "xddot_states");
+	  // sejong::pretty_print(F_dxddot, std::cout, "F_dxddot");
+
+	  for(size_t j = 0; j < F_dxddot.cols(); j++){
+	  	iG.push_back(i_local);
+	  	G.push_back(F_dxddot(0, j));  	
+	  	jG.push_back(j + j_local);
+	  }
+
+
+	  // Get Gradient w.r.t Reaction Force
+  	  local_j_offset = m*timestep + var_list.get_num_q_vars() + var_list.get_num_qdot_vars() + var_list.get_num_xddot_vars();
+	  var_list.get_var_reaction_forces(timestep, Fr_states);
+
+	  F_dFr = Fr_states.transpose()*(Q_mat + Q_mat.transpose());
+	  for(size_t j = 0; j < F_dFr.cols(); j++){
+	  	iG.push_back(i_local);
+	  	G.push_back(F_dFr(0, j));  	
+	  	jG.push_back(j + j_local);
+	  } 
+
+  }
+  // Go through F_dFr and push back values to G, iGfun, jGfun 
+
 }
 
 void WBC_Objective_Function::evaluate_sparse_A_matrix(WBT_Opt_Variable_List& var_list, std::vector<double>& A, std::vector<int>& iA, std::vector<int>& jA){
+
 }	
 
 
