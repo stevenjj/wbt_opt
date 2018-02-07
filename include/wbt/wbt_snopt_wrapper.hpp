@@ -18,7 +18,15 @@ namespace snopt_wrapper{
      int    iu[],    int *leniu,
      double ru[],    int *lenru);
 
+  void wbt_F(int    *Status, int *n,    double x[],
+     int    *needF,  int *lenF,  double F[],
+     int    *needG,  int *lenG,  double G[],
+     char      *cu,  int *lencu,
+     int    iu[],    int *leniu,
+     double ru[],    int *lenru);
+
   void solve_problem(Optimization_Problem_Main* input_ptr_optimization_problem);
+  void solve_problem_no_gradients(Optimization_Problem_Main* input_ptr_optimization_problem);
 }
 
 
