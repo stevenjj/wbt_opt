@@ -101,7 +101,7 @@ void WBDC_Opt::initialize_td_constraint_list(){
   int left_foot_index = 0;
   int right_foot_index = 1;  
   td_constraint_list.append_constraint(new Contact_Wrench_Constraint(&contact_list, left_foot_index, 0.8, 0.1, 0.05));  
-//  td_constraint_list.append_constraint(new Contact_Wrench_Constraint(&contact_list, right_foot_index, 0.8, 0.1, 0.05));  
+  td_constraint_list.append_constraint(new Contact_Wrench_Constraint(&contact_list, right_foot_index, 0.8, 0.1, 0.05));  
     
 
 

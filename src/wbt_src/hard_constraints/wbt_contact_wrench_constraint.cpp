@@ -62,6 +62,7 @@ void Contact_Wrench_Constraint::evaluate_constraint(const int &timestep, WBT_Opt
   var_list.get_var_states(timestep, q_state, qdot_state);
 
   robot_model->UpdateModel(timestep, q_state, qdot_state);
+//  robot_model->UpdateModel(q_state, qdot_state);  
   // Update U_int(q);
   UpdateUf(q_state, U_int);
 
@@ -78,8 +79,14 @@ void Contact_Wrench_Constraint::evaluate_constraint(const int &timestep, WBT_Opt
   for (size_t i = 0; i < contact_index; i++){
     index_offset += contact_list_obj->get_contact(i)->contact_dim;   
   }
+
+  //std::cout << "[Contact Wrench Constraint]: (contact_index, index_offset, contact_dim) = (" << contact_index << "," << index_offset << "," << current_contact_size << ")"  << std::endl;
+
   sejong::Vector Fr_contact = Fr_all.segment(index_offset, current_contact_size);
   sejong::Vector UFr = U_int*Fr_contact;
+
+/*  sejong::pretty_print(Fr_all, std::cout, "Fr_all");
+  sejong::pretty_print(Fr_contact, std::cout, "Fr_contact");*/
 
   // std::cout << "[Contact Wrench Constraint] UFr Size: " << UFr.size() << std::endl;
   // std::cout << "Should be 17" << std::endl;
@@ -100,12 +107,18 @@ void Contact_Wrench_Constraint::evaluate_sparse_gradient(const int &timestep, WB
   var_list.get_var_states(timestep, q_state, qdot_state);
 
   robot_model->UpdateModel(timestep, q_state, qdot_state);
+//  robot_model->UpdateModel(q_state, qdot_state);  
   // Update U_int(q);
   UpdateUf(q_state, U_int);
 
+  int index_offset = 0;
+  for (size_t i = 0; i < contact_index; i++){
+    index_offset += contact_list_obj->get_contact(i)->contact_dim;   
+  }  
+
   // Gradient of Contact Wrench wrt to Fr is U_int
   int m = var_list.get_size_timedependent_vars(); // var_list.get_num_time_dependent_vars
-  int local_j_offset = m*timestep + var_list.get_num_q_vars() + var_list.get_num_qdot_vars() + var_list.get_num_xddot_vars();
+  int local_j_offset = m*timestep + var_list.get_num_q_vars() + var_list.get_num_qdot_vars() + var_list.get_num_xddot_vars() + index_offset;
   //std::cout << "[CWC Constraint]: dF/dFr index j starts at: " << local_j_offset << std::endl; 
   sejong::Matrix F_dFr = U_int;  
   int i_local = 0;               // specify i starting index
