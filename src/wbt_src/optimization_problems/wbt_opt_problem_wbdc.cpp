@@ -28,7 +28,7 @@ WBDC_Opt::~WBDC_Opt(){
 
 void WBDC_Opt::Initialization(){
 	std::cout << "[WBDC_Opt] Initialization Called" << std::endl;
- 	total_timesteps = 5;
+ 	total_timesteps = 1;
   initialize_starting_configuration();
 	initialize_task_list();
 	initialize_contact_list();
@@ -97,6 +97,11 @@ void WBDC_Opt::initialize_td_constraint_list(){
   ptr_wbc_constraint->set_contact_list(&contact_list);  
 //  td_constraint_list.append_constraint(new Wholebody_Controller_Constraint(&wb_task_list, &contact_list));
   td_constraint_list.append_constraint(ptr_wbc_constraint);  
+
+  int left_foot_index = 0;
+  td_constraint_list.append_constraint(new Contact_Wrench_Constraint(&contact_list, left_foot_index, 0.8, 0.1, 0.05));  
+
+    
 
 
   // Test WBC B and c matrix construction
@@ -416,9 +421,9 @@ void WBDC_Opt::compute_G(std::vector<double> &G_eval, std::vector<int> &iGfun, s
       constraint_index = td_constraint_list.get_constraint(i)->get_constraint_index();
       iGfun_absolute_start = timestep*num_time_dependent_constraints_funcs + constraint_index;
 
-      // std::cout << "   Constraint i: " << i << " has constraint index: " << constraint_index  << std::endl; 
+      std::cout << " Timestep " << timestep << ", Constraint i: " << i << " has constraint index: " << iGfun_absolute_start  << std::endl; 
       // std::cout << "   absolute starting index: " << iGfun_absolute_start  << std::endl; 
-    
+   
       // Add to G_eval
       for(int j = 0; j < G_local.size(); j++){
         //std::cout << "G_local[j] = " << G_local[j] << std::endl;
@@ -474,7 +479,7 @@ void WBDC_Opt::compute_G(std::vector<double> &G_eval, std::vector<int> &iGfun, s
   //     neG_counter++;
   //   }
   // }
-  // neG = neG_counter;
+  //neG = neG_counter;
   neG = G_eval.size();
 
 }

@@ -37,7 +37,7 @@ void Contact_Wrench_Constraint::initialize_Flow_Fupp(){
     F_low.push_back(0.0);
     F_upp.push_back(OPT_INFINITY);    
   }
-
+  constraint_size = F_low.size();
   std::cout << "Contact Index:" << contact_index << std::endl;
   std::cout << "Contact Name:" <<  contact_list_obj->get_contact(contact_index)->contact_name << std::endl;  
 
@@ -81,11 +81,12 @@ void Contact_Wrench_Constraint::evaluate_constraint(const int &timestep, WBT_Opt
   sejong::Vector Fr_contact = Fr_all.segment(index_offset, current_contact_size);
   sejong::Vector UFr = U_int*Fr_contact;
 
-  std::cout << "[Contact Wrench Constraint] UFr Size: " << UFr.size() << std::endl;
-  std::cout << "Should be 17" << std::endl;
+  // std::cout << "[Contact Wrench Constraint] UFr Size: " << UFr.size() << std::endl;
+  // std::cout << "Should be 17" << std::endl;
   F_vec.clear();
 
   for (size_t i = 0; i < UFr.size(); i++){
+    //std::cout << "UFr[" << i << "] = " << UFr[i] << std::endl;
     F_vec.push_back(UFr[i]);
   }
 
@@ -93,6 +94,37 @@ void Contact_Wrench_Constraint::evaluate_constraint(const int &timestep, WBT_Opt
 }
 
 void Contact_Wrench_Constraint::evaluate_sparse_gradient(const int &timestep, WBT_Opt_Variable_List& var_list, std::vector<double>& G, std::vector<int>& iG, std::vector<int>& jG){
+  // Get q_states
+  sejong::Vector q_state;
+  sejong::Vector qdot_state;  
+  var_list.get_var_states(timestep, q_state, qdot_state);
+
+  robot_model->UpdateModel(timestep, q_state, qdot_state);
+  // Update U_int(q);
+  UpdateUf(q_state, U_int);
+
+  // Gradient of Contact Wrench wrt to Fr is U_int
+  int m = var_list.get_size_timedependent_vars(); // var_list.get_num_time_dependent_vars
+  int local_j_offset = m*timestep + var_list.get_num_q_vars() + var_list.get_num_qdot_vars() + var_list.get_num_xddot_vars();
+  //std::cout << "[CWC Constraint]: dF/dFr index j starts at: " << local_j_offset << std::endl; 
+  sejong::Matrix F_dFr = U_int;  
+  int i_local = 0;               // specify i starting index
+  int j_local = local_j_offset;// j = (total_j_size*timestep) + var_states_size + task_accelerations size // specify j starting index
+  // Go through F_dFr and push back values to G, iGfun, jGfun 
+
+  for(size_t i = 0; i < F_dFr.rows(); i++){
+    for(size_t j = 0; j < F_dFr.cols(); j++){
+      //std::cout << "(i,j): " << "(" << i << "," << j << ") = " << F_dFr(i, j) << std::endl;  
+      G.push_back(F_dFr(i,j));
+      iG.push_back(i_local);
+      jG.push_back(j_local);
+      j_local++;       
+    }
+    i_local++;
+    j_local = local_j_offset; // Reset counter
+  }
+
+
 
 }
 

@@ -220,7 +220,7 @@ void Wholebody_Controller_Constraint::evaluate_constraint(const int &timestep, W
 
   sejong::Vector g(NUM_QDOT, 1);
   sejong::Vector b(NUM_QDOT, 1);
-  UpdateModel(timestep, q_state, qdot_state, A_int, g, b);
+  UpdateModel(q_state, qdot_state, A_int, g, b);
   last_timestep_model_update = timestep;
 
   getB_c(q_state, qdot_state, B_int, c_int);
@@ -335,7 +335,7 @@ void Wholebody_Controller_Constraint::evaluate_sparse_gradient(const int &timest
     var_list.get_var_states(timestep, q_state, qdot_state);    
     sejong::Vector g(NUM_QDOT, 1);
     sejong::Vector b(NUM_QDOT, 1);
-    UpdateModel(timestep, q_state, qdot_state, A_int, g, b);       
+    UpdateModel(q_state, qdot_state, A_int, g, b);       
     last_timestep_model_update = timestep;
     getB_c(q_state, qdot_state, B_int, c_int);
     get_Jc(q_state, Jc_int);    
