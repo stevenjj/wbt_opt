@@ -1,3 +1,15 @@
+Test Contact Wrench constraint
+Add timestep check to robot model update.
+Add contact wrench gradient
+
+Add Contact LCP constraint
+Add Task and Reaction Force LCP constraint
+Add Time Integration Constraint
+Add Soft keyframes constraint
+
+Add hard keyframes constraint
+
+
 Optimization Object
 
 Objective_Functions
