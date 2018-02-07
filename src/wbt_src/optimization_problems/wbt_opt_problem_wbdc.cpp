@@ -28,7 +28,7 @@ WBDC_Opt::~WBDC_Opt(){
 
 void WBDC_Opt::Initialization(){
 	std::cout << "[WBDC_Opt] Initialization Called" << std::endl;
- 	total_timesteps = 1;
+ 	total_timesteps = 3;
   initialize_starting_configuration();
 	initialize_task_list();
 	initialize_contact_list();
@@ -149,8 +149,8 @@ void WBDC_Opt::initialize_opt_vars(){
     //---------------------------------------------------------------------------------------------------------------------  
     // Task Acceleration Initialization   
     for(size_t j = 0; j < ptr_wbc_constraint->task_dim; j++){
-//        WBT_Opt_Variable* xddot_var = new WBT_Opt_Variable("xddot", VAR_TYPE_TA, i, 0.0, -OPT_INFINITY, OPT_INFINITY);
-        WBT_Opt_Variable* xddot_var = new WBT_Opt_Variable("xddot", VAR_TYPE_TA, i, 0.0, -0.0001, 0.0001);
+        WBT_Opt_Variable* xddot_var = new WBT_Opt_Variable("xddot", VAR_TYPE_TA, i, 0.0, -OPT_INFINITY, OPT_INFINITY);
+//        WBT_Opt_Variable* xddot_var = new WBT_Opt_Variable("xddot", VAR_TYPE_TA, i, 0.0, -0.0001, 0.0001);
         opt_var_list.append_variable(xddot_var);      
     }
     //---------------------------------------------------------------------------------------------------------------------

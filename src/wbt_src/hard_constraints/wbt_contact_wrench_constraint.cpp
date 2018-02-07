@@ -62,7 +62,6 @@ void Contact_Wrench_Constraint::evaluate_constraint(const int &timestep, WBT_Opt
   var_list.get_var_states(timestep, q_state, qdot_state);
 
   robot_model->UpdateModel(timestep, q_state, qdot_state);
-//  robot_model->UpdateModel(q_state, qdot_state);  
   // Update U_int(q);
   UpdateUf(q_state, U_int);
 
@@ -107,10 +106,10 @@ void Contact_Wrench_Constraint::evaluate_sparse_gradient(const int &timestep, WB
   var_list.get_var_states(timestep, q_state, qdot_state);
 
   robot_model->UpdateModel(timestep, q_state, qdot_state);
-//  robot_model->UpdateModel(q_state, qdot_state);  
   // Update U_int(q);
   UpdateUf(q_state, U_int);
 
+  // We have to identify the index where this reaction force starts.
   int index_offset = 0;
   for (size_t i = 0; i < contact_index; i++){
     index_offset += contact_list_obj->get_contact(i)->contact_dim;   
