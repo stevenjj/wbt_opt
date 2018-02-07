@@ -60,6 +60,8 @@ private:
 
 	void UpdateModel(const sejong::Vector &q, const sejong::Vector &qdot,
                       sejong::Matrix &A_out, sejong::Vector &grav_out, sejong::Vector &cori_out);
+	void UpdateModel(const int &timestep, const sejong::Vector &q, const sejong::Vector &qdot,
+                      sejong::Matrix &A_out, sejong::Vector &grav_out, sejong::Vector &cori_out);	
 
 	void _WeightedInverse(const sejong::Matrix & J, const sejong::Matrix & Winv, sejong::Matrix & Jinv){
 	    sejong::Matrix lambda(J* Winv * J.transpose());

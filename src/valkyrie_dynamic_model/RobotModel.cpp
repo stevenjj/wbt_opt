@@ -39,6 +39,14 @@ void RobotModel::UpdateModel(const Vector & q, const Vector & qdot){
     kin_model_->UpdateKinematics(q, qdot);
 }
 
+
+void RobotModel::UpdateModel(int timestep, const sejong::Vector & q, const sejong::Vector & qdot){
+  if(timestep != last_timestep_model_update){
+    UpdateModel(q, qdot);
+    last_timestep_model_update = timestep;
+  }
+}
+
 void RobotModel::getCentroidInertia(sejong::Matrix & Icent){
     kin_model_->getCentroidInertia(Icent);
 }

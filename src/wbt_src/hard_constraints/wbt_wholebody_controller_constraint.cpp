@@ -109,6 +109,21 @@ void Wholebody_Controller_Constraint::UpdateModel(const sejong::Vector &q, const
   robot_model->getCoriolis(cori_out); 
 }
 
+void Wholebody_Controller_Constraint::UpdateModel(const int &timestep, const sejong::Vector &q, const sejong::Vector &qdot,
+                      sejong::Matrix &A_out, sejong::Vector &grav_out, sejong::Vector &cori_out){
+  A_out.resize(NUM_QDOT, NUM_QDOT);
+  grav_out.resize(NUM_QDOT, 1);
+  cori_out.resize(NUM_QDOT, 1);
+  A_out.setZero();
+  grav_out.setZero();
+  cori_out.setZero();  
+
+  robot_model->UpdateModel(timestep, q, qdot);
+  robot_model->getMassInertia(A_out); 
+  robot_model->getGravity(grav_out);  
+  robot_model->getCoriolis(cori_out);     
+}
+
 void Wholebody_Controller_Constraint::getB_c(const sejong::Vector &q, const sejong::Vector &qdot, sejong::Matrix &B_out, sejong::Vector &c_out){
   sejong::Matrix B;
   sejong::Vector c;  
@@ -205,7 +220,7 @@ void Wholebody_Controller_Constraint::evaluate_constraint(const int &timestep, W
 
   sejong::Vector g(NUM_QDOT, 1);
   sejong::Vector b(NUM_QDOT, 1);
-  UpdateModel(q_state, qdot_state, A_int, g, b);
+  UpdateModel(timestep, q_state, qdot_state, A_int, g, b);
   last_timestep_model_update = timestep;
 
   getB_c(q_state, qdot_state, B_int, c_int);
@@ -312,18 +327,20 @@ void Wholebody_Controller_Constraint::evaluate_sparse_A_matrix(const int &timest
 void Wholebody_Controller_Constraint::evaluate_sparse_gradient(const int &timestep, WBT_Opt_Variable_List& var_list, std::vector<double>& G, std::vector<int>& iG, std::vector<int>& jG){
   // std::cout << "[WBC Constraint] Sparse Gradient Called" << std::endl;
   // std::cout << "[WBC Constraint]: Current Timestep " << timestep << " Last Timestep That Model was updated:" << last_timestep_model_update << std::endl;
+
   if (timestep != last_timestep_model_update){
-  //  std::cout << "    Timestep does not match. Will update model" << std::endl;    
+    //std::cout << "    Timestep does not match. Will update model" << std::endl;    
     sejong::Vector q_state;
     sejong::Vector qdot_state; 
     var_list.get_var_states(timestep, q_state, qdot_state);    
     sejong::Vector g(NUM_QDOT, 1);
     sejong::Vector b(NUM_QDOT, 1);
-    UpdateModel(q_state, qdot_state, A_int, g, b);       
+    UpdateModel(timestep, q_state, qdot_state, A_int, g, b);       
     last_timestep_model_update = timestep;
     getB_c(q_state, qdot_state, B_int, c_int);
     get_Jc(q_state, Jc_int);    
   }
+
   int m = var_list.get_size_timedependent_vars(); // var_list.get_num_time_dependent_vars
 
 

@@ -41,6 +41,7 @@ public:
     void getCoMJacobian(const Vector & q, sejong::Matrix & J);
     void UpdateKinematics(const Vector & q, const Vector &qdot);
     void UpdateModel(const sejong::Vector & q, const sejong::Vector & qdot);
+    void UpdateModel(int timestep, const sejong::Vector & q, const sejong::Vector & qdot);    
 
 protected:
     Valkyrie_Dyn_Model* dyn_model_;
@@ -49,6 +50,7 @@ protected:
     RigidBodyDynamics::Model* model_;
 private:
     RobotModel();
+    int last_timestep_model_update = -1;
 };
 
 #endif
