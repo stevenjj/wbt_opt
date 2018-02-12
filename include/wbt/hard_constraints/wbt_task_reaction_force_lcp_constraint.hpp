@@ -15,7 +15,7 @@
 class Task_Reaction_Force_LCP_Constraint: public Constraint_Function{
 public:
 	Task_Reaction_Force_LCP_Constraint();
-	Task_Reaction_Force_LCP_Constraint(WholeBody_Task_List* wb_task_list_in, Contact_List* contact_list_in, int index_in);		
+	Task_Reaction_Force_LCP_Constraint(WholeBody_Task_List* wb_task_list_in, Contact_List* contact_list_in, int task_index_in, int contact_index_in);		
 	~Task_Reaction_Force_LCP_Constraint();
 
 	RobotModel* robot_model;	

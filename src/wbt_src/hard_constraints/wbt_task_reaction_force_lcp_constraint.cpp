@@ -12,8 +12,12 @@ Task_Reaction_Force_LCP_Constraint::~Task_Reaction_Force_LCP_Constraint(){
   std::cout << "[Task Reactrion Force LCP Constraint] Destructor called" << std::endl;	
 }
 
-Task_Reaction_Force_LCP_Constraint::Task_Reaction_Force_LCP_Constraint(WholeBody_Task_List* wb_task_list_in, Contact_List* contact_list_in, int index_in){
+Task_Reaction_Force_LCP_Constraint::Task_Reaction_Force_LCP_Constraint(WholeBody_Task_List* wb_task_list_in, Contact_List* contact_list_in, int task_index_in, int contact_index_in){
 	Initialization();
+	setTask_List(wb_task_list_in);
+	setContact_List(contact_list_in);	
+	setTask_index(task_index_in);
+	setContact_index(contact_index_in);	
 }	
 
 
@@ -48,6 +52,43 @@ void Task_Reaction_Force_LCP_Constraint::setContact_index(int index_in){
 
 
 void Task_Reaction_Force_LCP_Constraint::evaluate_constraint(const int &timestep, WBT_Opt_Variable_List& var_list, std::vector<double>& F_vec){
+  Contact* current_contact = contact_list_obj->get_contact(contact_index); 
+  int contact_link_id = current_contact->contact_link_id;
+  int current_contact_size = current_contact->contact_dim;
+
+  Task* current_task = wb_task_list_obj->get_task(task_index);
+  int current_task_size = current_task->task_dim;
+
+  // Get Task Accelerations
+  sejong::Vector xddot_all;
+  var_list.get_task_accelerations(timestep, xddot_all);
+  // Get Index of Task Acceleration
+  int task_index_offset = 0;
+  for (size_t i = 0; i < task_index; i++){
+    task_index_offset += wb_task_list_obj->get_task(i)->task_dim;   
+  }
+
+  // Get Fr_states----------------------------------------
+  sejong::Vector Fr_all;
+  var_list.get_var_reaction_forces(timestep, Fr_all);
+  // Get Index of Reaction Force
+  int contact_index_offset = 0;
+  for (size_t i = 0; i < contact_index; i++){
+    contact_index_offset += contact_list_obj->get_contact(i)->contact_dim;   
+  }
+  
+
+  sejong::Vector xddot_task = xddot_all.segment(task_index_offset, current_task_size);
+  sejong::Vector Fr_contact = Fr_all.segment(contact_index_offset, current_contact_size);
+
+  double Fr_l2_norm_squared = std::pow(Fr_contact.lpNorm<2>(), 2);
+  double xddot_l2_norm_squared = std::pow(xddot_task.lpNorm<2>(), 2);  
+
+  // ||xddot||^2_2 \cdot ||Fr||^2_2 = 0
+  double constraint_evaluation = xddot_l2_norm_squared*Fr_l2_norm_squared;
+
+
+  F_vec.push_back(constraint_evaluation);
 }
 
 
@@ -55,7 +96,7 @@ void Task_Reaction_Force_LCP_Constraint::evaluate_constraint(const int &timestep
 void Task_Reaction_Force_LCP_Constraint::evaluate_sparse_gradient(const int &timestep, WBT_Opt_Variable_List& var_list, std::vector<double>& G, std::vector<int>& iG, std::vector<int>& jG){}
 
 void Task_Reaction_Force_LCP_Constraint::evaluate_sparse_A_matrix(const int &timestep, WBT_Opt_Variable_List& var_list, std::vector<double>& A, std::vector<int>& iA, std::vector<int>& jA){
-	  int n = this->get_constraint_size();//this->num_constraints;
+  int n = this->get_constraint_size();//this->num_constraints;
   int m = var_list.get_size_timedependent_vars(); // var_list.get_num_time_dependent_vars
   int T = var_list.total_timesteps; // var_list.get_total_timesteps() Total timestep
   int k = var_list.get_num_keyframe_vars();

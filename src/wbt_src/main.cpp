@@ -11,6 +11,7 @@
 
 #include <wbt/tasks/wbt_task_com.hpp>
 #include <wbt/tasks/wbt_task_leftfoot.hpp>
+#include <wbt/tasks/wbt_task_rightfoot.hpp>
 #include <wbt/tasks/wbt_task_rightfoot_righthand.hpp>
 #include <wbt/soft_constraints/wbt_keyframe.hpp>
 #include <wbt/soft_constraints/wbt_keyframe_position.hpp>
@@ -177,7 +178,15 @@ void test_contact_wrench_lcp_constraint(){
 }
 
 void test_task_reaction_force_lcp_constraint(){
-	Task_Reaction_Force_LCP_Constraint trf_lcp;
+	WholeBody_Task_List wholebody_task_list;
+	wholebody_task_list.append_task(new LeftFoot_Task());
+	wholebody_task_list.append_task(new RightFoot_Task());
+
+	Contact_List contact_list;
+  	contact_list.append_contact(new LeftFoot_Contact());
+  	contact_list.append_contact(new RightFoot_Contact());
+
+	Task_Reaction_Force_LCP_Constraint trf_lcp(&wholebody_task_list, &contact_list, 0, 0);
 
 }
 

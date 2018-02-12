@@ -106,8 +106,10 @@ void WBDC_Opt::initialize_td_constraint_list(){
 
   td_constraint_list.append_constraint(new Contact_LCP_Constraint(&contact_list, left_foot_index));
   td_constraint_list.append_constraint(new Contact_LCP_Constraint(&contact_list, right_foot_index));      
-    
 
+  td_constraint_list.append_constraint(new Task_Reaction_Force_LCP_Constraint(&wb_task_list, &contact_list, right_foot_index, right_foot_index));        
+  td_constraint_list.append_constraint(new Task_Reaction_Force_LCP_Constraint(&wb_task_list, &contact_list, left_foot_index, left_foot_index));          
+    
 
   // Test WBC B and c matrix construction
 /*  sejong::Matrix B_test;
