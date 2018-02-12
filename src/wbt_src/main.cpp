@@ -18,6 +18,7 @@
 
 #include <wbt/hard_constraints/wbt_contact_wrench_constraint.hpp>
 #include <wbt/hard_constraints/wbt_contact_lcp_constraint.hpp>
+#include <wbt/hard_constraints/wbt_task_reaction_force_lcp_constraint.hpp>
 
 #include <wbt/contacts/wbt_contact_leftfoot.hpp>
 #include <wbt/contacts/wbt_contact_rightfoot.hpp>
@@ -173,8 +174,10 @@ void test_contact_wrench_lcp_constraint(){
 	Contact_Wrench_Constraint cwc(&contact_list, left_foot_index, 0.8, 0.1, 0.05);	
 
 	Contact_LCP_Constraint clcp(&contact_list, left_foot_index);	
+}
 
-
+void test_task_reaction_force_lcp_constraint(){
+	Task_Reaction_Force_LCP_Constraint trf_lcp;
 
 }
 
@@ -194,6 +197,7 @@ int main(int argc, char **argv)
 
 	test_opt_prob_ptr();
 	test_contact_wrench_lcp_constraint();
+	test_task_reaction_force_lcp_constraint();
 
 	return 0;
 }

@@ -5,11 +5,15 @@
 #include <cmath>
 
 Task_Reaction_Force_LCP_Constraint::Task_Reaction_Force_LCP_Constraint(){
+	Initialization();
 }
 
-Task_Reaction_Force_LCP_Constraint::~Task_Reaction_Force_LCP_Constraint(){}
+Task_Reaction_Force_LCP_Constraint::~Task_Reaction_Force_LCP_Constraint(){
+  std::cout << "[Task Reactrion Force LCP Constraint] Destructor called" << std::endl;	
+}
 
 Task_Reaction_Force_LCP_Constraint::Task_Reaction_Force_LCP_Constraint(WholeBody_Task_List* wb_task_list_in, Contact_List* contact_list_in, int index_in){
+	Initialization();
 }	
 
 
@@ -26,7 +30,28 @@ void Task_Reaction_Force_LCP_Constraint::initialize_Flow_Fupp(){
 	constraint_size = F_low.size();
 }
 
-void Task_Reaction_Force_LCP_Constraint::evaluate_constraint(const int &timestep, WBT_Opt_Variable_List& var_list, std::vector<double>& F_vec){}
+void Task_Reaction_Force_LCP_Constraint::setContact_List(Contact_List* contact_list_in){
+	contact_list_obj = contact_list_in;
+}
+
+void Task_Reaction_Force_LCP_Constraint::setTask_List(WholeBody_Task_List* wb_task_list_in){
+	wb_task_list_obj = wb_task_list_in;
+}
+
+void Task_Reaction_Force_LCP_Constraint::setTask_index(int index_in){
+	task_index = index_in;
+}
+
+void Task_Reaction_Force_LCP_Constraint::setContact_index(int index_in){
+	contact_index = index_in;
+}
+
+
+void Task_Reaction_Force_LCP_Constraint::evaluate_constraint(const int &timestep, WBT_Opt_Variable_List& var_list, std::vector<double>& F_vec){
+}
+
+
+
 void Task_Reaction_Force_LCP_Constraint::evaluate_sparse_gradient(const int &timestep, WBT_Opt_Variable_List& var_list, std::vector<double>& G, std::vector<int>& iG, std::vector<int>& jG){}
 
 void Task_Reaction_Force_LCP_Constraint::evaluate_sparse_A_matrix(const int &timestep, WBT_Opt_Variable_List& var_list, std::vector<double>& A, std::vector<int>& iA, std::vector<int>& jA){
