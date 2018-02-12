@@ -10,6 +10,7 @@
 
 #include <wbt/hard_constraints/wbt_wholebody_controller_constraint.hpp>
 #include <wbt/hard_constraints/wbt_contact_wrench_constraint.hpp>
+#include <wbt/hard_constraints/wbt_contact_lcp_constraint.hpp>
 //#include <wbt/objective_functions/objective_function_main.hpp>
 #include <wbt/objective_functions/objective_function_wbc_simple.hpp>
 

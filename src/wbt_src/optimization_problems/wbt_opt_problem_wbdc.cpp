@@ -100,8 +100,12 @@ void WBDC_Opt::initialize_td_constraint_list(){
 
   int left_foot_index = 0;
   int right_foot_index = 1;  
+
   td_constraint_list.append_constraint(new Contact_Wrench_Constraint(&contact_list, left_foot_index, 0.8, 0.1, 0.05));  
   td_constraint_list.append_constraint(new Contact_Wrench_Constraint(&contact_list, right_foot_index, 0.8, 0.1, 0.05));  
+
+  td_constraint_list.append_constraint(new Contact_LCP_Constraint(&contact_list, left_foot_index));
+  td_constraint_list.append_constraint(new Contact_LCP_Constraint(&contact_list, right_foot_index));      
     
 
 
@@ -149,8 +153,8 @@ void WBDC_Opt::initialize_opt_vars(){
     //---------------------------------------------------------------------------------------------------------------------  
     // Task Acceleration Initialization   
     for(size_t j = 0; j < ptr_wbc_constraint->task_dim; j++){
-        WBT_Opt_Variable* xddot_var = new WBT_Opt_Variable("xddot", VAR_TYPE_TA, i, 0.0, -OPT_INFINITY, OPT_INFINITY);
-//        WBT_Opt_Variable* xddot_var = new WBT_Opt_Variable("xddot", VAR_TYPE_TA, i, 0.0, -0.0001, 0.0001);
+//        WBT_Opt_Variable* xddot_var = new WBT_Opt_Variable("xddot", VAR_TYPE_TA, i, 0.0, -OPT_INFINITY, OPT_INFINITY);
+        WBT_Opt_Variable* xddot_var = new WBT_Opt_Variable("xddot", VAR_TYPE_TA, i, 0.0, -0.0001, 0.0001);
         opt_var_list.append_variable(xddot_var);      
     }
     //---------------------------------------------------------------------------------------------------------------------

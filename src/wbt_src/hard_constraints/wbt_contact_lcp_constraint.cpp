@@ -2,6 +2,7 @@
 #include <Utils/utilities.hpp>
 #include "valkyrie_definition.h"
 #include <wbt/optimization_constants.hpp>
+#include <cmath>
 
 Contact_LCP_Constraint::Contact_LCP_Constraint(){
   Initialization();  
@@ -24,7 +25,7 @@ void Contact_LCP_Constraint::Initialization(){
 }
 
 void Contact_LCP_Constraint::initialize_Flow_Fupp(){
-	// Phi(q)*Fr = 0
+	// Phi(q)*||Fr|| = 0
 	// Phi(q) >= 0
 	F_low.push_back(0.0);	
 	F_low.push_back(0.0);
@@ -42,8 +43,53 @@ void Contact_LCP_Constraint::setContact_index(int index_in){
   contact_index = index_in;  
 }  
 
-void Contact_LCP_Constraint::evaluate_constraint(const int &timestep, WBT_Opt_Variable_List& var_list, std::vector<double>& F_vec){}
-void Contact_LCP_Constraint::evaluate_sparse_gradient(const int &timestep, WBT_Opt_Variable_List& var_list, std::vector<double>& G, std::vector<int>& iG, std::vector<int>& jG){}
+void Contact_LCP_Constraint::evaluate_constraint(const int &timestep, WBT_Opt_Variable_List& var_list, std::vector<double>& F_vec){
+  Contact* current_contact = contact_list_obj->get_contact(contact_index);
+  int contact_link_id = current_contact->contact_link_id;
+
+  // Get q_states---------------------------------------------------------------------------
+  sejong::Vector q_state;
+  sejong::Vector qdot_state;  
+  var_list.get_var_states(timestep, q_state, qdot_state);
+
+  robot_model->UpdateModel(timestep, q_state, qdot_state);
+
+  // Get Fr_states--------------------------------------------------------------------------
+  sejong::Vector Fr_all;
+  var_list.get_var_reaction_forces(timestep, Fr_all);
+
+  int current_contact_size = current_contact->contact_dim;
+  if (current_contact_size != 6){
+    std::cout << "[Contact Wrench Constraint]: Error! Contact Dimension is not 6." << std::endl;
+  }
+  // Extract the segment of Reaction Forces corresponding to this contact-------------------
+  int index_offset = 0;
+  for (size_t i = 0; i < contact_index; i++){
+    index_offset += contact_list_obj->get_contact(i)->contact_dim;   
+  }
+  sejong::Vector Fr_contact = Fr_all.segment(index_offset, current_contact_size);
+
+  double Fr_l2_norm_squared = std::pow(Fr_contact.lpNorm<2>(), 2);
+
+  sejong::Vect3 contact_pos_vec;
+  robot_model->getPosition(q_state, contact_link_id, contact_pos_vec);
+
+  // Set contact to be rectangular surface. 
+    // Calculate distance to surface. 
+    // ...
+
+  // For now, this is just a ground contact
+  double phi_contact_dis = contact_pos_vec[2];
+  double complimentary_constraint = phi_contact_dis*Fr_l2_norm_squared;
+
+  F_vec.push_back(complimentary_constraint); // Phi >= 0
+  F_vec.push_back(phi_contact_dis);          // 
+
+}
+
+void Contact_LCP_Constraint::evaluate_sparse_gradient(const int &timestep, WBT_Opt_Variable_List& var_list, std::vector<double>& G, std::vector<int>& iG, std::vector<int>& jG){
+
+}
 
 void Contact_LCP_Constraint::evaluate_sparse_A_matrix(const int &timestep, WBT_Opt_Variable_List& var_list, std::vector<double>& A, std::vector<int>& iA, std::vector<int>& jA){
   int n = this->num_constraints;
