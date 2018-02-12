@@ -96,7 +96,8 @@ set(wbt_task_sources src/wbt_src/tasks/wbt_task_com.cpp
 
 set(wbt_hard_constraint_sources src/wbt_src/hard_constraints/wbt_wholebody_controller_constraint.cpp
 								src/wbt_src/hard_constraints/wbt_contact_wrench_constraint.cpp
-								src/wbt_src/hard_constraints/wbt_contact_lcp_constraint.cpp)
+								src/wbt_src/hard_constraints/wbt_contact_lcp_constraint.cpp
+								src/wbt_src/hard_constraints/wbt_task_reaction_force_lcp_constraint.cpp)
 
 set(wbt_soft_constraint_sources src/wbt_src/soft_constraints/wbt_keyframe_position.cpp
 								src/wbt_src/soft_constraints/wbt_keyframe_orientation.cpp)
