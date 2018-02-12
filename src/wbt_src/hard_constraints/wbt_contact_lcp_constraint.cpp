@@ -3,10 +3,23 @@
 #include "valkyrie_definition.h"
 #include <wbt/optimization_constants.hpp>
 
-Contact_LCP_Constraint::Contact_LCP_Constraint(){}
-Contact_LCP_Constraint::~Contact_LCP_Constraint(){}
+Contact_LCP_Constraint::Contact_LCP_Constraint(){
+  Initialization();  
+}
+
+Contact_LCP_Constraint::Contact_LCP_Constraint(Contact_List* contact_list_in, int index_in){
+  setContact_List(contact_list_in);
+  setContact_index(index_in);
+  Initialization();
+}
+
+Contact_LCP_Constraint::~Contact_LCP_Constraint(){
+  std::cout << "[Contact LCP Constraint] Destructor called" << std::endl;  
+}
 
 void Contact_LCP_Constraint::Initialization(){
+  std::cout << "[Contact LCP Constraint] Initialization called" << std::endl;
+  robot_model = RobotModel::GetRobotModel();  
 	initialize_Flow_Fupp();	
 }
 
@@ -18,7 +31,16 @@ void Contact_LCP_Constraint::initialize_Flow_Fupp(){
 
 	F_upp.push_back(0.0);
 	F_upp.push_back(OPT_INFINITY);			
+
+  constraint_size = F_low.size();
 }
+
+void Contact_LCP_Constraint::setContact_List(Contact_List* contact_list_in){
+  contact_list_obj = contact_list_in;
+}
+void Contact_LCP_Constraint::setContact_index(int index_in){
+  contact_index = index_in;  
+}  
 
 void Contact_LCP_Constraint::evaluate_constraint(const int &timestep, WBT_Opt_Variable_List& var_list, std::vector<double>& F_vec){}
 void Contact_LCP_Constraint::evaluate_sparse_gradient(const int &timestep, WBT_Opt_Variable_List& var_list, std::vector<double>& G, std::vector<int>& iG, std::vector<int>& jG){}

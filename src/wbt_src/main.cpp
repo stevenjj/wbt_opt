@@ -17,6 +17,7 @@
 #include <wbt/soft_constraints/wbt_keyframe_orientation.hpp>
 
 #include <wbt/hard_constraints/wbt_contact_wrench_constraint.hpp>
+#include <wbt/hard_constraints/wbt_contact_lcp_constraint.hpp>
 
 #include <wbt/contacts/wbt_contact_leftfoot.hpp>
 #include <wbt/contacts/wbt_contact_rightfoot.hpp>
@@ -162,16 +163,18 @@ void test_opt_prob_ptr(){
 	delete ptr_opt_problem;
 }
 
-void test_contact_wrench_constraint(){
+void test_contact_wrench_lcp_constraint(){
 	std::cout << "[Main] initializing Contact List" << std::endl;
 	Contact_List contact_list;
   	contact_list.append_contact(new LeftFoot_Contact());
   	contact_list.append_contact(new RightFoot_Contact());
 
   	int left_foot_index = 0;
-	Contact_Wrench_Constraint cwc(&contact_list, left_foot_index, 0.8, 0.1, 0.05);
+	Contact_Wrench_Constraint cwc(&contact_list, left_foot_index, 0.8, 0.1, 0.05);	
 
-	
+	Contact_LCP_Constraint clcp(&contact_list, left_foot_index);	
+
+
 
 }
 
@@ -190,7 +193,7 @@ int main(int argc, char **argv)
 	std::cout << "[Main] WBDC_OPT object destroyed" << std::endl;
 
 	test_opt_prob_ptr();
-	test_contact_wrench_constraint();
+	test_contact_wrench_lcp_constraint();
 
 	return 0;
 }

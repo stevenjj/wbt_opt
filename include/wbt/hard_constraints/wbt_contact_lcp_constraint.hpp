@@ -14,9 +14,13 @@
 class Contact_LCP_Constraint: public Constraint_Function{
 public:
 	Contact_LCP_Constraint();
+	Contact_LCP_Constraint(Contact_List* contact_list_in, int index_in);	
 	~Contact_LCP_Constraint();
 
 	RobotModel* robot_model;	
+
+	void setContact_List(Contact_List* contact_list_in);
+	void setContact_index(int index_in);	
 
 	void evaluate_constraint(const int &timestep, WBT_Opt_Variable_List& var_list, std::vector<double>& F_vec);
 	void evaluate_sparse_gradient(const int &timestep, WBT_Opt_Variable_List& var_list, std::vector<double>& G, std::vector<int>& iG, std::vector<int>& jG);

@@ -27,7 +27,7 @@ Contact_Wrench_Constraint::~Contact_Wrench_Constraint(){
 }
 
 void Contact_Wrench_Constraint::Initialization(){
-  std::cout << "Initialization called!" << std::endl; 
+  std::cout << "[Contact Wrench Constraint] Initialization called!" << std::endl; 
   robot_model = RobotModel::GetRobotModel();  
   initialize_Flow_Fupp();
 }
