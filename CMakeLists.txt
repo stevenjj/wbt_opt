@@ -106,7 +106,8 @@ set(wbt_contact_sources src/wbt_src/contacts/wbt_contact_leftfoot.cpp
 						src/wbt_src/contacts/wbt_contact_rightfoot.cpp)
 
 
-set(wbt_optimization_problems_sources src/wbt_src/optimization_problems/wbt_opt_problem_wbdc.cpp)
+set(wbt_optimization_problems_sources src/wbt_src/optimization_problems/wbt_opt_problem_wbdc.cpp
+									  src/wbt_src/optimization_problems/wbt_opt_problem_wbdc_time_integrate.cpp)
 set(wbt_objective_func_sources src/wbt_src/objective_functions/objective_function_wbc_simple.cpp)
 
 set(wbt_snopt_wrapper_sources src/wbt_src/wbt_snopt_wrapper.cpp)

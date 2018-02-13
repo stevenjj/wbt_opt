@@ -2,6 +2,9 @@
 #include <string.h>
 #include <iostream>
 
+#include "valkyrie_definition.h"
+#include <Utils/utilities.hpp>
+
 #include <wbt/optimization_constants.hpp>
 
 #include <wbt/containers/wbt_opt_variable.hpp>
@@ -47,13 +50,43 @@ void test_wholebody_task_objects(){
 	wholebody_task_list.append_task(new LeftFoot_Task());
 	wholebody_task_list.append_task(new RightFoot_RightHand_Task());		
 
+	sejong::Vector q_state(NUM_Q); q_state.setZero();
+	sejong::Vector qdot_state(NUM_QDOT); qdot_state.setZero();
+	  // Initialize Joints
+	  q_state[NUM_VIRTUAL + SJJointID::leftHipPitch] = -0.3; //r_joint_[r_joint_idx_map_.find("leftHipPitch"  )->second]->m_State.m_rValue[0] = -0.3;
+	  q_state[NUM_VIRTUAL + SJJointID::rightHipPitch] = -0.3;  //r_joint_[r_joint_idx_map_.find("rightHipPitch" )->second]->m_State.m_rValue[0] = -0.3;
+	  q_state[NUM_VIRTUAL + SJJointID::leftKneePitch] = 0.6;  //r_joint_[r_joint_idx_map_.find("leftKneePitch" )->second]->m_State.m_rValue[0] = 0.6;
+	  q_state[NUM_VIRTUAL + SJJointID::rightKneePitch] = 0.6;//r_joint_[r_joint_idx_map_.find("rightKneePitch")->second]->m_State.m_rValue[0] = 0.6;
+	  q_state[NUM_VIRTUAL + SJJointID::leftAnklePitch] = -0.3; //r_joint_[r_joint_idx_map_.find("leftAnklePitch")->second]->m_State.m_rValue[0] = -0.3;
+	  q_state[NUM_VIRTUAL + SJJointID::rightAnklePitch] = -0.3; //r_joint_[r_joint_idx_map_.find("rightAnklePitch")->second]->m_State.m_rValue[0] = -0.3;
+
+	  q_state[NUM_VIRTUAL + SJJointID::rightShoulderPitch] = 0.2; //r_joint_[r_joint_idx_map_.find("rightShoulderPitch")->second]->m_State.m_rValue[0] = 0.2;
+	  q_state[NUM_VIRTUAL + SJJointID::rightShoulderRoll] = 1.1;  //r_joint_[r_joint_idx_map_.find("rightShoulderRoll" )->second]->m_State.m_rValue[0] = 1.1;
+	  q_state[NUM_VIRTUAL + SJJointID::rightElbowPitch] = 0.4;  //r_joint_[r_joint_idx_map_.find("rightElbowPitch"   )->second]->m_State.m_rValue[0] = 0.4;
+	  q_state[NUM_VIRTUAL + SJJointID::rightForearmYaw] = 1.5;  //r_joint_[r_joint_idx_map_.find("rightForearmYaw" )->second]->m_State.m_rValue[0] = 1.5;
+
+	  q_state[NUM_VIRTUAL + SJJointID::leftShoulderPitch] = -0.2; //r_joint_[r_joint_idx_map_.find("rightShoulderPitch")->second]->m_State.m_rValue[0] = 0.2;
+	  q_state[NUM_VIRTUAL + SJJointID::leftShoulderRoll] = -1.1;  //r_joint_[r_joint_idx_map_.find("rightShoulderRoll" )->second]->m_State.m_rValue[0] = 1.1;
+	  q_state[NUM_VIRTUAL + SJJointID::leftElbowPitch] = -0.4;//0.4;  //r_joint_[r_joint_idx_map_.find("rightElbowPitch"   )->second]->m_State.m_rValue[0] = 0.4;
+	  q_state[NUM_VIRTUAL + SJJointID::leftForearmYaw] = 1.5;  //r_joint_[r_joint_idx_map_.find("rightForearmYaw" )->second]->m_State.m_rValue[0] = 1.5;		
+
+
+	sejong::Matrix J_task;  
+	sejong::Vector JtDotQdot;
 
 	std::cout << "[WBT] Testing wbt container copy" << std::endl;
 	std::vector<Task*> wb_tasks;
 	wholebody_task_list.get_task_list_copy(wb_tasks);
 	std::cout << "  Copy size: " << wb_tasks.size() << " should be 3" << std::endl;
 	for (size_t i = 0; i < wb_tasks.size(); i++){
-		std::cout << "  Task: " << i << " name: " << wb_tasks[i]->task_name << std::endl;	 
+		std::cout << "  Task: " << i << " name: " << wb_tasks[i]->task_name << std::endl;	 		
+
+		wb_tasks[i]->getTaskJacobian(q_state, J_task);
+		sejong::pretty_print(J_task, std::cout, wb_tasks[i]->task_name);
+
+		wb_tasks[i]->getTaskJacobianDotQdot(q_state, qdot_state, JtDotQdot);
+		sejong::pretty_print(JtDotQdot, std::cout, wb_tasks[i]->task_name);		
+
 	}
 
 	std::cout << "[WBT] Testing wholebody task container retrieval" << std::endl;
@@ -195,7 +228,6 @@ int main(int argc, char **argv)
 	std::cout << "[Main] Testing object and argument calls" << std::endl;
 
 	test_wbt_opt_variable();
-	test_wholebody_task_objects();
 	test_wbt_keyframe();
 	test_keyframe_list();
 
@@ -208,5 +240,6 @@ int main(int argc, char **argv)
 	test_contact_wrench_lcp_constraint();
 	test_task_reaction_force_lcp_constraint();
 
+	test_wholebody_task_objects();
 	return 0;
 }

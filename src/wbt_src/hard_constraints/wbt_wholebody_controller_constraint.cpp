@@ -232,8 +232,10 @@ void Wholebody_Controller_Constraint::evaluate_constraint(const int &timestep, W
   sejong::Vector WBC_virtual_constraints(NUM_VIRTUAL);
   sejong::Vector tau_constraints(NUM_ACT_JOINT);
   
+
   WBC_virtual_constraints = Sv*(WB_des);
   tau_constraints = Sa*WB_des;
+
 
   // sejong::pretty_print(q_state, std::cout, "q_state");
   // sejong::pretty_print(qdot_state, std::cout, "qdot_state");
@@ -345,6 +347,7 @@ void Wholebody_Controller_Constraint::evaluate_sparse_A_matrix(const int &timest
 void Wholebody_Controller_Constraint::evaluate_sparse_gradient(const int &timestep, WBT_Opt_Variable_List& var_list, std::vector<double>& G, std::vector<int>& iG, std::vector<int>& jG){
   // std::cout << "[WBC Constraint] Sparse Gradient Called" << std::endl;
   // std::cout << "[WBC Constraint]: Current Timestep " << timestep << " Last Timestep That Model was updated:" << last_timestep_model_update << std::endl;
+
 
   if (timestep != last_timestep_model_update){
     //std::cout << "    Timestep does not match. Will update model" << std::endl;    

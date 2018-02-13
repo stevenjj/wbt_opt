@@ -6,8 +6,8 @@ WBC_Objective_Function::WBC_Objective_Function(){}
 void WBC_Objective_Function::set_var_list(WBT_Opt_Variable_List& var_list){
 	num_q = var_list.get_num_q_vars();
 	num_qdot = var_list.get_num_qdot_vars();
-	num_Fr = var_list.get_num_xddot_vars();
-	num_xddot = var_list.get_num_Fr_vars();
+	num_xddot = var_list.get_num_xddot_vars();
+	num_Fr = var_list.get_num_Fr_vars();
 	num_kf =  var_list.get_num_keyframe_vars();
 	num_timesteps =  var_list.total_timesteps;
 
@@ -30,6 +30,8 @@ void WBC_Objective_Function::evaluate_objective_function(WBT_Opt_Variable_List& 
 	double dt = OPT_TIMESTEP;
 	sejong::Vector Fr_dot;
 
+	sejong::Matrix cost_eval;
+
 	double cost = 0.0;
 	double h_dt_current = 1.0;
 	// Evaluate state costs only
@@ -41,8 +43,10 @@ void WBC_Objective_Function::evaluate_objective_function(WBT_Opt_Variable_List& 
 		var_list.get_var_knotpoint_dt(timestep, h_dt_current);		
 
 		if (Fr_states.size() > 0){
+			cost_eval = Fr_states.transpose()*Q_mat*Fr_states;
 			cost += Fr_states.transpose()*Q_mat*Fr_states;
 		}
+
 		if (xddot_states.size() > 0){
 			cost += xddot_states.transpose()*N_mat*xddot_states;
 		}

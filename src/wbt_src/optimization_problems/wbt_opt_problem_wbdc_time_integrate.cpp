@@ -1,7 +1,6 @@
-#include <wbt/optimization_problems/wbt_opt_problem_wbdc.hpp>
+#include <wbt/optimization_problems/wbt_opt_problem_wbdc_time_integrate.hpp>
 #include <Utils/utilities.hpp>
 
-#include <wbt/tasks/wbt_task_com.hpp>
 #include <wbt/tasks/wbt_task_leftfoot.hpp>
 #include <wbt/tasks/wbt_task_rightfoot.hpp>
 #include <wbt/contacts/wbt_contact_leftfoot.hpp>
@@ -9,8 +8,8 @@
 
 //#define USE_OBJECTIVE_GRADIENT
 
-WBDC_Opt::WBDC_Opt(){
-  this->problem_name = "WBDC Optimization Problem";  
+WBDC_Opt_TimeIntegration::WBDC_Opt_TimeIntegration(){
+  this->problem_name = "WBDC with Time Integration Optimization Problem";  
 	robot_model = RobotModel::GetRobotModel();
 
 	robot_q_init.resize(NUM_Q); 
@@ -23,12 +22,12 @@ WBDC_Opt::WBDC_Opt(){
   Initialization();
 }
 
-WBDC_Opt::~WBDC_Opt(){
-  std::cout << "[WBDC OPT] Destructor Called" << std::endl;
+WBDC_Opt_TimeIntegration::~WBDC_Opt_TimeIntegration(){
+  std::cout << "[WBDC Time Integrate Opt] Destructor Called" << std::endl;
 }
 
-void WBDC_Opt::Initialization(){
-	std::cout << "[WBDC_Opt] Initialization Called" << std::endl;
+void WBDC_Opt_TimeIntegration::Initialization(){
+	std::cout << "[WBDC Time Integrate Opt] Initialization Called" << std::endl;
  	total_timesteps = 2;
   initialize_starting_configuration();
 	initialize_task_list();
@@ -44,7 +43,7 @@ void WBDC_Opt::Initialization(){
 
 }
 
-void WBDC_Opt::initialize_starting_configuration(){
+void WBDC_Opt_TimeIntegration::initialize_starting_configuration(){
  // Set Virtual Joints
   // x_pos
   robot_q_init[0] = 0.0;
@@ -73,27 +72,26 @@ void WBDC_Opt::initialize_starting_configuration(){
   robot_q_init[NUM_VIRTUAL + SJJointID::leftElbowPitch] = -0.4;//0.4;  //r_joint_[r_joint_idx_map_.find("rightElbowPitch"   )->second]->m_State.m_rValue[0] = 0.4;
   robot_q_init[NUM_VIRTUAL + SJJointID::leftForearmYaw] = 1.5;  //r_joint_[r_joint_idx_map_.find("rightForearmYaw" )->second]->m_State.m_rValue[0] = 1.5;	
 
-  std::cout << "[WBDC_Opt] Robot Starting State Initialized" << std::endl;
+  std::cout << "[WBDC_Opt_TimeIntegration] Robot Starting State Initialized" << std::endl;
   //sejong::pretty_print(robot_q_init, std::cout, "Q init");
 }
 
-void WBDC_Opt::initialize_task_list(){
+void WBDC_Opt_TimeIntegration::initialize_task_list(){
 /*	wb_task_list.append_task(new LeftFoot_Task());
-  std::cout << "[WBDC_Opt] Task List Initialized" << std::endl;  
+  std::cout << "[WBDC_Opt_TimeIntegration] Task List Initialized" << std::endl;  
   wbc_constraint.set_task_list(&wb_task_list);*/
   wb_task_list.append_task(new LeftFoot_Task());
   wb_task_list.append_task(new RightFoot_Task());  
-  wb_task_list.append_task(new COM_Task());    
 }
 
-void WBDC_Opt::initialize_contact_list(){
+void WBDC_Opt_TimeIntegration::initialize_contact_list(){
   contact_list.append_contact(new LeftFoot_Contact());
   contact_list.append_contact(new RightFoot_Contact());
-  std::cout << "[WBDC_Opt] Contact List Initialized" << std::endl;  
+  std::cout << "[WBDC_Opt_TimeIntegration] Contact List Initialized" << std::endl;  
 }
 
-void WBDC_Opt::initialize_td_constraint_list(){
-  std::cout << "[WBDC_Opt] Initializing WBC Constraints" << std::endl;
+void WBDC_Opt_TimeIntegration::initialize_td_constraint_list(){
+  std::cout << "[WBDC_Opt_TimeIntegration] Initializing WBC Constraints" << std::endl;
 
   ptr_wbc_constraint->set_task_list(&wb_task_list);
   ptr_wbc_constraint->set_contact_list(&contact_list);  
@@ -121,12 +119,12 @@ void WBDC_Opt::initialize_td_constraint_list(){
 }
 
 // Main class implementation
-void WBDC_Opt::initialize_opt_vars(){
+void WBDC_Opt_TimeIntegration::initialize_opt_vars(){
   // For each timestep:
     // timestep = 0 is a special case
     // Populate wbt_opt_variable_list to initialize x_value, xlow, xupp
 
-  std::cout << "[WBDC_OPT] Initializing Optimization Variables" << std::endl;
+  std::cout << "[WBDC_Opt_TimeIntegration] Initializing Optimization Variables" << std::endl;
 
   for(size_t i = 0; i < total_timesteps; i++){
     // -------------------------------------------------------------------------------------------------------------------
@@ -185,16 +183,16 @@ void WBDC_Opt::initialize_opt_vars(){
 
   // Specify total timesteps
   opt_var_list.total_timesteps = total_timesteps;
-  std::cout << "[WBDC_OPT] Computing Size of Time Dependent Variables " << std::endl;
+  std::cout << "[WBDC_Opt_TimeIntegration] Computing Size of Time Dependent Variables " << std::endl;
 
   // This must be computed...
   opt_var_list.compute_size_time_dep_vars();
 
   // ----------- End Initialization
 
-  std::cout << "[WBDC_OPT] Total Timesteps: " << total_timesteps << std::endl;
-  std::cout << "[WBDC_OPT] Total number of optimization variables: " << opt_var_list.get_size() << std::endl;
-  std::cout << "[WBDC_OPT] Total number of time dependent optimization variables: " << opt_var_list.get_size_timedependent_vars() << std::endl;
+  std::cout << "[WBDC_Opt_TimeIntegration] Total Timesteps: " << total_timesteps << std::endl;
+  std::cout << "[WBDC_Opt_TimeIntegration] Total number of optimization variables: " << opt_var_list.get_size() << std::endl;
+  std::cout << "[WBDC_Opt_TimeIntegration] Total number of time dependent optimization variables: " << opt_var_list.get_size_timedependent_vars() << std::endl;
 
   sejong::Vector q_state_test;
   sejong::Vector qdot_state_test;  
@@ -205,7 +203,7 @@ void WBDC_Opt::initialize_opt_vars(){
   opt_var_list.get_var_reaction_forces(0, Fr_test);
 }
 
-void WBDC_Opt::get_init_opt_vars(std::vector<double> &x_vars){ 
+void WBDC_Opt_TimeIntegration::get_init_opt_vars(std::vector<double> &x_vars){ 
 
   for(size_t i = 0; i < opt_var_list.get_size(); i++){
     x_vars.push_back(opt_var_list.get_opt_variable(i)->value);
@@ -214,7 +212,7 @@ void WBDC_Opt::get_init_opt_vars(std::vector<double> &x_vars){
 
 }
 
-void WBDC_Opt::get_opt_vars_bounds(std::vector<double> &x_low, std::vector<double> &x_upp){
+void WBDC_Opt_TimeIntegration::get_opt_vars_bounds(std::vector<double> &x_low, std::vector<double> &x_upp){
   for(size_t i = 0; i < opt_var_list.get_size(); i++){
     x_low.push_back(opt_var_list.get_opt_variable(i)->l_bound);
     x_upp.push_back(opt_var_list.get_opt_variable(i)->u_bound);    
@@ -222,15 +220,15 @@ void WBDC_Opt::get_opt_vars_bounds(std::vector<double> &x_low, std::vector<doubl
 
 }
 
-void WBDC_Opt::update_opt_vars(std::vector<double> &x_vars){ 
+void WBDC_Opt_TimeIntegration::update_opt_vars(std::vector<double> &x_vars){ 
   opt_var_list.update_x(x_vars);
 }
 
-void WBDC_Opt::get_current_opt_vars(std::vector<double> &x_vars_out){
+void WBDC_Opt_TimeIntegration::get_current_opt_vars(std::vector<double> &x_vars_out){
   opt_var_list.populate_x(x_vars_out);
 }
 
-void WBDC_Opt::get_F_bounds(std::vector<double> &F_low, std::vector<double> &F_upp){
+void WBDC_Opt_TimeIntegration::get_F_bounds(std::vector<double> &F_low, std::vector<double> &F_upp){
   // Initialize Bounds for Time Dependent Constraints
   for(int timestep = 0; timestep < total_timesteps; timestep++){
 
@@ -278,11 +276,11 @@ void WBDC_Opt::get_F_bounds(std::vector<double> &F_low, std::vector<double> &F_u
     // Construct Time Integration Constraint bounds
 }
 
-void WBDC_Opt::get_F_obj_Row(int &obj_row){
+void WBDC_Opt_TimeIntegration::get_F_obj_Row(int &obj_row){
   obj_row = objective_function.objective_function_index;
 }
 
-void WBDC_Opt::initialize_objective_func(){
+void WBDC_Opt_TimeIntegration::initialize_objective_func(){
   std::cout << "[WBDC Opt] Initializing Objective Function" << std::endl;
   objective_function.set_var_list(opt_var_list);
 
@@ -302,7 +300,7 @@ void WBDC_Opt::initialize_objective_func(){
 
 
 
-void WBDC_Opt::compute_F_constraints(std::vector<double> &F_eval){
+void WBDC_Opt_TimeIntegration::compute_F_constraints(std::vector<double> &F_eval){
   // Update var_list
 
   // We know the size of F.
@@ -315,8 +313,6 @@ void WBDC_Opt::compute_F_constraints(std::vector<double> &F_eval){
     for(int i = 0; i < td_constraint_list.get_size(); i++){
       F_vec_const.clear();
       td_constraint_list.get_constraint(i)->evaluate_constraint(timestep, opt_var_list, F_vec_const);
-
-
       for(int j = 0; j < F_vec_const.size(); j++){
         //std::cout << "F_vec_const[j] = " << F_vec_const[j] << std::endl;
         // Add to F_eval
@@ -335,21 +331,20 @@ void WBDC_Opt::compute_F_constraints(std::vector<double> &F_eval){
 
 }
 
-void WBDC_Opt::compute_F_objective_function(double &result_out){
+void WBDC_Opt_TimeIntegration::compute_F_objective_function(double &result_out){
   //std::cout << "[WBDC Opt] Evaluating Objective Function" << std::endl; 
   objective_function.evaluate_objective_function(opt_var_list, result_out);
 }
 
 
-void WBDC_Opt::compute_F(std::vector<double> &F_eval){
+void WBDC_Opt_TimeIntegration::compute_F(std::vector<double> &F_eval){
   compute_F_constraints(F_eval);
   double cost = 0.0;
-
   compute_F_objective_function(cost);
   F_eval.push_back(cost);
 }
 
-void WBDC_Opt::compute_A(std::vector<double> &A_eval, std::vector<int> &iAfun, std::vector<int> &jAvar, int &neA){
+void WBDC_Opt_TimeIntegration::compute_A(std::vector<double> &A_eval, std::vector<int> &iAfun, std::vector<int> &jAvar, int &neA){
   std::vector<double> A_local;
   std::vector<int> iAfun_local;
   std::vector<int> jAvar_local;
@@ -410,7 +405,7 @@ int get_len_neG(){
 
 */
 
-void WBDC_Opt::compute_G(std::vector<double> &G_eval, std::vector<int> &iGfun, std::vector<int> &jGvar, int &neG){
+void WBDC_Opt_TimeIntegration::compute_G(std::vector<double> &G_eval, std::vector<int> &iGfun, std::vector<int> &jGvar, int &neG){
 /*  std::vector<double> G_eval;
   std::vector<int> iGfun;
   std::vector<int> jGvar;*/
