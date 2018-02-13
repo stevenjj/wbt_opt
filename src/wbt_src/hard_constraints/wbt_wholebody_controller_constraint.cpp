@@ -260,13 +260,15 @@ void Wholebody_Controller_Constraint::evaluate_sparse_A_matrix(const int &timest
   int m = var_list.get_size_timedependent_vars(); // var_list.get_num_time_dependent_vars
   int T = var_list.total_timesteps; // var_list.get_total_timesteps() Total timestep
   int k = var_list.get_num_keyframe_vars();
+  int h_size = var_list.get_num_var_knotpoint_dt();
+
 
   std::cout << "[WBC Constraint] Evaluating A Matrix" << std::endl;
 
   sejong::Matrix pre_zeroBlock(n, m*timestep); pre_zeroBlock.setZero();
   sejong::Matrix post_zeroBlock(n, m*(T-1-timestep));  post_zeroBlock.setZero();
   sejong::Matrix kf_zeroBlock(n, k);    kf_zeroBlock.setZero();
-  sejong::Matrix h_zeroBlock(n, T); h_zeroBlock.setZero();
+  sejong::Matrix h_zeroBlock(n, h_size); h_zeroBlock.setZero();
 
   // Matrix A = [0, 0, ..., dWBC_i/dx, 0, ..., 0_{T-1-i}, 0] 
   int local_j_offset = 0;
