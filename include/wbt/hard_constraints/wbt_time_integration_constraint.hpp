@@ -6,6 +6,8 @@
 #include <iostream>
 
 #include <wbt/hard_constraints/wbt_constraint_main.hpp>
+#include <wbt/hard_constraints/wbt_wholebody_controller_constraint.hpp>
+
 #include "RobotModel.hpp"
 
 class Time_Integration_Constraint: public Constraint_Function{

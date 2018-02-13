@@ -71,5 +71,9 @@ private:
 	  }
 
 	 int last_timestep_model_update = -1;
+
+	 // Map of timestep to computed_torque_vector
+	 // std::map<int, sejong::Vector> timestep_to_computed_torque; // WBC constraint will be completely computed first. So that the time integration constraint can request this map.
+	 //
 };
 #endif
