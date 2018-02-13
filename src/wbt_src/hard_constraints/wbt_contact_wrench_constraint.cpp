@@ -140,7 +140,7 @@ void Contact_Wrench_Constraint::evaluate_sparse_gradient(const int &timestep, WB
 
 }
 
-/*void Contact_Wrench_Constraint::evaluate_sparse_A_matrix(const int &timestep, WBT_Opt_Variable_List& var_list, std::vector<double>& A, std::vector<int>& iA, std::vector<int>& jA){
+void Contact_Wrench_Constraint::evaluate_sparse_A_matrix(const int &timestep, WBT_Opt_Variable_List& var_list, std::vector<double>& A, std::vector<int>& iA, std::vector<int>& jA){
   int n = this->get_constraint_size();
   int m = var_list.get_size_timedependent_vars(); // var_list.get_num_time_dependent_vars
   int T = var_list.total_timesteps; // var_list.get_total_timesteps() Total timestep
@@ -207,7 +207,7 @@ void Contact_Wrench_Constraint::evaluate_sparse_gradient(const int &timestep, WB
   }
 
 
-}*/
+}
 
 void Contact_Wrench_Constraint::UpdateUf(const sejong::Vector &q_state, sejong::Matrix &Uf){
   Contact* current_contact = contact_list_obj->get_contact(contact_index);
