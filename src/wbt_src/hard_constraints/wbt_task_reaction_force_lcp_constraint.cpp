@@ -95,7 +95,7 @@ void Task_Reaction_Force_LCP_Constraint::evaluate_constraint(const int &timestep
 
 void Task_Reaction_Force_LCP_Constraint::evaluate_sparse_gradient(const int &timestep, WBT_Opt_Variable_List& var_list, std::vector<double>& G, std::vector<int>& iG, std::vector<int>& jG){}
 
-void Task_Reaction_Force_LCP_Constraint::evaluate_sparse_A_matrix(const int &timestep, WBT_Opt_Variable_List& var_list, std::vector<double>& A, std::vector<int>& iA, std::vector<int>& jA){
+/*void Task_Reaction_Force_LCP_Constraint::evaluate_sparse_A_matrix(const int &timestep, WBT_Opt_Variable_List& var_list, std::vector<double>& A, std::vector<int>& iA, std::vector<int>& jA){
   int n = this->get_constraint_size();//this->num_constraints;
   int m = var_list.get_size_timedependent_vars(); // var_list.get_num_time_dependent_vars
   int T = var_list.total_timesteps; // var_list.get_total_timesteps() Total timestep
@@ -161,5 +161,5 @@ void Task_Reaction_Force_LCP_Constraint::evaluate_sparse_A_matrix(const int &tim
     j_local = local_j_offset; // Reset counter    
   }
 
-}
+}*/
 

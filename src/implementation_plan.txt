@@ -2,11 +2,11 @@ DONE Test Contact Wrench constraint
 DONE Add timestep check to robot model update.
 DONE Add contact wrench gradient
 
-Add Contact LCP constraint
-Add Task and Reaction Force LCP constraint
+DONE Add Contact LCP constraint
+DONE Add Task and Reaction Force LCP constraint
 Add Time Integration Constraint
-Add Soft keyframes objective function
 
+Add Soft keyframes objective function
 Add hard keyframes constraint
 
 

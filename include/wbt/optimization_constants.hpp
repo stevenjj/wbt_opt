@@ -14,6 +14,7 @@
   #define VAR_TYPE_TA 2    // Task Acceleration Variable Type
   #define VAR_TYPE_FR 3    // Reaction Force Variable Type
   #define VAR_TYPE_KF 4    // Key Frame Variable Type
+  #define VAR_TYPE_H 5    // Knot Point Time Step Variable Type
 
 
 #endif 
