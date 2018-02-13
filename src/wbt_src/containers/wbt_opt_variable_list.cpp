@@ -23,6 +23,8 @@ void WBT_Opt_Variable_List::append_variable(WBT_Opt_Variable* opt_variable){
 		add_variable_to_map(timestep_to_Fr_vars, opt_variable);		
 	}else if(opt_variable->type == VAR_TYPE_KF){
 		add_variable_to_map(timestep_to_keyframe_vars, opt_variable);		
+	}else if(opt_variable->type == VAR_TYPE_H){
+		timestep_to_knotpoint_dt.push_back(opt_variable);
 	}
 
 /*	std::cout << "Size of Q map[timestep = 0]:    " << timestep_to_q_state_vars[0].size() << std::endl;
@@ -93,6 +95,10 @@ void WBT_Opt_Variable_List::get_var_keyframes(const int &timestep, sejong::Vecto
 }
 
 
+void WBT_Opt_Variable_List::get_var_knotpoint_dt(const int &timestep, double &h_dt){
+	h_dt = timestep_to_knotpoint_dt[timestep]->value;
+}
+
 
 void WBT_Opt_Variable_List::convert_to_vector(const int &timestep, 
 						  	 	   			  std::map<int, std::vector<WBT_Opt_Variable*> > &map_time_to_var_vec,
@@ -131,6 +137,13 @@ int WBT_Opt_Variable_List::get_num_keyframe_vars(){
 	return num_keyframe_vars;
 }
 
+int WBT_Opt_Variable_List::get_num_var_knotpoint_dt(){
+	num_knotpoint_dt_vars = timestep_to_knotpoint_dt.size();
+	return num_knotpoint_dt_vars;
+}
+
+
+
 
 void WBT_Opt_Variable_List::compute_size_time_dep_vars(){
 	int timestep = 0;
@@ -142,7 +155,7 @@ void WBT_Opt_Variable_List::compute_size_time_dep_vars(){
 	num_Fr_vars = count_num_vars_in_map(timestep, timestep_to_Fr_vars);
 	num_keyframe_vars = count_num_vars_in_map(timestep, timestep_to_keyframe_vars);
 
-	num_timedep_vars = num_q_vars + num_qdot_vars + num_xddot_vars + num_Fr_vars + num_keyframe_vars;
+	num_timedep_vars = num_q_vars + num_qdot_vars + num_xddot_vars + num_Fr_vars;
 }
 
 int WBT_Opt_Variable_List::get_size_timedependent_vars(){

@@ -31,12 +31,14 @@ void WBC_Objective_Function::evaluate_objective_function(WBT_Opt_Variable_List& 
 	sejong::Vector Fr_dot;
 
 	double cost = 0.0;
+	double h_dt_current = 1.0;
 	// Evaluate state costs only
 	for(size_t timestep = 0; timestep < num_timesteps; timestep++){
 		var_list.get_var_reaction_forces(timestep, Fr_states);
 		var_list.get_task_accelerations(timestep, xddot_states);
 		var_list.get_var_states(timestep, q_states, qdot_states);
 		var_list.get_var_keyframes(timestep, kf_states);		
+		var_list.get_var_knotpoint_dt(timestep, h_dt_current);		
 
 		if (Fr_states.size() > 0){
 			cost += Fr_states.transpose()*Q_mat*Fr_states;
@@ -51,6 +53,8 @@ void WBC_Objective_Function::evaluate_objective_function(WBT_Opt_Variable_List& 
 		if (kf_states.size() > 0){
 			// get desired keyframes.
 		}
+
+		cost*= h_dt_current;
 
 	}
 	

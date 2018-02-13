@@ -264,7 +264,7 @@ void Wholebody_Controller_Constraint::evaluate_sparse_A_matrix(const int &timest
   sejong::Matrix pre_zeroBlock(n, m*timestep); pre_zeroBlock.setZero();
   sejong::Matrix post_zeroBlock(n, m*(T-1-timestep));  post_zeroBlock.setZero();
   sejong::Matrix kf_zeroBlock(n, k);    kf_zeroBlock.setZero();
-
+  sejong::Matrix h_zeroBlock(n, T); h_zeroBlock.setZero();
 
   // Matrix A = [0, 0, ..., dWBC_i/dx, 0, ..., 0_{T-1-i}, 0] 
   int local_j_offset = 0;
@@ -318,6 +318,24 @@ void Wholebody_Controller_Constraint::evaluate_sparse_A_matrix(const int &timest
     i_local++;
     j_local = local_j_offset; // Reset counter    
   }
+
+
+  // Add zeros on the h_dt block
+  local_j_offset = m*T + k;
+  i_local = 0;
+  j_local = local_j_offset;  
+  std::cout << "[WBC Constraint] Constructing h_dt block with size: (" << kf_zeroBlock.rows() << "," << kf_zeroBlock.cols() << ")" << std::endl;
+  std::cout << "[WBC Constraint] Starting with j index: " << j_local << std::endl;  
+  for(size_t i = 0; i < h_zeroBlock.rows(); i++){
+    for(size_t j = 0; j < h_zeroBlock.cols(); j++){
+      A.push_back(h_zeroBlock(i,j));
+      iA.push_back(i_local);
+      jA.push_back(j_local);
+      j_local++;
+    }
+    i_local++;
+    j_local = local_j_offset; // Reset counter    
+  }    
 
 
 }

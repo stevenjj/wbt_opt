@@ -174,6 +174,13 @@ void WBDC_Opt::initialize_opt_vars(){
   // Insert initialization here
   //
 
+
+  // knotpoint h dt Initialization 
+  for(size_t i = 0; i < total_timesteps; i++){
+    WBT_Opt_Variable* h_dt_var = new WBT_Opt_Variable("h_dt", VAR_TYPE_H, i, 0.001, OPT_ZERO_EPS, OPT_INFINITY);
+    opt_var_list.append_variable(h_dt_var);      
+  }
+
   // Specify total timesteps
   opt_var_list.total_timesteps = total_timesteps;
   std::cout << "[WBDC_OPT] Computing Size of Time Dependent Variables " << std::endl;
