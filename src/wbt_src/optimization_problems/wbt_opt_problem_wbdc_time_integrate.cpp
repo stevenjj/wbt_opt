@@ -28,7 +28,7 @@ WBDC_Opt_TimeIntegration::~WBDC_Opt_TimeIntegration(){
 
 void WBDC_Opt_TimeIntegration::Initialization(){
 	std::cout << "[WBDC Time Integrate Opt] Initialization Called" << std::endl;
- 	total_timesteps = 2;
+ 	total_timesteps = 1;
   initialize_starting_configuration();
 	initialize_task_list();
 	initialize_contact_list();

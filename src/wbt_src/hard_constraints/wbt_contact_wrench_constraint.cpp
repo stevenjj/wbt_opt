@@ -124,6 +124,8 @@ void Contact_Wrench_Constraint::evaluate_sparse_gradient(const int &timestep, WB
   int j_local = local_j_offset;// j = (total_j_size*timestep) + var_states_size + task_accelerations size // specify j starting index
   // Go through F_dFr and push back values to G, iGfun, jGfun 
 
+  //sejong::pretty_print(U_int, std::cout, "U_int");
+
   for(size_t i = 0; i < F_dFr.rows(); i++){
     for(size_t j = 0; j < F_dFr.cols(); j++){
       //std::cout << "(i,j): " << "(" << i << "," << j << ") = " << F_dFr(i, j) << std::endl;  
