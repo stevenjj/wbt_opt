@@ -567,6 +567,7 @@ namespace snopt_wrapper{
   	whole_body_trajectory_problem.setPrintFile("wbt_problem.out"); 
 	whole_body_trajectory_problem.setIntParameter("Derivative option", 0);
 	whole_body_trajectory_problem.setIntParameter("Verify level ", 3);	
+//	whole_body_trajectory_problem.setIntParameter("Verify level ", 0);	
 
 
 	whole_body_trajectory_problem.computeJac(nF, n, snopt_wrapper::wbt_F, x, xlow, xupp,
