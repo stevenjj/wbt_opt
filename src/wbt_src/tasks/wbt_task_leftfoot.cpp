@@ -1,4 +1,6 @@
 #include <wbt/tasks/wbt_task_leftfoot.hpp>
+#include <Utils/utilities.hpp>
+
 #include "valkyrie_definition.h"
 
 // Define LeftFoot Task ---------------------------------------------------------------
@@ -18,8 +20,11 @@ void LeftFoot_Task::getTaskJacobian(const sejong::Vector &q_state, sejong::Matri
 void LeftFoot_Task::getTaskJacobianDotQdot(const sejong::Vector &q_state, 
   							  			  const sejong::Vector &qdot_state, sejong::Vector & JtDotQdot){
 	sejong::Matrix Jdot_tmp;    
+    robot_model_->UpdateModel(q_state, qdot_state);
     robot_model_->getFullJacobianDot(q_state, qdot_state, SJLinkID::LK_leftCOP_Frame, Jdot_tmp);
     sejong::Matrix Jdot_task = Jdot_tmp;//Jdot_tmp.block(3, 0, 3, NUM_QDOT);
 
-	JtDotQdot = Jdot_task*qdot_state;    
+	JtDotQdot = Jdot_task*qdot_state;  
+
 }
+

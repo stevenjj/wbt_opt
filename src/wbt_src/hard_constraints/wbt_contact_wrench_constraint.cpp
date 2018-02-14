@@ -61,7 +61,7 @@ void Contact_Wrench_Constraint::evaluate_constraint(const int &timestep, WBT_Opt
   sejong::Vector qdot_state;  
   var_list.get_var_states(timestep, q_state, qdot_state);
 
-  robot_model->UpdateModel(timestep, q_state, qdot_state);
+  robot_model->UpdateModel(q_state, qdot_state);
   // Update U_int(q);
   UpdateUf(q_state, U_int);
 

@@ -52,7 +52,8 @@ void Contact_LCP_Constraint::evaluate_constraint(const int &timestep, WBT_Opt_Va
   sejong::Vector qdot_state;  
   var_list.get_var_states(timestep, q_state, qdot_state);
 
-  robot_model->UpdateModel(timestep, q_state, qdot_state);
+//  robot_model->UpdateModel(timestep, q_state, qdot_state);
+  robot_model->UpdateModel(q_state, qdot_state);  
 
   // Get Fr_states--------------------------------------------------------------------------
   sejong::Vector Fr_all;
@@ -60,7 +61,7 @@ void Contact_LCP_Constraint::evaluate_constraint(const int &timestep, WBT_Opt_Va
 
   int current_contact_size = current_contact->contact_dim;
   if (current_contact_size != 6){
-    std::cout << "[Contact Wrench Constraint]: Error! Contact Dimension is not 6." << std::endl;
+    std::cout << "[Contact_LCP_Constraint]: Error! Contact Dimension is not 6." << std::endl;
   }
   // Extract the segment of Reaction Forces corresponding to this contact-------------------
   int index_offset = 0;
@@ -79,6 +80,7 @@ void Contact_LCP_Constraint::evaluate_constraint(const int &timestep, WBT_Opt_Va
     // ...
 
   // For now, this is just a ground contact
+
   double phi_contact_dis = contact_pos_vec[2];
   double complimentary_constraint = phi_contact_dis*Fr_l2_norm_squared;
 

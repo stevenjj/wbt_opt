@@ -70,6 +70,9 @@ private:
 	    Jinv = Winv * J.transpose() * lambda_inv;
 	  }
 
+
+
+
 	 int last_timestep_model_update = -1;
 
 	 // Map of timestep to computed_torque_vector

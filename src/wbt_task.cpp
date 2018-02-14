@@ -1,4 +1,5 @@
 #include "wbt_task.h"
+#include <Utils/utilities.hpp>
 #include "valkyrie_definition.h"
 
 // Define COM Task ---------------------------------------------------------------
@@ -43,6 +44,7 @@ void LeftFootTask::getTaskJacobianDotQdot(const sejong::Vector &q_state,
     sejong::Matrix Jdot_task = Jdot_tmp;//Jdot_tmp.block(3, 0, 3, NUM_QDOT);
 
 	JtDotQdot = Jdot_task*qdot_state;    
+
 }
 
 // Define RightFoot Task ---------------------------------------------------------------

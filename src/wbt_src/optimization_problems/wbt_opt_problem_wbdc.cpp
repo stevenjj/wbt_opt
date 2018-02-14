@@ -29,7 +29,7 @@ WBDC_Opt::~WBDC_Opt(){
 
 void WBDC_Opt::Initialization(){
 	std::cout << "[WBDC_Opt] Initialization Called" << std::endl;
- 	total_timesteps = 2;
+ 	total_timesteps = 1;
   initialize_starting_configuration();
 	initialize_task_list();
 	initialize_contact_list();
@@ -97,8 +97,8 @@ void WBDC_Opt::initialize_td_constraint_list(){
 
   ptr_wbc_constraint->set_task_list(&wb_task_list);
   ptr_wbc_constraint->set_contact_list(&contact_list);  
-//  td_constraint_list.append_constraint(new Wholebody_Controller_Constraint(&wb_task_list, &contact_list));
-  td_constraint_list.append_constraint(ptr_wbc_constraint);  
+ td_constraint_list.append_constraint(new Wholebody_Controller_Constraint(&wb_task_list, &contact_list));
+ td_constraint_list.append_constraint(ptr_wbc_constraint);  
 
   int left_foot_index = 0;
   int right_foot_index = 1;  
@@ -157,8 +157,8 @@ void WBDC_Opt::initialize_opt_vars(){
     //---------------------------------------------------------------------------------------------------------------------  
     // Task Acceleration Initialization   
     for(size_t j = 0; j < ptr_wbc_constraint->task_dim; j++){
-//        WBT_Opt_Variable* xddot_var = new WBT_Opt_Variable("xddot", VAR_TYPE_TA, i, 0.0, -OPT_INFINITY, OPT_INFINITY);
-        WBT_Opt_Variable* xddot_var = new WBT_Opt_Variable("xddot", VAR_TYPE_TA, i, 0.0, -0.0001, 0.0001);
+        WBT_Opt_Variable* xddot_var = new WBT_Opt_Variable("xddot", VAR_TYPE_TA, i, 0.0, -OPT_INFINITY, OPT_INFINITY);
+//        WBT_Opt_Variable* xddot_var = new WBT_Opt_Variable("xddot", VAR_TYPE_TA, i, 0.0, -0.0001, 0.0001);
         opt_var_list.append_variable(xddot_var);      
     }
     //---------------------------------------------------------------------------------------------------------------------
@@ -203,6 +203,7 @@ void WBDC_Opt::initialize_opt_vars(){
   opt_var_list.get_var_states(0, q_state_test, qdot_state_test);
   opt_var_list.get_task_accelerations(0, xddot_test);  
   opt_var_list.get_var_reaction_forces(0, Fr_test);
+
 }
 
 void WBDC_Opt::get_init_opt_vars(std::vector<double> &x_vars){ 

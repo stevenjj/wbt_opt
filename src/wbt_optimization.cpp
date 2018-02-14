@@ -823,6 +823,9 @@ void WBT_Optimization::getB_c(const sejong::Vector &q, const sejong::Vector &qdo
   B = Jt_inv;
   c = Jt_inv * JtDotQdot;
 
+/*  sejong::pretty_print(qdot, std::cout, "qdot");
+  sejong::pretty_print(JtDotQdot, std::cout, "JtDotQdot");*/
+
   Npre = sejong::Matrix::Identity(NUM_QDOT, NUM_QDOT) - Jt_inv * Jt;
   tot_task_size += task->task_dim;
 

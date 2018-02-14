@@ -11,6 +11,11 @@ namespace snopt_wrapper{
      int    iu[],    int *leniu,
      double ru[],    int *lenru){
 
+  		if (*Status >= 2){
+  			std::cout << "*Status = " << *Status << std::endl;
+  		}
+
+
 		std::vector<double> x_vars;
 		std::vector<double> F_eval;
 		std::vector<double> G_eval;				
@@ -22,6 +27,7 @@ namespace snopt_wrapper{
 		for (size_t i = 0; i < *n; i++){
 			x_vars.push_back(x[i]);
 		}
+
 		ptr_optimization_problem->update_opt_vars(x_vars);
 		// Get F and G evaluations
 		if ((*needF) > 0){
@@ -62,6 +68,7 @@ namespace snopt_wrapper{
 		for (size_t i = 0; i < *n; i++){
 			x_vars.push_back(x[i]);
 		}
+
 		ptr_optimization_problem->update_opt_vars(x_vars);
 		// Get F and G evaluations
 		if ((*needF) > 0){
@@ -204,14 +211,12 @@ namespace snopt_wrapper{
 	// Populate x_vars
 	for(size_t i = 0; i < x_vars.size(); i++){
 		x[i] = x_vars[i];		
-		xstate[i] = x[i];
-		xmul[i] = 0.0;
-		//std::cout << "x[" << i << "] = " << x[i] << std::endl;
+		xstate[i] = 0;
 	}
 	// Populate F bounds
 	for (size_t i = 0; i < F_eval.size(); i++){
 		F[i] = F_eval[i];
-		Fstate[i] =  F_eval[i];
+		Fstate[i] = 0;
 		Fmul[i] = 0.0;
 	}
 	// Populate x bounds
@@ -266,6 +271,20 @@ namespace snopt_wrapper{
 	whole_body_trajectory_problem.setIntParameter("Derivative option", 0);
 	whole_body_trajectory_problem.setIntParameter("Verify level ", 3);	
 
+
+/*	whole_body_trajectory_problem.computeJac(nF, n, snopt_wrapper::wbt_FG, x, xlow, xupp,
+		  iAfun_test, jAvar_test, A_test, neA_test,
+		  iGfun_test, jGvar_test, neG_test);
+
+	std::cout << "Size of non zero A's: " << neA_test << std::endl;
+	std::cout << "Size of non zero G's: " << neG_test << std::endl;
+
+
+	for (size_t i = 0; i < neG_test; i++){
+		std::cout << "iGfun_test[i], jGvar_test[j] = " << iGfun_test[i] << ", " << jGvar_test[i] << std::endl;
+	}
+*/
+
 	whole_body_trajectory_problem.solve(Cold, nF, n, ObjAdd, ObjRow, snopt_wrapper::wbt_FG,
 			  iAfun, jAvar, A, neA,
 			  iGfun, jGvar, neG,
@@ -275,12 +294,10 @@ namespace snopt_wrapper{
 			  nS, nInf, sInf);
 
 
-	// whole_body_trajectory_problem.computeJac(nF, n, snopt_wrapper::wbt_FG, x, xlow, xupp,
-	// 	  iAfun_test, jAvar_test, A_test, neA_test,
-	// 	  iGfun_test, jGvar_test, neG_test);
+	std::cout << "Size of non zero A's: " << neA_test << std::endl;
+	std::cout << "Size of non zero G's: " << neG_test << std::endl;	
+  	std::cout << "(n, nF) = (" << n << ", " << nF << "). n x nF = " << n*nF << std::endl;
 
-	// std::cout << "Size of non zero A's: " << neA_test << std::endl;
-	// std::cout << "Size of non zero G's: " << neG_test << std::endl;	
 
 
 
@@ -290,15 +307,16 @@ namespace snopt_wrapper{
    //  			  nS, nInf, sInf);
 
 
-	for (size_t i = 0; i < n; i++){
+
+/*	for (size_t i = 0; i < n; i++){
 		std::cout << "x[" << i << "] = " << x[i] << std::endl;
 	}
-
+*/
 
 /*	for (size_t i = 0; i < nF; i++){
 		std::cout << "F[" << i << "] = " << F[i] << std::endl;
-	}	*/
-
+	}	
+*/
 
 
 	delete []iAfun;  delete []jAvar;  delete []A;
@@ -470,6 +488,7 @@ namespace snopt_wrapper{
 	// for (size_t i = 0; i < nF; i++){
 	// 	std::cout << "F[" << i << "] = " << F[i] << std::endl;
 	// }	
+
 
 
 
