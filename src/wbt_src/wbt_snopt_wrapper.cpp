@@ -608,7 +608,7 @@ namespace snopt_wrapper{
 		iGfun[i] =  iGfun_snJac[i] - 1;
 
 		if (!(iGfun_snJac[i] < nF)){
-			std::cout << " Error, index iG, jG: " << iGfun_snJac[i] << ", " << jGvar_snJac[i] << " is out of bounds." << std::endl;
+			//std::cout << " Error, index iG, jG: " << iGfun_snJac[i] << ", " << jGvar_snJac[i] << " is out of bounds." << std::endl;
 		}
 
 	}
@@ -616,7 +616,7 @@ namespace snopt_wrapper{
 		jGvar[i] =  jGvar_snJac[i] - 1;
 
 		if (!(jGvar_snJac[i] < n)){
-			std::cout << " Error, index jG, iG: " << jGvar_snJac[i] << ", " << iGfun_snJac[i] << " is out of bounds." << std::endl;
+			//std::cout << " Error, index jG, iG: " << jGvar_snJac[i] << ", " << iGfun_snJac[i] << " is out of bounds." << std::endl;
 		}
 
 	}	
@@ -664,15 +664,15 @@ namespace snopt_wrapper{
 
 
 
-/*	for (size_t i = 0; i < n; i++){
+	for (size_t i = 0; i < n; i++){
 		std::cout << "x[" << i << "] = " << x[i] << std::endl;
 	}
-*/
 
-/*	for (size_t i = 0; i < nF; i++){
+
+	for (size_t i = 0; i < nF; i++){
 		std::cout << "F[" << i << "] = " << F[i] << std::endl;
 	}	
-*/
+
 
 
 	delete []iAfun;  delete []jAvar;  delete []A;
