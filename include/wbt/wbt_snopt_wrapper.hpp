@@ -3,6 +3,8 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <map>
+
 #include <iostream>
 #include <math.h>
 
@@ -10,6 +12,7 @@
 #include <wbt/optimization_problems/wbt_opt_problem_main.hpp>
 
 namespace snopt_wrapper{
+  
   void wbt_FG_noG(int    *Status, int *n,    double x[],
      int    *needF,  int *lenF,  double F[],
      int    *needG,  int *lenG,  double G[],

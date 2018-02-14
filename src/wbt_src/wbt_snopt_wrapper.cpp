@@ -4,6 +4,31 @@ namespace snopt_wrapper{
 
   Optimization_Problem_Main* ptr_optimization_problem;
 
+  std::map<int, std::map<int, int> > Gij_to_stored_index;
+
+  bool get_stored_index(int &G_i, int &G_j, int &stored_index){
+	std::map<int, std::map<int, int> >::iterator index_i_it;
+	std::map<int, int>::iterator index_j_it;
+
+	index_i_it = Gij_to_stored_index.find(G_i);
+
+	// if the key in the map has been found
+	if (index_i_it != Gij_to_stored_index.end()){	
+		index_j_it = index_i_it->second.find(G_j); 
+
+		if (index_j_it != index_i_it->second.end()){
+			//std::cout << "Found index of G(" << G_i << "," << G_j << ") . Its stored at " << index_j_it->second << std::endl;
+			stored_index = index_j_it->second;
+			return true;			
+		}
+	}
+	//std::cout << "Could not find index of G(" << G_i << "," << G_j << ") ." << std::endl;
+	return false;
+
+  }
+
+
+
   void wbt_FG_noG(int    *Status, int *n,    double x[],
      int    *needF,  int *lenF,  double F[],
      int    *needG,  int *lenG,  double G[],
@@ -34,7 +59,7 @@ namespace snopt_wrapper{
 			ptr_optimization_problem->compute_F(F_eval);
 		}
 		if ((*needG) > 0){
-//			ptr_optimization_problem->compute_G(G_eval, iGfun_eval, jGvar_eval, neG_eval);
+			ptr_optimization_problem->compute_G(G_eval, iGfun_eval, jGvar_eval, neG_eval);
 		}
 
 
@@ -42,10 +67,16 @@ namespace snopt_wrapper{
 		for (size_t i = 0; i < F_eval.size(); i++){
 			F[i] = F_eval[i];
 		}
-/*		//Populate G
+		//Populate G
+		
+		int stored_index = 0;
 		for (size_t i = 0; i < G_eval.size(); i++){
-			G[i] = G_eval[i];
-		}	*/
+			if (get_stored_index(iGfun_eval[i], jGvar_eval[i], stored_index)){
+				G[stored_index] = G_eval[i];				
+			}else{
+				//std::cout << "Warning could not find index. G[" <<s i << "] should be 0. Its value is " << G_eval[i] << std::endl;
+			}
+		}	
 
     }
 
@@ -538,12 +569,15 @@ namespace snopt_wrapper{
 	whole_body_trajectory_problem.setIntParameter("Verify level ", 3);	
 
 
-	whole_body_trajectory_problem.computeJac(nF, n, snopt_wrapper::wbt_FG_noG, x, xlow, xupp,
+	whole_body_trajectory_problem.computeJac(nF, n, snopt_wrapper::wbt_F, x, xlow, xupp,
 		  iAfun_snJac, jAvar_snJac, A_snJac, neA_snJac,
 		  iGfun_snJac, jGvar_snJac, neG_snJac);
 
 	std::cout << "Size of non zero A's: " << neA_snJac << std::endl;
 	std::cout << "Size of non zero G's: " << neG_snJac << std::endl;
+
+	std::cout << "Number of variables: n = " << n << std::endl;
+	std::cout << "Number of functions: nF = " << nF << std::endl;	
 
 	neG = neG_snJac;
 
@@ -570,12 +604,36 @@ namespace snopt_wrapper{
 
 
 	// Populate G indices
-	for(int i = 0; i < neG_snJac; i++){
-		iGfun[i] =  iGfun_snJac[i];
+	for(int i = 0; i < neG; i++){
+		iGfun[i] =  iGfun_snJac[i] - 1;
+
+		if (!(iGfun_snJac[i] < nF)){
+			std::cout << " Error, index iG, jG: " << iGfun_snJac[i] << ", " << jGvar_snJac[i] << " is out of bounds." << std::endl;
+		}
+
 	}
-	for(int i = 0; i < neG_snJac; i++){
-		jGvar[i] =  jGvar_snJac[i];
+	for(int i = 0; i < neG; i++){
+		jGvar[i] =  jGvar_snJac[i] - 1;
+
+		if (!(jGvar_snJac[i] < n)){
+			std::cout << " Error, index jG, iG: " << jGvar_snJac[i] << ", " << iGfun_snJac[i] << " is out of bounds." << std::endl;
+		}
+
 	}	
+
+	// Store the nonzero (i,j) coordinates of G 
+	for(int i = 0; i < neG; i++){
+		Gij_to_stored_index[ iGfun[i] ][ jGvar[i] ] = i;
+	}
+
+	// Check if we can retrieve the coordinates
+	int stored_index = 0;
+	for(int i = 0; i < neG; i++){
+		if ( !(get_stored_index(iGfun[i], jGvar[i], stored_index)) ){
+			std::cout << "Error, could not find the stored index of (" << iGfun[i] << "," << jGvar[i] << ") coordinate of G" << std::endl;
+		};
+	}
+
 	// Populate A and its indices
 	for(size_t i = 0; i < A_eval.size(); i++){
 		A[i] = A_eval[i];
@@ -768,6 +826,7 @@ namespace snopt_wrapper{
 	// 	  iAfun_test, jAvar_test, A_test, neA_test,
 	// 	  iGfun_test, jGvar_test, neG_test);
 
+  	std::cout << "[SNOPT Wrapper] Solving Problem with no Gradients" << std::endl;
 
   	whole_body_trajectory_problem.solve(Cold, nF, n, ObjAdd, ObjRow, snopt_wrapper::wbt_F,
 			      xlow, xupp, Flow, Fupp,
