@@ -10,7 +10,7 @@ WBT_Opt_Variable::WBT_Opt_Variable(std::string _name, double _value, double _l_b
 	name = _name;
 	value = _value;	
 	l_bound = _l_bound;
-	_u_bound = _u_bound;	
+	u_bound = _u_bound;	
 }
 
 WBT_Opt_Variable::WBT_Opt_Variable(std::string _name, int _time_step, double _value, double _l_bound, double _u_bound){
@@ -18,7 +18,7 @@ WBT_Opt_Variable::WBT_Opt_Variable(std::string _name, int _time_step, double _va
 	value = _value;	
 	time_step = _time_step;
 	l_bound = _l_bound;
-	_u_bound = _u_bound;	
+	u_bound = _u_bound;	
 
 }
 
@@ -28,7 +28,7 @@ WBT_Opt_Variable::WBT_Opt_Variable(std::string _name, int _type, int _time_step,
 	value = _value;	
 	time_step = _time_step;
 	l_bound = _l_bound;
-	_u_bound = _u_bound;		
+	u_bound = _u_bound;		
 }
 
 WBT_Opt_Variable::~WBT_Opt_Variable(){}

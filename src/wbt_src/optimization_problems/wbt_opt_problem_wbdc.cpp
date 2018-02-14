@@ -217,6 +217,10 @@ void WBDC_Opt::get_init_opt_vars(std::vector<double> &x_vars){
 
 void WBDC_Opt::get_opt_vars_bounds(std::vector<double> &x_low, std::vector<double> &x_upp){
   for(size_t i = 0; i < opt_var_list.get_size(); i++){
+    std::cout << "x[" << i << "] = " << opt_var_list.get_opt_variable(i)->value << std::endl;
+    std::cout << "lower x[" << i << "] = " << opt_var_list.get_opt_variable(i)->l_bound << std::endl;     
+    std::cout << "upper x[" << i << "] = " << opt_var_list.get_opt_variable(i)->u_bound << std::endl;     
+
     x_low.push_back(opt_var_list.get_opt_variable(i)->l_bound);
     x_upp.push_back(opt_var_list.get_opt_variable(i)->u_bound);    
   }
