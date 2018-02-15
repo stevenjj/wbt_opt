@@ -61,13 +61,23 @@ include_directories(
 
 include_directories(include)
 include_directories(src/valkyrie_dynamic_model)
+include_directories(src/draco_dynamic_model)
+
 set(val_sim_model_sources src/valkyrie_dynamic_model/valkyrie_definition.h
 						  src/valkyrie_dynamic_model/Valkyrie_Dyn_Model.hpp						  
 						  src/valkyrie_dynamic_model/Valkyrie_Dyn_Model.cpp
 						  src/valkyrie_dynamic_model/Valkyrie_Kin_Model.hpp						  
 						  src/valkyrie_dynamic_model/Valkyrie_Kin_Model.cpp						  
 						  src/valkyrie_dynamic_model/RobotModel.hpp
-						  src/valkyrie_dynamic_model/RobotModel.cpp)					
+						  src/valkyrie_dynamic_model/RobotModel.cpp)		
+
+set(draco_sim_model_sources src/draco_dynamic_model/DracoP1Rot_Definition.h
+						  src/draco_dynamic_model/Draco_Dyn_Model.hpp						  
+						  src/draco_dynamic_model/Draco_Dyn_Model.cpp
+						  src/draco_dynamic_model/Draco_Kin_Model.hpp						  
+						  src/draco_dynamic_model/Draco_Kin_Model.cpp						  
+						  src/draco_dynamic_model/DracoModel.hpp
+						  src/draco_dynamic_model/DracoModel.cpp)								  			
 
 
 set(wbt_opt_sources     src/main.cpp
@@ -159,7 +169,9 @@ add_executable(opt_prob_wbc_main src/wbt_src/main_opt_problem.cpp
 								 ${wbt_hard_constraint_sources}
 								 ${wbt_optimization_problems_sources}
 								 ${wbt_objective_func_sources}
-								 ${val_sim_model_sources})
+								 ${val_sim_model_sources}
+								 ${draco_sim_model_sources}
+								 )
 
 target_link_libraries(opt_prob_wbc_main ${SJUtils}
   										${SJurdf}

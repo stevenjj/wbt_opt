@@ -148,7 +148,8 @@ void WBDC_Opt::initialize_opt_vars(){
         opt_var_list.append_variable(q_var);
       }
       for(size_t j = 0; j < NUM_QDOT; j++){
-        WBT_Opt_Variable* qdot_var = new WBT_Opt_Variable("qdot_state", VAR_TYPE_QDOT, i, robot_qdot_init[j], -OPT_INFINITY, OPT_INFINITY);
+        //WBT_Opt_Variable* qdot_var = new WBT_Opt_Variable("qdot_state", VAR_TYPE_QDOT, i, robot_qdot_init[j], -OPT_INFINITY, OPT_INFINITY);
+        WBT_Opt_Variable* qdot_var = new WBT_Opt_Variable("qdot_state", VAR_TYPE_QDOT, i, robot_qdot_init[j], -10, 10);        
         opt_var_list.append_variable(qdot_var);      
       }
     }
